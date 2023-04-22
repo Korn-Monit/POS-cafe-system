@@ -10,8 +10,8 @@
 ![image](https://user-images.githubusercontent.com/116006734/233759400-6ae2d3e0-2c2c-4bf8-a435-37fc901d6db2.png)
 
 
-#Note:
-Dont forget to change database name in application.properties
+# Note:
+Dont forget to change database name in application.properties file in src/main/resources
 
 
 
