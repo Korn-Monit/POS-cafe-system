@@ -13,8 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import gp8.itc.cafe.Controller.DB.RepositoryCafeTable;
+import gp8.itc.cafe.Controller.DB.RepositoryDrinkCategory;
 import gp8.itc.cafe.Controller.DB.RepositoryUser;
 import gp8.itc.cafe.Controller.DataStructure.CafeTable;
+
+import gp8.itc.cafe.Controller.DataStructure.DrinkCategory;
 import gp8.itc.cafe.Controller.DataStructure.User;
 
 
@@ -68,5 +71,39 @@ public class Controller {
         //System.out.println(cafeTable.getTableNumber());
         repositoryCafeTable.save(cafeTable);
         return new RedirectView("/index");  
+    }
+    
+    //drink
+    // @Autowired
+    // private RepositoryDrink repositoryDrink;
+
+    // @GetMapping("/drink")
+    // public Object drink() {
+    //     return new ModelAndView("drink");
+    // }
+
+    // @RequestMapping(method=RequestMethod.POST, value="/drink")
+    // @ResponseBody
+    // public Object processDrink(@ModelAttribute("Drink") Drink drink) {
+    //     //System.out.println(cafeTable.getTableNumber());
+    //     repositoryDrink.save(drink);
+    //     return new RedirectView("/drink");  
+    // }
+
+    //drink category
+    @Autowired
+    private RepositoryDrinkCategory repositoryDrinkCat;
+
+    @GetMapping("/drinkCat")
+    public Object drinkCat() {
+        return new ModelAndView("drinkCat");
+    }
+
+    @RequestMapping(method=RequestMethod.POST, value="/drinkCat")
+    @ResponseBody
+    public Object processDrinkCat(@ModelAttribute("DrinkCategory") DrinkCategory drinkCat) {
+        //System.out.println(cafeTable.getTableNumber());
+        repositoryDrinkCat.save(drinkCat);
+        return new RedirectView("/drinkCat");  
     }
 }

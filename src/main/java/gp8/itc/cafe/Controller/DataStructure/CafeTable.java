@@ -33,20 +33,20 @@ public class CafeTable {
     public void setTableId(int table_id){
         this.table_id = table_id;
     }
+
     
-
-
     public double getTableNumber(){
         return tablenumber;
     }
     public void setTableNumber(double tablenumber){
         this.tablenumber = tablenumber;
     }
-
     
+
     public double getAvaiabilitye(){
         return availability;
     }
+
     public void setAvaiability(double availability){
         this.availability = availability;
     }

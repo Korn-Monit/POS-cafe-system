@@ -2,8 +2,6 @@ package gp8.itc.cafe.Controller.DataStructure;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,22 +16,30 @@ public class User {
     //generate the id automatically and increase the id too
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    int user_id;
+    private int user_id;
 
     @Column(name = "email")
-    String email;
+    private String email;
 
     @Column(name = "password")
-    String password;
+    private String password;
 
-    @Enumerated(EnumType.STRING)
+    // @Enumerated(EnumType.STRING)
     @Column(name = "user_type")
-    private UserType type;
+    private String type;
+    // private UserType type;
 
-    public UserType getType() {
+    // public UserType getType() {
+    //     return type;
+    // }
+    // public void setType(UserType type) {
+    //     this.type = type;
+    // }
+
+    public String getType(){
         return type;
     }
-    public void setType(UserType type) {
+    public void setType(String type){
         this.type = type;
     }
     
@@ -60,10 +66,10 @@ public class User {
         this.user_id = user_id;
     }
 
-    public enum UserType{
-        Admin,
-        Cashier,
-    };
+    // public enum UserType{
+    //     Admin,
+    //     Cashier,
+    // };
 }
 
 
