@@ -1,30 +1,71 @@
-// package gp8.itc.cafe.Controller.DataStructure;
+package gp8.itc.cafe.Controller.DataStructure;
 
-// import java.util.ArrayList;
 
-// import jakarta.persistence.Entity;
-// import jakarta.persistence.GeneratedValue;
-// import jakarta.persistence.GenerationType;
-// import jakarta.persistence.Id;
-// import jakarta.persistence.Table;
-// import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.List;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 
-// @Entity
-// @Table(name = "history")
-// public class History<Receipt> {
+@Entity
+@Table(name = "history")
+public class History{
 
-//     @Id
-//     @GeneratedValue(strategy= GenerationType.IDENTITY)
-//     @Column(name = "history_id")
-//     private int history_id;
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int history_id;
 
-//     @Column(name = "description")
-//     private String description;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User userId;
 
-//     @JoinColumn(name = "user_id");
+    @ManyToOne
+    @JoinColumn(name = "table_id")
+    private CafeTable tableId;
+
+
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    private List<Invoice> invoices;
+
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public int getHistory_id() {
+        return history_id;
+    }
+
+    public void setHistory_id(int history_id) {
+        this.history_id = history_id;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
+    public CafeTable getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(CafeTable tableId) {
+        this.tableId = tableId;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
+
     
-//     @JoinColumn(name = "table_id");
-
-//     @Column(name="list_of_receipts")
-//     ArrayList<Receipt> history = new ArrayList<>();
-// }
+}

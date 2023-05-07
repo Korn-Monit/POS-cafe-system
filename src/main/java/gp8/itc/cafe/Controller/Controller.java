@@ -56,6 +56,7 @@ public class Controller {
         repositorySignup.save(signup);
         return new RedirectView("/signup");  
     }
+
     //
     @Autowired
     private RepositoryCafeTable repositoryCafeTable;
@@ -91,19 +92,19 @@ public class Controller {
     // }
 
     //drink category
-    @Autowired
-    private RepositoryDrinkCategory repositoryDrinkCat;
+    // @Autowired
+    // private RepositoryDrinkCategory repositoryDrinkCat;
 
-    @GetMapping("/drinkCat")
-    public Object drinkCat() {
-        return new ModelAndView("drinkCat");
-    }
+    // @GetMapping("/drinkCat")
+    // public Object drinkCat() {
+    //     return new ModelAndView("drinkCat");
+    // }
 
-    @RequestMapping(method=RequestMethod.POST, value="/drinkCat")
-    @ResponseBody
-    public Object processDrinkCat(@ModelAttribute("DrinkCategory") DrinkCategory drinkCat) {
-        //System.out.println(cafeTable.getTableNumber());
-        repositoryDrinkCat.save(drinkCat);
-        return new RedirectView("/drinkCat");  
-    }
+    // @RequestMapping(method=RequestMethod.POST, value="/drinkCat")
+    // @ResponseBody
+    // public Object processDrinkCat(@ModelAttribute("DrinkCategory") DrinkCategory drinkCat) {
+    //     //System.out.println(cafeTable.getTableNumber());
+    //     repositoryDrinkCat.save(drinkCat);
+    //     return new RedirectView("/drinkCat");  
+    // }
 }

@@ -11,7 +11,6 @@ import jakarta.persistence.Table;
 @Table(name = "user")
 public class User {
 
-    //Table
     @Id
     //generate the id automatically and increase the id too
     @GeneratedValue(strategy = GenerationType.IDENTITY)

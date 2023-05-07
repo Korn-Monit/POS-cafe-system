@@ -1,11 +1,11 @@
-// package gp8.itc.cafe.Controller.DB;
+package gp8.itc.cafe.Controller.DB;
 
-// import org.springframework.data.jpa.repository.JpaRepository;
-
-
-// import gp8.itc.cafe.Controller.DataStructure.Drink;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 
-// public interface RepositoryDrink extends JpaRepository<Drink, String>{
+import gp8.itc.cafe.Controller.DataStructure.Drink;
+
+
+public interface RepositoryDrink extends JpaRepository<Drink, String>{
     
-// }
+}
