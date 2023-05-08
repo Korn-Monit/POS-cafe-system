@@ -1,12 +1,17 @@
 package gp8.itc.cafe.Controller.DataStructure;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,11 +37,54 @@ public class Drink {
     @Column(name="addons")
     private String addons;
 
-    @ManyToOne
-    @JoinColumn(name = "drink_categoryId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drink_category_Id")
     private DrinkCategory category_id;
 
-    //setter and getter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drink_size_id")
+    private DrinkSize size_id;
+
+    public int getDrink_id() {
+        return drink_id;
+    }
+
+    public void setDrink_id(int drink_id) {
+        this.drink_id = drink_id;
+    }
+
+    public String getDrinkName() {
+        return drinkName;
+    }
+
+    public void setDrinkName(String drinkName) {
+        this.drinkName = drinkName;
+    }
+
+    public String getDrinkSize() {
+        return drinkSize;
+    }
+
+    public void setDrinkSize(String drinkSize) {
+        this.drinkSize = drinkSize;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
+
+    public String getAddons() {
+        return addons;
+    }
+
+    public void setAddons(String addons) {
+        this.addons = addons;
+    }
+
     public DrinkCategory getCategory_id() {
         return category_id;
     }
@@ -45,34 +93,13 @@ public class Drink {
         this.category_id = category_id;
     }
 
-    public String getDrinkName(){
-        return drinkName;
-    }
-    public void setDrinkName(String drinkName){
-        this.drinkName = drinkName;
+    public DrinkSize getDrinkSizeId() {
+        return size_id;
     }
 
+    public void setDrinkSizeId(DrinkSize size_id) {
+        this.size_id = size_id;
+    }
     
-    public String getDrinkSize(){
-        return drinkSize;
-    }
-    public void setDrinkSize(String drinkSize){
-        this.drinkSize = drinkSize;
-    }
-
-
-    public String getZone(){
-        return zone;
-    }
-    public void setZone(String zone){
-        this.zone = zone;
-    }
-
-
-    public String getAddons(){
-        return addons;
-    }
-    public void setAddons(String addons){
-        this.addons = addons;
-    }
+    
 }

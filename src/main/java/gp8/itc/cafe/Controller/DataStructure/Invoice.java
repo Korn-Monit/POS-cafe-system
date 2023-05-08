@@ -1,11 +1,6 @@
 package gp8.itc.cafe.Controller.DataStructure;
 
 
-
-
-
-import org.hibernate.annotations.ManyToAny;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,15 +30,15 @@ public class Invoice {
     @JoinColumn(name = "user_id")
     private User userId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drink_id")
     private Drink drinkId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drink_category_id")
     private DrinkCategory drinkCategoryId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "table_id")
     private CafeTable cafeTableId;
 

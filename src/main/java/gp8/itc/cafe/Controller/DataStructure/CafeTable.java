@@ -1,10 +1,14 @@
 package gp8.itc.cafe.Controller.DataStructure;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,7 +19,7 @@ public class CafeTable {
     @Id
     //generate the id automatically and increase the id too
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="table_id")
+    @Column(name="id")
     int table_id;
 
     @Column(name = "number")
@@ -24,30 +28,43 @@ public class CafeTable {
     @Column(name = "availability")
     double availability;
 
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    private List<Invoice> invoices;
 
-
-    //Setter and getter
-    public int getId(){
+    public int getTable_id() {
         return table_id;
     }
-    public void setTableId(int table_id){
+
+    public void setTable_id(int table_id) {
         this.table_id = table_id;
     }
 
-    
-    public double getTableNumber(){
+    public double getTablenumber() {
         return tablenumber;
     }
-    public void setTableNumber(double tablenumber){
+
+    public void setTablenumber(double tablenumber) {
         this.tablenumber = tablenumber;
     }
-    
 
-    public double getAvaiabilitye(){
+    public double getAvailability() {
         return availability;
     }
 
-    public void setAvaiability(double availability){
+    public void setAvailability(double availability) {
         this.availability = availability;
     }
+
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
+
+
+    //Setter and getter
+
 }
