@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="cruddrink.css">
+</head>
+
+<body>
+    <div class="form">
+        <div class="title">
+            <h4>CREATE NEW DRINK</h4>
+            <p>Input drink information</p>
+        </div>
+        <div class="even-column">
+            <div class="child">
+                <div class="input-element">
+                    <label for="">Drink code</label>
+                    <input type="text">
+                </div>
+                <div class="input-element">
+                    <label for="">Drink Name</label>
+                    <input type="text">
+                </div>
+                <div class="input-element">
+                    <label for="">Price</label>
+                    <input type="text">
+                </div>
+                <div class="input-element">
+                    <label for="">Category</label>
+                    <input type="text">
+                    <div id="add_category"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="input-element">
+                    <label for="">Info</label>
+                    <input type="text">
+                </div>
+                <div class="button-element">
+                    <button>Done</button>
+                    <button>Cancel</button>
+                </div>
+            </div>
+            <div class="child2">
+                <div class="image-container">
+                    <img src="" alt="" id="output">
+                    <span>Image</span>
+                </div>
+                <div class="file">
+                    <label for="file">Upload</label>
+                    <input name="file" id="file" type="file" onchange="loadFile(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="popup">
+        <div class="box1">
+            <h3>New Category</h3>
+
+        </div>
+        <div class="box2">
+            <div class="input">
+                <label for="catecode">Category code </label><span>: </span>
+                <input type="text" id="catecode"><br>
+
+            </div>
+            <div class="input">
+                <label for="catecode">Category name </label><span>: </span>
+                <input type="text" id="catename"><br>
+
+            </div>
+
+        </div>
+        <div class="button">
+            <input type="button" value="OK" id="agree">
+            <input type="button" value="Cancel" id="cancel">
+
+
+        </div>
+
+    </div>
+    <div class="overlay" id="overlay"></div>
+</body>
+<script>
+    var loadFile = function (event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('output');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+
+    const button_add = document.getElementById('add_category')
+    const overlay = document.getElementById('overlay')
+    const popup = document.getElementById('popup')
+    const cancel = document.getElementById('cancel')
+    const agree = document.getElementById('agree')
+
+    button_add.onclick = () => {
+        overlay.style.display = "block"
+        popup.style.display = "block"
+    }
+
+    cancel.onclick = () => {
+        overlay.style.display = "none"
+        popup.style.display = "none"
+    }
+
+    agree.onclick = () => {
+        overlay.style.display = "none"
+        popup.style.display = "none"
+    }
+
+</script>
+
+</html>
