@@ -8,8 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -18,10 +16,10 @@ import jakarta.persistence.Table;
 public class DrinkSize {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "size_id")
+    @Column(name = "id")
     private int drink_sizeId;
 
-    @OneToMany(mappedBy = "size_id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sizeId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Drink> drink;
 
     @Column(name = "size")
@@ -61,8 +59,5 @@ public class DrinkSize {
     public void setPrice(double price) {
         this.price = price;
     }
-
-
-
 
 }

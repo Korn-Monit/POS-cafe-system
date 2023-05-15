@@ -1,8 +1,5 @@
 package gp8.itc.cafe.Controller.DataStructure;
 
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -43,7 +39,7 @@ public class Drink {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drink_size_id")
-    private DrinkSize size_id;
+    private DrinkSize sizeId;
 
     public int getDrink_id() {
         return drink_id;
@@ -93,13 +89,11 @@ public class Drink {
         this.category_id = category_id;
     }
 
-    public DrinkSize getDrinkSizeId() {
-        return size_id;
+    public DrinkSize getSize_id() {
+        return sizeId;
     }
 
-    public void setDrinkSizeId(DrinkSize size_id) {
-        this.size_id = size_id;
-    }
-    
-    
+    public void setSize_id(DrinkSize sizeId) {
+        this.sizeId = sizeId;
+    }   
 }

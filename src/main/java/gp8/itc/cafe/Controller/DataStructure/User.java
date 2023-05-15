@@ -21,19 +21,26 @@ public class User {
     @Column(name = "id")
     private int user_id;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "password")
     private String password;
 
-
     @Column(name = "user_type")
     private String type;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "gender")
+    private String sex;
+
+    @Column(name = "date_of_birth")
+    private String dob;
+
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<Invoice> invoices;
-
     
     @OneToMany(mappedBy = "history_id", cascade = CascadeType.ALL)
     private List<History> history;
@@ -49,13 +56,13 @@ public class User {
     }
 
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 
@@ -79,6 +86,36 @@ public class User {
     }
 
 
+    public String getName() {
+        return name;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public String getSex() {
+        return sex;
+    }
+
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+
+    public String getDob() {
+        return dob;
+    }
+
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+
     public List<Invoice> getInvoices() {
         return invoices;
     }
@@ -97,9 +134,6 @@ public class User {
     public void setHistory(List<History> history) {
         this.history = history;
     }
-
-
-
 }
 
 

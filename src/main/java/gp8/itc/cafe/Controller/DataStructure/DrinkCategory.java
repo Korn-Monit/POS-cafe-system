@@ -59,8 +59,4 @@ public class DrinkCategory {
     public void setDrink(List<Drink> drink) {
         this.drink = drink;
     }
-
-    
-
-    
 }

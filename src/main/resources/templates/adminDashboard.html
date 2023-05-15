@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .tabs {
+            overflow: hidden;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .tablink {
+            background-color: #f1f1f1;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 16px;
+            width: 20%;
+            float: left;
+        }
+
+        .tablink:hover {
+            background-color: #ddd;
+        }
+
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            clear: both;
+        }
+
+        .subtablink {
+            background-color: #f1f1f1;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .subtablink:hover {
+            background-color: #ddd;
+        }
+    </style>
+
+    <div class="tabs">
+        <button class="tablink" onclick="openTab(event, 'cashier')">New Cashier</button>
+        <button class="tablink" onclick="openTab(event, 'drink')">New Drink</button>
+        <button class="tablink" onclick="openTab(event, 'food')">New Food</button>
+        <button class="tablink" onclick="openTab(event, 'category')">New Category</button>
+        <button class="tablink" onclick="openTab(event, 'orders')">Orders History</button>
+        <button class="tablink" onclick="openTab(event, 'table')">Manage Table</button>
+    </div>
+
+    <div id="cashier" class="tabcontent">
+        <h3>Cashiers</h3>
+        <!-- Cashiers content goes here -->
+    </div>
+
+    <div id="drink" class="tabcontent">
+        <h3>Drinks</h3>
+        <!-- Drinks content goes here -->
+    </div>
+
+    <div id="food" class="tabcontent">
+        <h3>Foods</h3>
+        <!-- Foods content goes here -->
+    </div>
+
+    <div id="category" class="tabcontent">
+        <h3>Categories</h3>
+        <!-- Categories content goes here -->
+    </div>
+
+    <div id="orders" class="tabcontent">
+        <h3>Orders History</h3>
+        <!-- Orders content goes here -->
+    </div>
+
+    <div id="table" class="tabcontent">
+        <h3>Manage Table</h3>
+        <!-- Table management content goes here -->
+    </div>
+
+    <div>
+        <button>Cashiers</button>
+        <button>Drinks</button>
+        <button>Foods</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${userList}">
+                <td th:text="${user1.id}"></td>
+                <td th:text="${user1.username}"></td>
+                <!-- <td th:text="${user.}"></td> -->
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function openTab(event, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            if (tabName === "cashier"){
+                window.open("cashier.html", "_blank"); // Open cashier.html in a new tab
+            } else{
+                document.getElementById(tabName).style.display = "block";
+                event.currentTarget.className += " active";
+            }
+        }
+
+    
+        function openCashierPage() {
+            window.open("cashier.html", "_blank");
+        }
+        openCashierPage();
+    </script>
+
+</body>
+</html>
