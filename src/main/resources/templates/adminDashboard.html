@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"></html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -98,14 +99,31 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Email</th>
+                <th>Username</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="user : ${userList}">
-                <td th:text="${user1.id}"></td>
-                <td th:text="${user1.username}"></td>
-                <!-- <td th:text="${user.}"></td> -->
+            <!-- <tr th:each="drink : ${dashboardData.drinks}"> -->
+                <!-- <td th:text="${drink.drink_id}"></td>
+                <td th:text="${drink.drinkName}"></td>
+                <td th:text="${drink.image}"></td> -->
+                <!-- Add more columns as needed -->
+            <!-- </tr>  -->
+        </tbody> 
+        <tbody>
+            <!-- <tr th:each="user : ${dashboardData.users}"> -->
+                <!-- <td th:text="${user.user_id}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.username}"></td> -->
+                <!-- Add more columns as needed -->
+            <!-- </tr> -->
+        </tbody>
+        <tbody>
+            <tr th:each="drink : ${drinks}">
+                <th th:text="${drink.getDrink_id()}"></th>
+                <td th:text="${drink.getDrinkName()}"></td>
+                <a th:href="@{/drink/delete/{id} (id = ${drink.getDrink_id})}" >Delete</a>
+                <br>
             </tr>
         </tbody>
     </table>

@@ -41,6 +41,17 @@ public class Drink {
     @JoinColumn(name = "drink_size_id")
     private DrinkSize sizeId;
 
+    @Column(name = "image")
+    private String image;
+
+    public String getImage(){
+        return image;
+    }
+
+    public void setImage(String image){
+        this.image = image;
+    }
+
     public int getDrink_id() {
         return drink_id;
     }

@@ -1,12 +1,14 @@
 package gp8.itc.cafe.Controller;
 
-import org.springframework.ui.Model;
 
-import java.util.Optional;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -79,38 +81,64 @@ public class Controller {
 
 
     //admin dashboard
-    //RepositoryUser displayUser;
+    @Autowired
+    private RepositoryDrink repositoryDrink;
+    @Autowired
+    private RepositoryUser repositoryUser;
+    
 
-    // public UserController(RepositoryUser displayUser) {
-    //     this.displayUser = displayUser;
+    // @GetMapping("/testThemeLeaf")
+    // public ModelAndView adminDashboard() {
+    //     List<Drink> drinks = repositoryDrink.findAll(); 
+    //     ModelAndView modelAndView = new ModelAndView("/testThemeLeaf");
+    //     modelAndView.addObject("drinks", drinks); // Add the drinks to the model
+    //     return modelAndView;
     // }
 
-    // @GetMapping("/adminDashboard")
-    // public String getUsers(Model model) {
-    //     java.util.List<User> userList = displayUser.findAll();
-    //     model.addAttribute("users", userList);
-    //     return "userList";
-    // }
-
-
-
-    // @GetMapping("/loginSuccess")
-    // public Object loginSuccess() {
-    //     return new ModelAndView("loginSuccess");
-    // }
-
-    // @GetMapping("/loginNotSuccess")
-    // public Object loginNotSuccess() {
-    //     return new ModelAndView("loginNotSuccess");
-    // }
-
+    @GetMapping("/adminDashboard")
+    public ModelAndView adminDashboard1() {
+        // Retrieve drinks
+        List<Drink> drinks = repositoryDrink.findAll();
+    
+        // Retrieve users
+        List<User> users = repositoryUser.findAll();
+    
+        // Create a class to hold both drinks and users
+        class DashboardData {
+            private List<Drink> drinks;
+            private List<User> users;
+    
+            public DashboardData(List<Drink> drinks, List<User> users) {
+                this.drinks = drinks;
+                this.users = users;
+            }
+    
+            public List<Drink> getDrinks() {
+                return drinks;
+            }
+    
+            public List<User> getUsers() {
+                return users;
+            }
+        }
+    
+        // Create an instance of DashboardData and pass drinks and users to it
+        DashboardData dashboardData = new DashboardData(drinks, users);
+    
+        // Create a ModelAndView object and add the dashboardData object to it
+        ModelAndView modelAndView = new ModelAndView("/adminDashboard");
+        modelAndView.addObject("dashboardData", dashboardData);
+    
+        return modelAndView;
+    }
+    
 
     //sign up, will be deleted soon
     @Autowired
     private RepositoryUser repositorySignup;
 
     @GetMapping("/signup")
-    public Object signup() {
+    public Object signup (){
         return new ModelAndView("/signup");
     }
 
@@ -121,6 +149,7 @@ public class Controller {
         repositorySignup.save(signup);
         return new RedirectView("/signup");  
     }
+    
 
     //table
     @Autowired
@@ -140,16 +169,14 @@ public class Controller {
     }
     
     //drink
-    
+
+    //add drink
     @Autowired
     RepositoryDrink drinkRepository;
     @Autowired
     RepositoryDrinkSize drinkSizeRepository;
     @Autowired
     RepositoryDrinkCategory drinkCategoryRepository;
-
-    // @Autowired
-    // private DrinkService drinkService;
 
     @GetMapping("/addDrink")
     public Object addDrink() {
@@ -158,29 +185,80 @@ public class Controller {
 
     @PostMapping("/addDrink")
     @ResponseBody
-    public Object processAddDrinkForm(@RequestParam("drinkName") String drinkNom, @RequestParam("drinkPrice") double drinkPrix, @RequestParam("drinkNote") String note) {
+    public Object processAddDrinkForm(@RequestParam("drinkName") String drinkNom, @RequestParam("drinkPrice") double drinkPrix, @RequestParam("drinkNote") String note, @RequestParam("categoryName") String categoryNom, @RequestParam("file") String limage) {
 
-            Drink drinkName = new Drink();
-            drinkName.setDrinkName(drinkNom);
+        Drink drinkName = new Drink();
+        drinkName.setDrinkName(drinkNom);
+        drinkName.setImage(limage);
+
+        DrinkSize drinkSize = new DrinkSize();
+        drinkSize.setPrice(drinkPrix);
+
+        DrinkCategory drinkCategory = new DrinkCategory();
+        drinkCategory.setDescription(note);
+        drinkCategory.setName(categoryNom);
+
+        drinkRepository.save(drinkName);
+        drinkSizeRepository.save(drinkSize);
+        drinkCategoryRepository.save(drinkCategory);
+        
+        //insert foreign key
+        drinkName.setCategory_id(drinkCategory);
+        drinkRepository.save(drinkName);
+
+        drinkName.setSize_id(drinkSize);
+        drinkRepository.save(drinkName);
+
+        return new RedirectView("/addDrink");  
+    }
+
+    //delete drink
+    @GetMapping("/drink/delete/{id}")
+    public Object deleteDrink(@PathVariable Integer id) {
+        Drink drink = drinkRepository.findById(id).get();
+        int cateID = drink.getCategory_id().getDrink_categoryId();
+        int sizeID = drink.getSize_id().getDrink_sizeId();
+        
+        drinkRepository.deleteById(id);
+        drinkCategoryRepository.deleteById(cateID);
+        drinkSizeRepository.deleteById(sizeID);
+
+        return new RedirectView("/drink");
+    }
+
+    //edit drink
+    @GetMapping("/drink")
+    public Object drinkCategory(Model model) {
+        model.addAttribute("drinks", drinkRepository.findAll());
+        return new ModelAndView("drinkMenu");
+    }
+    @GetMapping("/drink/edit/{id}")
+    public Object editDrink(@PathVariable Integer id, Model model) {
+        Drink drink = drinkRepository.findById(id).get();
+        model.addAttribute("drink", drink);
+        return new ModelAndView("/editDrink");
+    }
     
-            DrinkSize drinkSize = new DrinkSize();
-            drinkSize.setPrice(drinkPrix);
+    @PostMapping("/drink/{id}")
+    public Object drinkUpdated(@PathVariable Integer id,
+                            @RequestParam("drinkName") String drinkNom, 
+                            @RequestParam("drinkPrice") double drinkPrix, 
+                            @RequestParam("drinkNote") String note) {
+        Drink drink = drinkRepository.findById(id).get();
+        int cateID = drink.getCategory_id().getDrink_categoryId();
+        int sizeID = drink.getSize_id().getDrink_sizeId();
 
-            DrinkCategory drinkCategory = new DrinkCategory();
-            drinkCategory.setDescription(note);
+        DrinkCategory drinkCategory = drinkCategoryRepository.findById(cateID).get();
+        DrinkSize drinkSize = drinkSizeRepository.findById(sizeID).get();
     
-            drinkRepository.save(drinkName);
-            drinkSizeRepository.save(drinkSize);
-            drinkCategoryRepository.save(drinkCategory);
-            
-            //insert foreign key
-            drinkName.setCategory_id(drinkCategory);
-            drinkRepository.save(drinkName);
+        drink.setDrinkName(drinkNom);
+        drinkSize.setPrice(drinkPrix);
+        drinkCategory.setDescription(note);
 
-            drinkName.setSize_id(drinkSize);
-            drinkRepository.save(drinkName);
+        drinkRepository.save(drink);
+        drinkCategoryRepository.save(drinkCategory);
+        drinkSizeRepository.save(drinkSize);
 
-            return new RedirectView("/addDrink");  
-    
+        return new RedirectView("/drink");
     }
 }
