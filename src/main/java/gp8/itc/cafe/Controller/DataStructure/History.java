@@ -17,11 +17,20 @@ import jakarta.persistence.Column;
 @Entity
 @Table(name = "history")
 public class History{
-
+    //note that this is history of cashier, not admin
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
     private int history_id;
+
+    @Column(name = "table_number")
+    private int tableNumber;
+
+    @Column(name = "price")
+    private int price;
+
+    @Column(name = "date")
+    private String date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -39,6 +48,36 @@ public class History{
 
     public void setHistory_id(int history_id) {
         this.history_id = history_id;
+    }
+
+
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+
+    public int getPrice() {
+        return price;
+    }
+
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+
+    public String getDate() {
+        return date;
+    }
+
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
 
@@ -60,9 +99,6 @@ public class History{
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
     }
-
-    
-
 
     
 }

@@ -1,5 +1,9 @@
 package gp8.itc.cafe.Controller.DataStructure;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -7,6 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -30,8 +36,6 @@ public class Drink {
     @Column(name = "zone")
     private String zone;
 
-    @Column(name="addons")
-    private String addons;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drink_category_Id")
@@ -44,13 +48,13 @@ public class Drink {
     @Column(name = "image")
     private String image;
 
-    public String getImage(){
-        return image;
-    }
-
-    public void setImage(String image){
-        this.image = image;
-    }
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "drink_addon",
+        joinColumns = @JoinColumn(name = "drink_id"),
+        inverseJoinColumns = @JoinColumn(name = "addon_id")
+    )
+    private List<Addon> addons = new ArrayList<>();
 
     public int getDrink_id() {
         return drink_id;
@@ -84,14 +88,6 @@ public class Drink {
         this.zone = zone;
     }
 
-    public String getAddons() {
-        return addons;
-    }
-
-    public void setAddons(String addons) {
-        this.addons = addons;
-    }
-
     public DrinkCategory getCategory_id() {
         return category_id;
     }
@@ -100,11 +96,29 @@ public class Drink {
         this.category_id = category_id;
     }
 
-    public DrinkSize getSize_id() {
+    public DrinkSize getSizeId() {
         return sizeId;
     }
 
-    public void setSize_id(DrinkSize sizeId) {
+    public void setSizeId(DrinkSize sizeId) {
         this.sizeId = sizeId;
-    }   
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public List<Addon> getAddons() {
+        return addons;
+    }
+
+    public void setAddons(List<Addon> addons) {
+        this.addons = addons;
+    }
+
+
 }

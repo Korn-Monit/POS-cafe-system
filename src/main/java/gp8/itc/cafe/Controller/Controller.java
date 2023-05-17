@@ -178,9 +178,6 @@ public class Controller {
         return new RedirectView("/index");  
     }
 
-
-
-    
     //drink
 
     //add drink
@@ -219,7 +216,7 @@ public class Controller {
         drinkName.setCategory_id(drinkCategory);
         drinkRepository.save(drinkName);
 
-        drinkName.setSize_id(drinkSize);
+        drinkName.setSizeId(drinkSize);
         drinkRepository.save(drinkName);
 
         return new RedirectView("/addDrink");  
@@ -230,7 +227,7 @@ public class Controller {
     public Object deleteDrink(@PathVariable Integer id) {
         Drink drink = drinkRepository.findById(id).get();
         int cateID = drink.getCategory_id().getDrink_categoryId();
-        int sizeID = drink.getSize_id().getDrink_sizeId();
+        int sizeID = drink.getSizeId().getDrink_sizeId();
         
         drinkRepository.deleteById(id);
         drinkCategoryRepository.deleteById(cateID);
@@ -263,7 +260,7 @@ public class Controller {
                             @RequestParam("drinkNote") String note) {
         Drink drink = drinkRepository.findById(id).get();
         int cateID = drink.getCategory_id().getDrink_categoryId();
-        int sizeID = drink.getSize_id().getDrink_sizeId();
+        int sizeID = drink.getSizeId().getDrink_sizeId();
 
         DrinkCategory drinkCategory = drinkCategoryRepository.findById(cateID).get();
         DrinkSize drinkSize = drinkSizeRepository.findById(sizeID).get();

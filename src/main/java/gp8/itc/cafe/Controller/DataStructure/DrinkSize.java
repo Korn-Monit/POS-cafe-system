@@ -59,5 +59,4 @@ public class DrinkSize {
     public void setPrice(double price) {
         this.price = price;
     }
-
 }
