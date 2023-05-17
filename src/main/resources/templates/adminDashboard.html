@@ -104,25 +104,38 @@
         </thead>
 
         <!-- delete edit drink -->
-        <tbody>
+        <!-- <tbody>
             <tr th:each="drink : ${dashboardData.drinks}">
                 <td th:text="${drink.getDrink_id()}"></td>
                 <td th:text="${drink.getDrinkName()}"></td>
+                <td ><img alt="" th:src="*{'data:image/jpeg;base64,'+{drink.image} }"></td>
                 <td><a th:href="@{/drink/edit/{id}(id=${drink.getDrink_id()})}">Edit</a></td>
                 <td><a th:href="@{/drink/delete/{id}(id=${drink.getDrink_id()})}">Delete</a></td>
                 <br>
             </tr>
-        </tbody>
+        </tbody> -->
         
         <!-- delete edit user, not yet done-->
-        <!-- <tbody>
+        <tbody>
             <tr th:each="user : ${dashboardData.users}">
                 <td th:text="${user.getName()}"></td>
                 <td th:text="${user.getUsername()}"></td>
                 <td><a th:href="@{/user/edit/{id}(id=${user.getUser_id()})}">Edit</a></td>
                 <td><a th:href="@{/user/delete/{id}(id=${user.getUser_id()})}">Delete</a></td>
             </tr>
-        </tbody> -->
+        </tbody>
+
+        <!--drink category  -->
+        <tbody>
+            <!-- <tr th:each="drinkC : ${dashboardData.drinkCategories}"> -->
+                <!-- <td th:text="${drinkC.getName()}"></td>
+                <td th:text="${drinkC.getDescription()}"></td> -->
+                <!-- <td ><img alt="" th:src="*{'data:image/jpeg;base64,'+{drink.image} }"></td> -->
+                <!-- <td><a th:href="@{/drinkCategories/edit/{id}(id=${drinkC.getDrink_id()})}">Edit</a></td>
+                <td><a th:href="@{/drinkCategories/delete/{id}(id=${drinkC.getDrink_id()})}">Delete</a></td> -->
+                <!-- <br>
+            </tr> -->
+        </tbody>
         
     </table>
 

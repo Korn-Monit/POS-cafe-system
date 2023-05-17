@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -45,7 +46,8 @@ public class Drink {
     @JoinColumn(name = "drink_size_id")
     private DrinkSize sizeId;
 
-    @Column(name = "image")
+    @Lob
+    @Column(name = "image", length = 9000)
     private String image;
 
     @ManyToMany(cascade = CascadeType.ALL)

@@ -1,4 +1,5 @@
 package gp8.itc.cafe.Controller;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import java.io.File;
+import java.io.IOException;
 
+import com.mysql.cj.util.StringUtils;
 
 import gp8.itc.cafe.Controller.DB.RepositoryCafeTable;
 import gp8.itc.cafe.Controller.DB.RepositoryDrink;
@@ -113,6 +118,8 @@ public class Controller {
     private RepositoryDrink repositoryDrink;
     @Autowired
     private RepositoryUser repositoryUser;
+    @Autowired
+    private RepositoryDrinkCategory repositoryDrinkCategory;
     
 
     // @GetMapping("/testThemeLeaf")
@@ -130,15 +137,19 @@ public class Controller {
     
         // Retrieve users
         List<User> users = repositoryUser.findAll();
+
+        List<DrinkCategory> drinkCategories = repositoryDrinkCategory.findAll();
     
         // Create a class to hold both drinks and users
         class DashboardData {
             private List<Drink> drinks;
             private List<User> users;
+            private List<DrinkCategory> drinkCategories;
     
-            public DashboardData(List<Drink> drinks, List<User> users) {
+            public DashboardData(List<Drink> drinks, List<User> users, List<DrinkCategory> drinkCategories) {
                 this.drinks = drinks;
                 this.users = users;
+                this.drinkCategories = drinkCategories;
             }
     
             public List<Drink> getDrinks() {
@@ -148,10 +159,14 @@ public class Controller {
             public List<User> getUsers() {
                 return users;
             }
+
+            public List<DrinkCategory> getDrinkCategories() {
+                return drinkCategories;
+            }
         }
     
         // Create an instance of DashboardData and pass drinks and users to it
-        DashboardData dashboardData = new DashboardData(drinks, users);
+        DashboardData dashboardData = new DashboardData(drinks, users, drinkCategories);
     
         // Create a ModelAndView object and add the dashboardData object to it
         ModelAndView modelAndView = new ModelAndView("/adminDashboard");
@@ -195,11 +210,24 @@ public class Controller {
 
     @PostMapping("/addDrink")
     @ResponseBody
-    public Object processAddDrinkForm(@RequestParam("drinkName") String drinkNom, @RequestParam("drinkPrice") double drinkPrix, @RequestParam("drinkNote") String note, @RequestParam("categoryName") String categoryNom, @RequestParam("file") String limage) {
+    // MultipartFile is a class in Spring Framework that represents a file that has been uploaded via a form in a web application. It is typically used for handling file uploads in Spring applications
+    public Object processAddDrinkForm(@RequestParam("drinkName") String drinkNom, @RequestParam("drinkPrice") double drinkPrix, @RequestParam("drinkNote") String note, @RequestParam("categoryName") String categoryNom, @RequestParam("file") MultipartFile limage) {
 
         Drink drinkName = new Drink();
         drinkName.setDrinkName(drinkNom);
-        drinkName.setImage(limage);
+        // the .getOriginalFileName extract image name
+        String fileName = limage.getOriginalFilename();
+        //if fileName is "C:/path/to/my_image.jpg", then cleanFileName will contain "my_image.jpg", which is the extracted filename from the file path.
+        String cleanFileName = new File(fileName).getName();
+        if(cleanFileName.contains("..")){
+            System.out.println("not a valid file");
+        }
+        //encode from imagefile to string
+        try {
+            drinkName.setImage(Base64.getEncoder().encodeToString(limage.getBytes()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         DrinkSize drinkSize = new DrinkSize();
         drinkSize.setPrice(drinkPrix);
@@ -208,13 +236,13 @@ public class Controller {
         drinkCategory.setDescription(note);
         drinkCategory.setName(categoryNom);
 
-        drinkRepository.save(drinkName);
+        // drinkRepository.save(drinkName);
         drinkSizeRepository.save(drinkSize);
         drinkCategoryRepository.save(drinkCategory);
         
         //insert foreign key
         drinkName.setCategory_id(drinkCategory);
-        drinkRepository.save(drinkName);
+        // drinkRepository.save(drinkName);
 
         drinkName.setSizeId(drinkSize);
         drinkRepository.save(drinkName);
