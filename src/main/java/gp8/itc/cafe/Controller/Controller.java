@@ -1,7 +1,4 @@
 package gp8.itc.cafe.Controller;
-
-
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +61,7 @@ public class Controller {
     }
 
 
-    //add cashier
+    //User
     @Autowired
     private RepositoryUser addCashierRepos;
     @GetMapping("/addCashier")
@@ -77,6 +74,37 @@ public class Controller {
     public Object processAddCashierForm(@ModelAttribute("User") User addCashier) {
         addCashierRepos.save(addCashier);
         return new RedirectView("/addCashier");  
+    }
+
+    //delete user
+    @Autowired
+    RepositoryUser userRepository;
+    @GetMapping("/user/delete/{id}")
+    public Object deleteUser(@PathVariable Integer id) {
+        //User user = userRepository.findById(id).get();
+        userRepository.deleteById(id);
+        return new RedirectView("/adminDashboard");
+    }
+    //edit user
+    @GetMapping("/user/edit/{id}")
+    public Object editUser(@PathVariable Integer id, Model model) {
+        User user = userRepository.findById(id).get();
+        model.addAttribute("user", user);
+        return new ModelAndView("/editUser");
+    }
+
+    @PostMapping("/user/{id}")
+    public Object userUpdated(@PathVariable Integer id,
+                            @RequestParam("username") String usernom,
+                            @RequestParam("password") String passmot) {
+        User user = userRepository.findById(id).get();
+    
+        user.setUsername(usernom);
+        user.setPassword(passmot);
+
+        userRepository.save(user);
+
+        return new RedirectView("/adminDashboard");
     }
 
 
@@ -133,24 +161,6 @@ public class Controller {
     }
     
 
-    //sign up, will be deleted soon
-    @Autowired
-    private RepositoryUser repositorySignup;
-
-    @GetMapping("/signup")
-    public Object signup (){
-        return new ModelAndView("/signup");
-    }
-
-    @RequestMapping(method=RequestMethod.POST, value="/signup")
-    @ResponseBody
-    public Object processSignupForm(@ModelAttribute("User") User signup) {
-        //System.out.println(cafeTable.getTableNumber());
-        repositorySignup.save(signup);
-        return new RedirectView("/signup");  
-    }
-    
-
     //table
     @Autowired
     private RepositoryCafeTable repositoryCafeTable;
@@ -167,6 +177,9 @@ public class Controller {
         repositoryCafeTable.save(cafeTable);
         return new RedirectView("/index");  
     }
+
+
+
     
     //drink
 
@@ -223,22 +236,26 @@ public class Controller {
         drinkCategoryRepository.deleteById(cateID);
         drinkSizeRepository.deleteById(sizeID);
 
-        return new RedirectView("/drink");
+        return new RedirectView("/adminDashboard");
     }
 
     //edit drink
-    @GetMapping("/drink")
-    public Object drinkCategory(Model model) {
-        model.addAttribute("drinks", drinkRepository.findAll());
-        return new ModelAndView("drinkMenu");
-    }
+
+    //go to drink
+    // @GetMapping("/drinkDE")
+    // public Object drinkCategory(Model model) {
+    //     model.addAttribute("drinks", drinkRepository.findAll());
+    //     return new ModelAndView("drinkDE");
+    // }
+
+    //then to edit
     @GetMapping("/drink/edit/{id}")
     public Object editDrink(@PathVariable Integer id, Model model) {
         Drink drink = drinkRepository.findById(id).get();
         model.addAttribute("drink", drink);
         return new ModelAndView("/editDrink");
     }
-    
+
     @PostMapping("/drink/{id}")
     public Object drinkUpdated(@PathVariable Integer id,
                             @RequestParam("drinkName") String drinkNom, 
@@ -259,6 +276,6 @@ public class Controller {
         drinkCategoryRepository.save(drinkCategory);
         drinkSizeRepository.save(drinkSize);
 
-        return new RedirectView("/drink");
+        return new RedirectView("/drinkDE");
     }
 }

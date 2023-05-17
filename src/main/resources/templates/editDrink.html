@@ -272,6 +272,7 @@ body{
         display: none;
     }
     </style>
+    <!-- change this and all name attribute of input tags -->
     <form th:action="@{/drink/{id} (id = ${drink.getDrink_id()})}" th:object="${drink}" method="post">
         <div class="form">
             <div class="title">

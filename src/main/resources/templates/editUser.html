@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edit Drink</title>
 </head>
 
 <body>
@@ -272,31 +272,32 @@ body{
         display: none;
     }
     </style>
-    <form th:action="@{/addDrink}" method="post">
+    <form th:action="@{/user/{id} (id = ${user.getUser_id()})}" th:object="${user}" method="post">
         <div class="form">
             <div class="title">
-                <h4>CREATE NEW DRINK</h4>
+                <h4>EDIT DRINK</h4>
                 <p>Input drink information</p>
             </div>
 
             <div class="even-column">
                 <div class="child">
-                    <div class="input-element">
+
+                    <!-- <div class="input-element">
                         <label for="">Drink code</label>
                         <input type="text" >
+                    </div> -->
+
+                    <div class="input-element">
+                        <label for="">Username</label>
+                        <input type="text" name="username">
                     </div>
 
                     <div class="input-element">
-                        <label for="">Drink Name</label>
-                        <input type="text" name="drinkName">
+                        <label for="">Password</label>
+                        <input type="password" name="password">
                     </div>
 
-                    <div class="input-element">
-                        <label for="">Price</label>
-                        <input type="text" name="drinkPrice">
-                    </div>
-
-                    <div class="input-element">
+                    <!-- <div class="input-element">
                         <label for="">Category</label>
                         <input type="text">
                         <div id="add_category"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -305,14 +306,14 @@ body{
                                     d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                    </div>
+                    </div> -->
 
 
                     <!-- not yet decide -->
-                    <div class="input-element">
+                    <!-- <div class="input-element">
                         <label for="">Info</label>
                         <input type="text" name="drinkNote">
-                    </div>
+                    </div> -->
 
 
                     <div class="button-element">
@@ -321,7 +322,7 @@ body{
                     </div>
                 </div>
                 <!-- image -->
-                <div class="child2">
+                <!-- <div class="child2">
                     <div class="image-container">
                         <img src="" alt="" id="output">
                         <span>Image</span>
@@ -330,23 +331,23 @@ body{
                         <label for="file">Upload</label>
                         <input name="file" id="file" type="file" onchange="loadFile(event)">
                     </div>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div> -->
         </div>
 
         <div class="container" id="popup">
             <div class="box1">
                 <h3>New Category</h3>
             </div>
-            <div class="box2">
+            <!-- <div class="box2">
                 <div class="input">
                     <label for="catecode">Category code </label><span>: </span>
-                    <input type="text" id="catecode" ><br>
+                    <input type="text" id="catecode"><br>
     
                 </div>
                 <div class="input">
                     <label for="catecode">Category name </label><span>: </span>
-                    <input type="text" id="catename" name="categoryName"><br>
+                    <input type="text" id="catename"><br>
     
                 </div>
     
@@ -356,8 +357,8 @@ body{
                 <input type="button" value="Cancel" id="cancel">
             </div>
     
-        </div>
-        <div class="overlay" id="overlay"></div>
+        </div> -->
+        <!-- <div class="overlay" id="overlay"></div> -->
     </form>
     
 </body>

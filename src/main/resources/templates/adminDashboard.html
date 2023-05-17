@@ -102,30 +102,28 @@
                 <th>Username</th>
             </tr>
         </thead>
+
+        <!-- delete edit drink -->
         <tbody>
-            <!-- <tr th:each="drink : ${dashboardData.drinks}"> -->
-                <!-- <td th:text="${drink.drink_id}"></td>
-                <td th:text="${drink.drinkName}"></td>
-                <td th:text="${drink.image}"></td> -->
-                <!-- Add more columns as needed -->
-            <!-- </tr>  -->
-        </tbody> 
-        <tbody>
-            <!-- <tr th:each="user : ${dashboardData.users}"> -->
-                <!-- <td th:text="${user.user_id}"></td>
-                <td th:text="${user.name}"></td>
-                <td th:text="${user.username}"></td> -->
-                <!-- Add more columns as needed -->
-            <!-- </tr> -->
-        </tbody>
-        <tbody>
-            <tr th:each="drink : ${drinks}">
-                <th th:text="${drink.getDrink_id()}"></th>
+            <tr th:each="drink : ${dashboardData.drinks}">
+                <td th:text="${drink.getDrink_id()}"></td>
                 <td th:text="${drink.getDrinkName()}"></td>
-                <a th:href="@{/drink/delete/{id} (id = ${drink.getDrink_id})}" >Delete</a>
+                <td><a th:href="@{/drink/edit/{id}(id=${drink.getDrink_id()})}">Edit</a></td>
+                <td><a th:href="@{/drink/delete/{id}(id=${drink.getDrink_id()})}">Delete</a></td>
                 <br>
             </tr>
         </tbody>
+        
+        <!-- delete edit user, not yet done-->
+        <!-- <tbody>
+            <tr th:each="user : ${dashboardData.users}">
+                <td th:text="${user.getName()}"></td>
+                <td th:text="${user.getUsername()}"></td>
+                <td><a th:href="@{/user/edit/{id}(id=${user.getUser_id()})}">Edit</a></td>
+                <td><a th:href="@{/user/delete/{id}(id=${user.getUser_id()})}">Delete</a></td>
+            </tr>
+        </tbody> -->
+        
     </table>
 
     <script>
