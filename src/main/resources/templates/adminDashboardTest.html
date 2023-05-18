@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    *{
+        box-sizing: border-box;
+        font-size: inherit;
+        padding: 0;
+        margin: 0;
+    }
+    body{
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family:'Courier New', Courier, monospace;
+        background-color: #fff
+    }
+    .container{
+        width: 1100px;
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        border: 1px solid grey;
+    }
+    
+    .tabs{
+        width: 100%;
+        overflow: hidden;
+        border-bottom: 1px solid gray;
+        display: flex;
+    }
+
+    .tablink {
+            background-color: #fff;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 16px;
+            /* width: 20%;
+            float: left; */
+            margin: 0;
+            border: 1px solid gray;
+    }
+
+    .tablink:hover {
+            background-color: #ddd;
+    }
+   .tabs:nth-child(2){
+    padding-left: 20px;
+   }
+   .evencolumn{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+
+   }
+   .evencolumn>*{
+    width: 50%;
+    flex-basis: 100%;
+    border: 2px solid gray;
+   }
+   .left-column{
+    padding-top: 40px;
+   }
+   .row{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    
+   }
+   .row:nth-child(1){
+    background-color: rgb(158, 237, 237);
+    
+   }
+   .row p{
+    padding: 10px;
+   }
+   .row p:nth-child(1){
+    flex: 1;
+   }
+   .row p:nth-child(2){
+    flex: 3;
+   }
+   .row p:nth-child(3){
+    flex: 3;
+   }
+   .row p:nth-child(4){
+    flex: 3;
+   }
+   .right-column{
+    overflow: hidden;
+   }
+   .right-column img{
+    width: 50%;
+   }
+   .right-column h2{
+    font-size: 30px;
+   }
+   /* function for selected table */
+   .selected {
+        background-color: yellow;
+    }
+    .hidden{
+        display: none;
+    }
+</style>
+<body>
+    <div class="container">
+            <div class="tabs">
+                <button class="tablink" onclick="openTab(event, 'cashier')">New Cashier</button>
+                <button class="tablink" onclick="openTab(event, 'drink')">New Drink</button>
+                <button class="tablink" onclick="openTab(event, 'food')">New Food</button>
+                <button class="tablink" onclick="openTab(event, 'category')">New Category</button>
+                <button class="tablink" onclick="openTab(event, 'orders')">Orders History</button>
+                <button class="tablink" onclick="openTab(event, 'table')">Manage Table</button>
+            </div>
+            <div class="tabs">
+                <button class="tablink" id="btn_cashier">Cashier</button>
+                <button class="tablink" id="btn_drinks">Drink</button>
+                <button class="tablink" id="btn_foods">Food</button>
+            </div>
+            <div class="evencolumn">
+                <div class="left-column">
+                   <div class="row">
+                        <p>No</p>
+                        <p>Cashier Name</p>
+                        <p>Login</p>
+                        <p>Action</p>
+                   </div>
+                <div class="row">
+                    <!-- <div class="drinkClass"> -->
+                        <div id="drinkContent">
+                            <div>
+                                <span style="width: 100px;">ID</span>
+                                <span>DrinkName</span>
+                                <span>Action</span>
+                            </div>
+                        <!-- drink -->
+                            <div>
+                                <div th:each="drink : ${dashboardData.drinks}" class="data-row ">
+                                    <span th:text="${drink.getDrink_id()}"></span>
+                                    <span th:text="${drink.getDrinkName()}"></span>
+                                    <span style="margin-left: 100px;"><a th:href="@{/drink/edit/{id}(id=${drink.getDrink_id()})}">Edit</a></span>
+                                    <span><a th:href="@{/drink/delete/{id}(id=${drink.getDrink_id()})}">Delete</a></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    <!-- </div> -->
+
+                
+                    <div id="cashierContent" >
+                        <!-- delete edit cashier, not yet done -->
+                        <div>
+                            <div th:each="user : ${dashboardData.users}" class="data-row" >
+                                    <span th:text="${user.getName()}"></span>
+                                    <span th:text="${user.getUsername()}"></span>
+                                    <span><a th:href="@{/user/edit/{id}(id=${user.getUser_id()})}">Edit</a></span>
+                                    <span><a th:href="@{/user/delete/{id}(id=${user.getUser_id()})}">Delete</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <table id="foodsContent" hidden>
+                        <thead>
+                            <!-- <tr>
+                                <th>Name</th>
+                                <th>Username</th>
+                            </tr> -->
+                        </thead>
+                
+                        <tbody>
+                            <tr>
+                                <td><h1>Setthika</h1></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                </div>
+                <div class="right-column ">
+                    <h2>Cashier information</h2>
+                    <!-- <img src="https://juksun.com/wp-content/uploads/2022/02/Jennie-Kim.jpg" alt=""> -->
+                    <!-- <div th:each="drink : ${dashboardData.drinks}" class="hidden">
+                        <span th:text="${drink.getDrink_id()}"></span>
+                        <span th:text="${drink.getDrinkName()}"></span>
+                        <span style="margin-left: 100px;"><a th:href="@{/drink/edit/{id}(id=${drink.getDrink_id()})}">Edit</a></span>
+                        <span><a th:href="@{/drink/delete/{id}(id=${drink.getDrink_id()})}">Delete</a></span>
+                    </div> -->
+                </div>
+            </div>
+    </div>
+   
+    <script>
+        function openTab(event, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            if (tabName === "cashier"){
+                window.open("/addCashier", "_blank"); // Open cashier.html in a new tab
+                // location.href="/addCashier";
+            }
+            else if(tabName === "drink") {
+                location.href="/addDrink";
+            }
+
+            else{
+                document.getElementById(tabName).style.display = "block";
+                event.currentTarget.className += " active";
+            }
+        }
+
+        const cashierButton = document.getElementById('btn_cashier');
+        const drinkButton = document.getElementById('btn_drinks');
+        const foodButton = document.getElementById('btn_foods');
+
+        const contentCashier = document.getElementById('cashierContent');
+        const contentDrink = document.getElementById('drinkContent');
+        const contentFood = document.getElementById('foodsContent');
+
+        cashierButton.addEventListener("click", ()=>{
+            contentCashier.hidden = false;
+            contentDrink.hidden = true;
+            contentFood.hidden = true;
+            cashierButton.style.background = "#ddd";
+            drinkButton.style.background = "#f1f1f1";
+            foodButton.style.background = "#f1f1f1";
+
+        })
+        drinkButton.addEventListener("click", ()=> {
+            contentCashier.hidden = true;
+            contentDrink.hidden = false;
+            contentFood.hidden = true;
+            cashierButton.style.background = "#f1f1f1";
+            drinkButton.style.background = "#ddd";
+            foodButton.style.background = "#f1f1f1";
+        
+        })
+        foodButton.addEventListener("click", ()=>{
+            contentCashier.hidden = true;
+            contentDrink.hidden = true;
+            contentFood.hidden = false;
+            cashierButton.style.background = "#f1f1f1";
+            drinkButton.style.background = "#f1f1f1";
+            foodButton.style.background = "#ddd";
+        })
+        
+    
+        // function openCashierPage() {
+        //     window.open("cashier.html", "_blank");
+        // }
+        // openCashierPage();
+
+
+
+        //drink
+        document.addEventListener('DOMContentLoaded', function() {
+        var drinkRows = document.querySelectorAll('#drinkContent .data-row');
+
+        for (var i = 0; i < drinkRows.length; i++) {
+            drinkRows[i].addEventListener('click', function() {
+            // Deselect previously selected row
+            var selectedRow = document.querySelector('#drinkContent .data-row.selected');
+            if (selectedRow) {
+                selectedRow.classList.remove('selected');
+            }
+
+            // Select the clicked row
+            this.classList.add('selected');
+
+            // Retrieve and display the drink details
+            var drinkId = this.querySelector('span:nth-child(1)').textContent;
+            var drinkName = this.querySelector('span:nth-child(2)').textContent;
+            var editLink = this.querySelector('span:nth-child(3) a').getAttribute('href');
+            var deleteLink = this.querySelector('span:nth-child(4) a').getAttribute('href');
+
+            var content = `
+                <div>
+                <span>${drinkId}</span>
+                <span>${drinkName}</span>
+                <span style="margin-left: 100px;"><a href="${editLink}">Edit</a></span>
+                <span><a href="${deleteLink}">Delete</a></span>
+                </div>
+            `;
+
+            var rightColumn = document.querySelector('.right-column');
+            rightColumn.innerHTML = content;
+            });
+        }
+        });
+
+        //another version of displaying the code above
+
+//         document.addEventListener('DOMContentLoaded', function() {
+//   var drinkRows = document.querySelectorAll('#drinkContent .data-row');
+
+//   for (var i = 0; i < drinkRows.length; i++) {
+//     drinkRows[i].addEventListener('click', function() {
+//       // Retrieve and display all the drink details
+//       var drinks = document.querySelectorAll('#drinkContent .data-row');
+
+//       var content = '';
+//       for (var j = 0; j < drinks.length; j++) {
+//         var drinkId = drinks[j].querySelector('span:nth-child(1)').textContent;
+//         var drinkName = drinks[j].querySelector('span:nth-child(2)').textContent;
+//         var editLink = drinks[j].querySelector('span:nth-child(3) a').getAttribute('href');
+//         var deleteLink = drinks[j].querySelector('span:nth-child(4) a').getAttribute('href');
+
+//         content += `
+//           <div>
+//             <span>${drinkId}</span>
+//             <span>${drinkName}</span>
+//             <span style="margin-left: 100px;"><a href="${editLink}">Edit</a></span>
+//             <span><a href="${deleteLink}">Delete</a></span>
+//           </div>
+//         `;
+//       }
+
+//       var rightColumn = document.querySelector('.right-column');
+//       rightColumn.innerHTML = content;
+//     });
+//   }
+// });
+
+   
+
+
+
+
+
+
+
+        //user
+        // $(document).ready(function() {
+        // $('#cashierContent .data-row').click(function() {
+        //     // Deselect previously selected row
+        //     $('#cashierContent .data-row.selected').removeClass('selected');
+            
+        //     // Select the clicked row
+        //     $(this).addClass('selected');
+        // });
+        // });
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        // var drinkRows = document.querySelectorAll('#cashierContent .data-row');
+
+        // for (var i = 0; i < drinkRows.length; i++) {
+        //     drinkRows[i].addEventListener('click', function() {
+        //     // Deselect previously selected row
+        //     var selectedRow = document.querySelector('#drinkContent .data-row.selected');
+        //     if (selectedRow) {
+        //         selectedRow.classList.remove('selected');
+        //     }
+
+        //     // Select the clicked row
+        //     this.classList.add('selected');
+
+        //     // Retrieve and display the drink details
+        //     var drinkId = this.querySelector('span:nth-child(1)').textContent;
+        //     var drinkName = this.querySelector('span:nth-child(2)').textContent;
+        //     var editLink = this.querySelector('span:nth-child(3) a').getAttribute('href');
+        //     var deleteLink = this.querySelector('span:nth-child(4) a').getAttribute('href');
+
+        //     var content = `
+        //         <div>
+        //         <span>${drinkId}</span>
+        //         <span>${drinkName}</span>
+        //         <span style="margin-left: 100px;"><a href="${editLink}">Edit</a></span>
+        //         <span><a href="${deleteLink}">Delete</a></span>
+        //         </div>
+        //     `;
+
+        //     var rightColumn = document.querySelector('.right-column');
+        //     rightColumn.innerHTML = content;
+        //     });
+        // }
+        // });
+    </script>
+   
+    
+</body>
+</html>

@@ -169,7 +169,7 @@ public class Controller {
         DashboardData dashboardData = new DashboardData(drinks, users, drinkCategories);
     
         // Create a ModelAndView object and add the dashboardData object to it
-        ModelAndView modelAndView = new ModelAndView("/adminDashboard");
+        ModelAndView modelAndView = new ModelAndView("/adminDashboardTest");
         modelAndView.addObject("dashboardData", dashboardData);
     
         return modelAndView;

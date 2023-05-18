@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -44,6 +45,20 @@ public class User {
     
     @OneToMany(mappedBy = "history_id", cascade = CascadeType.ALL)
     private List<History> history;
+
+    // @Lob
+    // @Column(name = "image", length = 9000)
+    // private String cashierImage;
+
+    // public String getImage() {
+    //     return cashierImage;
+    // }
+
+
+    // public void setImage(String cashierImage) {
+    //     this.cashierImage = cashierImage;
+    // }
+
 
 
     public int getUser_id() {
