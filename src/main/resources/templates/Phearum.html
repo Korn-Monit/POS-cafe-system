@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+		/* Style for the pop-up form */
+		.popup-form {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			left: 0;
+			top: 0;
+			width: 100%; /* Full width */
+			height: 100%; /* Full height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgba(0,0,0,0.4); /* Black with opacity */
+		}
+		
+		/* Style for the form content */
+		.popup-form-content {
+			background-color: #fefefe;
+			margin: 10% auto; /* 15% from the top and centered */
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%; /* Could be more or less, depending on screen size */
+		}
+		
+		/* Style for the close button */
+		.popup-form-close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+		
+		.popup-form-close:hover,
+		.popup-form-close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+    <div id="container" class="flex bg-[#f2f2f2] h-[100vh]">
+        <div id="d-selection" class="w-1/2 p-3">
+            <div id="category" class="flex bg-[#8eaadc] justify-center p-3">
+                <button th:each="category: ${categories}" th:text="${category.name}" th:id="${category.id}" class="category bg-[#343f50] mx-2 p-1 rounded-lg flex justify-center items-center text-white text-2xl active"></button>
+            </div>
+            <div class="border border-gray-400 my-2"></div>
+            <div th:each="category: ${categories}" th:id="${'dcontent' + category.id}" class="grid-cols-3 gap-2 hidden dcontent">
+                <div th:each="drink: ${drinks}" th:if="${drink.category_id == category.id}" th:id="${drink.id}" class="drink rounded-lg bg-white hover:bg-black duration-200 hover:text-white">
+                    <img src="data:image/jpeg;base64," th:attrappend="src=${drink.image}" alt="americano" th:id="${drink.id}" class="rounded-lg h-44 w-full object-cover">
+                    <!-- <img src="data:image/jpeg;base64," th:attrappend="src=${selectedDrink.image}"  alt="coffee" width="50%"> -->
+                    <div th:text="${drink.name}" class="w-full flex justify-center text-lg" th:id="${drink.id}"></div>
+                </div>
+            </div>
+        </div>
+        <div id="d-information" class="w-1/2 bg-[#deebf7] p-3 flex flex-col justify-between">
+            <div>
+                <h1 class="text-3xl w-full flex justify-center p-3">Order information</h1>
+                <div class="border border-gray-400 my-2"></div>
+                <table class="w-full">
+                    <thead>
+                        <tr class="w-full grid grid-cols-6">
+                            <th class="flex justify-start" scope="row">ID</th>
+                            <th class="flex justify-start">Name</th>
+                            <th class="flex justify-start">Size</th>
+                            <th class="flex justify-start">Amount</th>
+                            <th class="flex justify-start">Price</th>
+                            <th class="flex justify-start">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="order: ${allOrders}" class="w-full grid grid-cols-6">
+                        <th th:text="${order.getProduct_order().getId}" class="flex justify-start" scope="row"></th>
+                        <td th:text="${order.getProduct().getName()}" class="flex justify-start"></td>
+                        <td th:text="${order.getSize().getName()}" class="flex justify-start"></td>
+                        <td th:text="${order.getProduct_order().getAmount()}" class="flex justify-start"></td>
+                        <td th:text="${order.getOrderPrice()}" class="flex justify-start"></td>
+                        <td  class="flex justify-start">
+                            <a th:href="@{/product_selection/delete_order/{id} (id=${order.getProduct_order().getId()})}" class="rounded-md p-1 m-1 text-sm text-white bg-red-600">
+                                Delete
+                            </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex justify-end">
+                <a class="rounded-md p-2 m-1 text-white bg-green-700" th:href="@{/table_selection}">
+                    Check Out
+                </a>
+            </div>
+        </div>
+    </div>
+	<!-- The pop-up form -->
+	<div id="myForm" class="popup-form">
+		<!-- Form content -->
+		<div class="popup-form-content bg-white p-4 rounded w-1/2">
+			<h2 class="text-lg font-bold mb-2">Customize Your Order</h2>
+			<form method="POST" th:object="${order}" th:action="@{/save_order}">
+                <input th:field="*{product_id}" id="sDrinkId" type="number" class="hidden">
+				<div class="mb-4">
+					<label class="block text-gray-700 font-bold mb-2" for="size">Size:</label>
+					<select th:field="*{size_id}" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="size">
+						<option th:each="size: ${sizes}" th:text="${size.name}" th:value="${size.id}"></option>
+					</select>
+				</div>
+				<div class="mb-4">
+					<label class="block text-gray-700 font-bold mb-2" for="flavor">Flavor:</label>
+					<div class="">
+						<div class="mr-4">
+							<input th:field="*{addon_ids}" type="checkbox" id="cream" name="cream" th:value="${cream.id}">
+							<label class="ml-2" for="cream">Cream</label>
+						</div>
+						<div class="mb-4">
+                            <label class="block text-gray-700 font-bold mb-2" for="sugar">Sugar:</label>
+                            <select th:field="*{addon_ids}" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="sugar">
+                                <option th:each="sugar: ${sugars}" th:text="${sugar.value + '%'}" th:value="${sugar.id}"></option>
+                            </select>
+						</div>
+
+					</div>
+				</div>
+				<div class="mb-4">
+					<div class="mb-4">
+						<label class="block text-gray-700 font-bold mb-2" for="amount">Amount:</label>
+                        <input th:field="*{amount}" type="number" id="amount" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+					</div>
+					<div class="flex justify-end">
+						<button type="button" onclick="closeForm()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-4">Cancel</button>
+						<button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+    <!-- pop-up form 2 -->
+    
+    <script>
+        // category part
+        const buttons = document.getElementsByClassName("category");
+        const buttonPressed = e => {
+            let catID = e.target.id;  // Get ID of Clicked Element
+
+            for (let button of buttons) {
+                button.style.backgroundColor = "#343f50"
+            }
+            document.getElementById(catID).style.backgroundColor = "black"
+
+            let hides = document.getElementsByClassName("dcontent");
+            for (let hide of hides) {
+                hide.style.display = "none";
+            }
+            document.getElementById("dcontent" + catID).style.display = "grid";
+        }
+        for (let button of buttons) {
+            button.addEventListener("click", buttonPressed);
+        }
+        buttons[0].click();
+
+        // select drink part
+        const drinks = document.getElementsByClassName("drink");
+        const drinkSelected = e => {
+            let drinkID = e.target.id;  // Get ID of Clicked Element
+            console.log(drinkID);
+            document.getElementById("sDrinkId").value = drinkID+"";
+            openForm()
+        }
+        for (let drink of drinks) {
+            drink.addEventListener("click", drinkSelected);
+        }
+
+        /* Function to open the pop-up form */
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        /* Function to close the pop-up form */
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+
+        // /* Function to open the pop-up form */
+        // function openCal() {
+        //     document.getElementById("myForm2").style.display = "block";
+        // }
+
+        // /* Function to close the pop-up form */
+        // function closeCal() {
+        //     document.getElementById("myForm2").style.display = "none";
+        // }
+    </script>
+</body>
+</html>

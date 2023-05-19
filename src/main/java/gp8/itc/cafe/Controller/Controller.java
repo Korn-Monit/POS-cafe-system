@@ -1,6 +1,7 @@
 package gp8.itc.cafe.Controller;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -53,13 +54,20 @@ public class Controller {
 
     @RequestMapping(method=RequestMethod.POST, value="/login")
     @ResponseBody
+    //@ModelAttribute("User") this allows us to access method in User class
     public Object processLoginForm(@ModelAttribute("User") User login) {
         String username = login.getUsername();
         String password = login.getPassword();
         String type = login.getType();
         // User user = repositoryLogin.getUserByEmail(login.getEmail());
         if (userService.loginTest(username, password, type)) {
-            return new ModelAndView("loginSuccess");
+            if(type.equals("admin")) {
+                return new RedirectView(" /adminDashboard");
+            }
+            else{
+                return new RedirectView(" /tableSelect");
+            }
+            // return new ModelAndView("loginSuccess");
         } else {
             return new ModelAndView("redirect:/login");
         }
@@ -67,18 +75,47 @@ public class Controller {
 
 
     //User
+    //Add cashier
     @Autowired
     private RepositoryUser addCashierRepos;
     @GetMapping("/addCashier")
     public Object addCashier() {
-        return new ModelAndView("addCashier");
+        return new ModelAndView("addCashierNew");
     }
 
     @PostMapping("/addCashier")
     @ResponseBody
-    public Object processAddCashierForm(@ModelAttribute("User") User addCashier) {
-        addCashierRepos.save(addCashier);
-        return new RedirectView("/addCashier");  
+    // MultipartFile is a class in Spring Framework that represents a file that has been uploaded via a form in a web application. It is typically used for handling file uploads in Spring applications
+    public Object processAddCashierForm(@RequestParam("name") String nom, @RequestParam("sex") String gender, @RequestParam("dob") String dateOfBirth, @RequestParam("username") String unom, @RequestParam("password") String pass, @RequestParam("hd") String hiredDate ,@RequestParam("file") MultipartFile limage) {
+
+        User user = new User();
+        user.setName(nom);
+        user.setSex(gender);
+        user.setDob(dateOfBirth);
+        user.setUsername(unom);
+        user.setPassword(pass);
+        user.setHiredDate(hiredDate);
+        user.setType("Cashier");
+        // the .getOriginalFileName extract image name
+        String fileName = limage.getOriginalFilename();
+        //if fileName is "C:/path/to/my_image.jpg", then cleanFileName will contain "my_image.jpg", which is the extracted filename from the file path.
+        String cleanFileName = new File(fileName).getName();
+        if(cleanFileName.contains("..")){
+            System.out.println("not a valid file");
+        }
+        //encode from imagefile to string
+        try {
+            user.setImage(Base64.getEncoder().encodeToString(limage.getBytes()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        addCashierRepos.save(user);
+
+        return new RedirectView("addCashier");  
     }
 
     //delete user
@@ -101,9 +138,20 @@ public class Controller {
     @PostMapping("/user/{id}")
     public Object userUpdated(@PathVariable Integer id,
                             @RequestParam("username") String usernom,
-                            @RequestParam("password") String passmot) {
+                            @RequestParam("password") String passmot, @RequestParam("file") MultipartFile limage) {
         User user = userRepository.findById(id).get();
-    
+        String fileName = limage.getOriginalFilename();
+        //if fileName is "C:/path/to/my_image.jpg", then cleanFileName will contain "my_image.jpg", which is the extracted filename from the file path.
+        String cleanFileName = new File(fileName).getName();
+        if(cleanFileName.contains("..")){
+            System.out.println("not a valid file");
+        }
+        //encode from imagefile to string
+        try {
+            user.setImage(Base64.getEncoder().encodeToString(limage.getBytes()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }                        
         user.setUsername(usernom);
         user.setPassword(passmot);
 
@@ -174,6 +222,22 @@ public class Controller {
     
         return modelAndView;
     }
+
+    @Autowired
+    private RepositoryUser repositoryUser1;
+    @GetMapping("/user/cashier/view/{id}")
+    public ModelAndView getUserDetails(@PathVariable Integer id) {
+        // Retrieve the user details based on the provided ID from the database
+        User user = repositoryUser1.findById(id).get();
+    
+        // Create a ModelAndView object and pass the user details to it
+        ModelAndView modelAndView = new ModelAndView("adminDashboardTest");
+        modelAndView.addObject("user", user);
+    
+        return modelAndView;
+    }
+
+
     
 
     //table

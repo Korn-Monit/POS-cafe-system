@@ -31,13 +31,6 @@ public class Drink {
     @Column(name="drink_name")
     private String drinkName;
 
-    @Column(name = "drink_size")
-    private String drinkSize;
-
-    @Column(name = "zone")
-    private String zone;
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drink_category_Id")
     private DrinkCategory category_id;
@@ -74,22 +67,6 @@ public class Drink {
         this.drinkName = drinkName;
     }
 
-    public String getDrinkSize() {
-        return drinkSize;
-    }
-
-    public void setDrinkSize(String drinkSize) {
-        this.drinkSize = drinkSize;
-    }
-
-    public String getZone() {
-        return zone;
-    }
-
-    public void setZone(String zone) {
-        this.zone = zone;
-    }
-
     public DrinkCategory getCategory_id() {
         return category_id;
     }
@@ -121,6 +98,4 @@ public class Drink {
     public void setAddons(List<Addon> addons) {
         this.addons = addons;
     }
-
-
 }

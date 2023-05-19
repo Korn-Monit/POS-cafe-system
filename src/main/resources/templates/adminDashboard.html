@@ -152,17 +152,24 @@
             }
             if (tabName === "cashier"){
                 window.open("cashier.html", "_blank"); // Open cashier.html in a new tab
-            } else{
+            }
+            else if(tabName === "drink") {
+                location.href = "/addDrink";
+            }
+            else if(tabName === "table") {
+                location.href = "/index";
+            }
+            else{
                 document.getElementById(tabName).style.display = "block";
                 event.currentTarget.className += " active";
             }
         }
 
     
-        function openCashierPage() {
-            window.open("cashier.html", "_blank");
-        }
-        openCashierPage();
+        // function openCashierPage() {
+        //     window.open("cashier.html", "_blank");
+        // }
+        // openCashierPage();
     </script>
 
 </body>

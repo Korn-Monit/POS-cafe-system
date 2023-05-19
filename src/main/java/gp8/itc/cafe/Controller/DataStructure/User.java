@@ -46,72 +46,72 @@ public class User {
     @OneToMany(mappedBy = "history_id", cascade = CascadeType.ALL)
     private List<History> history;
 
-    // @Lob
-    // @Column(name = "image", length = 9000)
-    // private String cashierImage;
+    @Lob
+    @Column(name = "image", length = 9000)
+    private String cashierImage;
 
-    // public String getImage() {
-    //     return cashierImage;
-    // }
+    @Column(name = "hired_date")
+    private String hd;
 
-
-    // public void setImage(String cashierImage) {
-    //     this.cashierImage = cashierImage;
-    // }
+    public String getHiredDate() {
+        return hd;
+    }
 
 
+    public void setHiredDate(String hd) {
+        this.hd = hd;
+    }
+
+    public String getImage() {
+        return cashierImage;
+    }
+
+
+    public void setImage(String cashierImage) {
+        this.cashierImage = cashierImage;
+    }
 
     public int getUser_id() {
         return user_id;
     }
 
-
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
-
 
     public String getUsername() {
         return username;
     }
 
-
     public void setUsername(String username) {
         this.username = username;
     }
-
 
     public String getPassword() {
         return password;
     }
 
-
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public String getType() {
         return type;
     }
 
-
     public void setType(String type) {
         this.type = type;
     }
-
 
     public String getName() {
         return name;
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
 
-
-    public String getSex() {
+    public String getSex(){
         return sex;
     }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -107,12 +107,13 @@
     font-size: 30px;
    }
    /* function for selected table */
-   .selected {
+   .selected-row {
         background-color: yellow;
+        
     }
-    .hidden{
-        display: none;
-    }
+    /* image and text at the same line */
+
+
 </style>
 <body>
     <div class="container">
@@ -146,29 +147,32 @@
                                 <span>Action</span>
                             </div>
                         <!-- drink -->
-                            <div>
+                            <!-- <div>
                                 <div th:each="drink : ${dashboardData.drinks}" class="data-row ">
                                     <span th:text="${drink.getDrink_id()}"></span>
                                     <span th:text="${drink.getDrinkName()}"></span>
                                     <span style="margin-left: 100px;"><a th:href="@{/drink/edit/{id}(id=${drink.getDrink_id()})}">Edit</a></span>
                                     <span><a th:href="@{/drink/delete/{id}(id=${drink.getDrink_id()})}">Delete</a></span>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         
                     <!-- </div> -->
 
-                
                     <div id="cashierContent" >
-                        <!-- delete edit cashier, not yet done -->
+                        <!-- display on the right side -->
                         <div>
                             <div th:each="user : ${dashboardData.users}" class="data-row" >
+                                    <!-- <span th:text="${user.getName()}"></span> -->
+                                <div th:onclick="showInfo([[${user.getName()}]] ,[[${user.getUsername()}]], [[${user.getSex()}]]  ,[[${user.getDob()}]], [[${user.getHiredDate()}]], [[${user.getImage()}]] )" type="button">
                                     <span th:text="${user.getName()}"></span>
                                     <span th:text="${user.getUsername()}"></span>
                                     <span><a th:href="@{/user/edit/{id}(id=${user.getUser_id()})}">Edit</a></span>
                                     <span><a th:href="@{/user/delete/{id}(id=${user.getUser_id()})}">Delete</a></span>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                     
                     <table id="foodsContent" hidden>
@@ -188,18 +192,18 @@
                 </div>
                 
                 </div>
-                <div class="right-column ">
+                <div class="right-column">
                     <h2>Cashier information</h2>
-                    <!-- <img src="https://juksun.com/wp-content/uploads/2022/02/Jennie-Kim.jpg" alt=""> -->
-                    <!-- <div th:each="drink : ${dashboardData.drinks}" class="hidden">
-                        <span th:text="${drink.getDrink_id()}"></span>
-                        <span th:text="${drink.getDrinkName()}"></span>
-                        <span style="margin-left: 100px;"><a th:href="@{/drink/edit/{id}(id=${drink.getDrink_id()})}">Edit</a></span>
-                        <span><a th:href="@{/drink/delete/{id}(id=${drink.getDrink_id()})}">Delete</a></span>
-                    </div> -->
+                    <div id="showInfo" class="w-3/5">
+
+                    </div>  
                 </div>
+                
+
+
             </div>
     </div>
+
    
     <script>
         function openTab(event, tabName) {
@@ -260,137 +264,42 @@
             drinkButton.style.background = "#f1f1f1";
             foodButton.style.background = "#ddd";
         })
-        
-    
-        // function openCashierPage() {
-        //     window.open("cashier.html", "_blank");
-        // }
-        // openCashierPage();
 
+        //click display function
+        let previousClickedRow = null;
+        function showInfo(arg1, arg2, arg3, arg4, arg5, arg6) {
+            let showInfoElement = document.getElementById('showInfo');
 
+            let imageElement = document.createElement('img');
+            imageElement.src = 'data:image/jpeg;base64,' + arg6;
+            imageElement.width = 190; // Set the desired width of the image
+            imageElement.height = 250; // Set the desired height of the image
 
-        //drink
-        document.addEventListener('DOMContentLoaded', function() {
-        var drinkRows = document.querySelectorAll('#drinkContent .data-row');
-
-        for (var i = 0; i < drinkRows.length; i++) {
-            drinkRows[i].addEventListener('click', function() {
-            // Deselect previously selected row
-            var selectedRow = document.querySelector('#drinkContent .data-row.selected');
-            if (selectedRow) {
-                selectedRow.classList.remove('selected');
-            }
-
-            // Select the clicked row
-            this.classList.add('selected');
-
-            // Retrieve and display the drink details
-            var drinkId = this.querySelector('span:nth-child(1)').textContent;
-            var drinkName = this.querySelector('span:nth-child(2)').textContent;
-            var editLink = this.querySelector('span:nth-child(3) a').getAttribute('href');
-            var deleteLink = this.querySelector('span:nth-child(4) a').getAttribute('href');
-
-            var content = `
-                <div>
-                <span>${drinkId}</span>
-                <span>${drinkName}</span>
-                <span style="margin-left: 100px;"><a href="${editLink}">Edit</a></span>
-                <span><a href="${deleteLink}">Delete</a></span>
-                </div>
+            let content = `
+                <span style="margin-left: 300px;" class="py-2">Name: ${arg1}</span><br>
+                <span style="margin-left: 300px; class="py-2">Username: ${arg2}</span><br>
+                <span style="margin-left: 300px; class="py-2">Sex: ${arg3}</span><br>
+                <span style="margin-left: 300px; class="py-2">Date of Birth: ${arg4}</span><br>
+                <span style="margin-left: 300px; class="py-2">Hired Date: ${arg5}</span><br>
             `;
 
-            var rightColumn = document.querySelector('.right-column');
-            rightColumn.innerHTML = content;
-            });
+            showInfoElement.innerHTML = '';
+            showInfoElement.appendChild(imageElement);
+            showInfoElement.insertAdjacentHTML('beforeend', content);
+
+            // Remove CSS class from the previously clicked row
+            if (previousClickedRow) {
+                previousClickedRow.classList.remove('selected-row');
+            }
+
+            // Add CSS class to the clicked row
+            let clickedRow = event.target.closest('.data-row');
+            if (clickedRow) {
+                clickedRow.classList.add('selected-row');
+                previousClickedRow = clickedRow;
+            }
         }
-        });
 
-        //another version of displaying the code above
-
-//         document.addEventListener('DOMContentLoaded', function() {
-//   var drinkRows = document.querySelectorAll('#drinkContent .data-row');
-
-//   for (var i = 0; i < drinkRows.length; i++) {
-//     drinkRows[i].addEventListener('click', function() {
-//       // Retrieve and display all the drink details
-//       var drinks = document.querySelectorAll('#drinkContent .data-row');
-
-//       var content = '';
-//       for (var j = 0; j < drinks.length; j++) {
-//         var drinkId = drinks[j].querySelector('span:nth-child(1)').textContent;
-//         var drinkName = drinks[j].querySelector('span:nth-child(2)').textContent;
-//         var editLink = drinks[j].querySelector('span:nth-child(3) a').getAttribute('href');
-//         var deleteLink = drinks[j].querySelector('span:nth-child(4) a').getAttribute('href');
-
-//         content += `
-//           <div>
-//             <span>${drinkId}</span>
-//             <span>${drinkName}</span>
-//             <span style="margin-left: 100px;"><a href="${editLink}">Edit</a></span>
-//             <span><a href="${deleteLink}">Delete</a></span>
-//           </div>
-//         `;
-//       }
-
-//       var rightColumn = document.querySelector('.right-column');
-//       rightColumn.innerHTML = content;
-//     });
-//   }
-// });
-
-   
-
-
-
-
-
-
-
-        //user
-        // $(document).ready(function() {
-        // $('#cashierContent .data-row').click(function() {
-        //     // Deselect previously selected row
-        //     $('#cashierContent .data-row.selected').removeClass('selected');
-            
-        //     // Select the clicked row
-        //     $(this).addClass('selected');
-        // });
-        // });
-
-        // document.addEventListener('DOMContentLoaded', function() {
-        // var drinkRows = document.querySelectorAll('#cashierContent .data-row');
-
-        // for (var i = 0; i < drinkRows.length; i++) {
-        //     drinkRows[i].addEventListener('click', function() {
-        //     // Deselect previously selected row
-        //     var selectedRow = document.querySelector('#drinkContent .data-row.selected');
-        //     if (selectedRow) {
-        //         selectedRow.classList.remove('selected');
-        //     }
-
-        //     // Select the clicked row
-        //     this.classList.add('selected');
-
-        //     // Retrieve and display the drink details
-        //     var drinkId = this.querySelector('span:nth-child(1)').textContent;
-        //     var drinkName = this.querySelector('span:nth-child(2)').textContent;
-        //     var editLink = this.querySelector('span:nth-child(3) a').getAttribute('href');
-        //     var deleteLink = this.querySelector('span:nth-child(4) a').getAttribute('href');
-
-        //     var content = `
-        //         <div>
-        //         <span>${drinkId}</span>
-        //         <span>${drinkName}</span>
-        //         <span style="margin-left: 100px;"><a href="${editLink}">Edit</a></span>
-        //         <span><a href="${deleteLink}">Delete</a></span>
-        //         </div>
-        //     `;
-
-        //     var rightColumn = document.querySelector('.right-column');
-        //     rightColumn.innerHTML = content;
-        //     });
-        // }
-        // });
     </script>
    
     
