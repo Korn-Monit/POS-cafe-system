@@ -5,12 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>newdrink</title>
+   
 </head>
-
-<body>
-    <style>
-        *{
+<style>
+    *{
     box-sizing: border-box;
     font-size: inherit;
     padding: 0;
@@ -25,17 +24,19 @@ body{
     align-items: center;
     font-family:'Courier New', Courier, monospace;
     background-color: lightgrey;
+    
 }
 
 .form {
     width: 900px;
-    height: 600px;
+    height: 550px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     padding: 40px;
     border-top-left-radius: 60px;
     border-bottom-right-radius: 60px;
     z-index: 999;
     background: #fff;
+    position: relative;
 }
 
 .form .title{
@@ -108,12 +109,18 @@ body{
 }
 
 .form .even-column .child .input-element:nth-child(4) div{
-    width: 25px;
-    height: 25px;
+    width: 60px;
+    height: 60px;
     position: absolute;
     right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.form .even-column .child .input-element:nth-child(4) div i{
+    width: 100%;
+    height: fit-content;
+    margin-top: 2px;
     cursor: pointer;
 }
 
@@ -121,7 +128,6 @@ body{
     display: flex;
     align-items: center;
     gap: 10px;
-    
 }
 
 .form .even-column .child .button-element button{
@@ -262,105 +268,166 @@ body{
     background-color: #909090;
    }
 
-    /*  */
-    .overlay{
-        z-index: 1000;
+/*  */
+
+.overlay{
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgb(0, 0, 0);
+    opacity: 0.2;
+    display: none;
+}
+
+
+/* adding */
+
+#category{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    font-size: 12px;
+    top: 40px;
+    right: 20px;
+    background: rgb(243, 243, 243);
+    z-index: 999;
+    padding: 5px 15px;
+    height: auto;
+    border-radius: 10px;
+    display: none;
+}
+
+#category p{
+    border: 1px solid rgb(0, 0, 0);
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+ .icon{
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        top: 60px;
+        right: 40px;
+       z-index: 999;
+         color: black;
+    }
+    .icon a{
         width: 100%;
         height: 100%;
-        position: absolute;
-        background-color: rgb(0, 0, 0);
-        opacity: 0.2;
-        display: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid black;
+        
     }
-    </style>
-    <form th:action="@{/addDrink}" method="post" enctype="multipart/form-data">
-        <div class="form">
-            <div class="title">
-                <h4>CREATE NEW DRINK</h4>
-                <p>Input drink information</p>
+</style>
+<body>
+    <div class="form">
+        <a class="icon" href="/adminDashboard">
+            <div class="svg">
+        
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                    class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+        
             </div>
-
-            <div class="even-column">
-                <div class="child">
-                    <div class="input-element">
-                        <label for="">Drink code</label>
-                        <input type="text" >
+        </a>
+        <div class="title">
+            <h4>CREATE NEW DRINK</h4>
+            <p>Input drink information</p>
+        </div>
+        <div class="even-column">
+            <div class="child">
+                <div class="input-element" style="display: none;">
+                    <label for="">Addon</label>
+                    <input type="text">
+                </div>
+                <div class="input-element">
+                    <label for="">Drink Name</label>
+                    <input type="text">
+                </div>
+                <div class="input-element">
+                    <label for="">Price</label>
+                    <input type="text">
+                </div>
+                <div class="input-element">
+                    <label for="">Category</label>
+                    <input type="text" id="category_value">
+                    <div id="category">
+                        <p>Hot Drink</p>
+                        <p>Cold Drink</p>
+                        <p>Frappe</p>
                     </div>
-
-                    <div class="input-element">
-                        <label for="">Drink Name</label>
-                        <input type="text" name="drinkName">
-                    </div>
-
-                    <div class="input-element">
-                        <label for="">Price</label>
-                        <input type="text" name="drinkPrice">
-                    </div>
-
-                    <div class="input-element">
-                        <label for="">Category</label>
-                        <input type="text">
-                        <div id="add_category"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <div>
+                        <i id="select_type">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </i>
+                        <i id="add_category">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                        </div>
-                    </div>
-
-
-                    <!-- not yet decide -->
-                    <div class="input-element">
-                        <label for="">Info</label>
-                        <input type="text" name="drinkNote">
-                    </div>
-
-
-                    <div class="button-element">
-                        <button type="submit">Done</button>
-                        <!-- <button type="submit">Cancel</button> -->
+                        </i>
                     </div>
                 </div>
-                <!-- image -->
-                <div class="child2">
-                    <div class="image-container">
-                        <img src="" alt="" id="output">
-                        <span>Image</span>
-                    </div>
-                    <div class="file">
-                        <label for="file">Upload</label>
-                        <input name="file" id="file" type="file" onchange="loadFile(event)">
-                    </div>
+                <div class="input-element">
+                    <label for="">Info</label>
+                    <input type="text">
+                </div>
+                <div class="button-element">
+                    <button>Done</button>
+                    <button>Cancel</button>
+                </div>
+            </div>
+            <div class="child2">
+                <div class="image-container">
+                    <img src="" alt="" id="output">
+                    <span>Image</span>
+                </div>
+                <div class="file">
+                    <label for="file">Upload</label>
+                    <input name="file" id="file" type="file" onchange="loadFile(event)">
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container" id="popup">
+        <div class="box1">
+            <h3>New Category</h3>
 
-        <div class="container" id="popup">
-            <div class="box1">
-                <h3>New Category</h3>
-            </div>
-            <div class="box2">
-                <div class="input">
-                    <label for="catecode">Category code </label><span>: </span>
-                    <input type="text" id="catecode" ><br>
-    
-                </div>
-                <div class="input">
-                    <label for="catecode">Category name </label><span>: </span>
-                    <input type="text" id="catename" name="categoryName"><br>
-    
-                </div>
-    
-            </div>
-            <div class="button">
-                <input type="button" value="OK" id="agree">
-                <input type="button" value="Cancel" id="cancel">
-            </div>
-    
         </div>
-        <div class="overlay" id="overlay"></div>
-    </form>
-    
+        <div class="box2">
+            <div class="input">
+                <label for="catecode">Category code </label><span>: </span>
+                <input type="text" id="catecode"><br>
+
+            </div>
+            <div class="input">
+                <label for="catecode">Category name </label><span>: </span>
+                <input type="text" id="catename"><br>
+
+            </div>
+
+        </div>
+        <div class="button">
+            <input type="button" value="OK" id="agree">
+            <input type="button" value="Cancel" id="cancel">
+
+
+        </div>
+
+    </div>
+    <div class="overlay" id="overlay"></div>
 </body>
 <script>
     var loadFile = function (event) {
@@ -377,6 +444,23 @@ body{
     const popup = document.getElementById('popup')
     const cancel = document.getElementById('cancel')
     const agree = document.getElementById('agree')
+
+    const select_type = document.getElementById("select_type")
+    const drop_category = document.getElementById("category")
+    var track_click = true
+
+    drop_category.querySelectorAll("p").forEach((child) => {
+        child.onclick = () => {
+            document.getElementById('category_value').value = child.innerHTML
+            drop_category.style.display = "none"
+            track_click = true
+        }
+    })
+
+    select_type.onclick = () => {
+        (track_click) ? (drop_category.style.display = "flex") : (drop_category.style.display = "none")
+        track_click = !track_click
+    }
 
     button_add.onclick = () => {
         overlay.style.display = "block"

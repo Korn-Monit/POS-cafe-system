@@ -8,22 +8,24 @@
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-    *{
+    * {
         box-sizing: border-box;
         font-size: inherit;
         padding: 0;
         margin: 0;
     }
-    body{
+
+    body {
         width: 100vw;
         height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-family:'Courier New', Courier, monospace;
+        font-family: 'Courier New', Courier, monospace;
         background-color: #fff
     }
-    .container{
+
+    .container {
         width: 1100px;
         height: 600px;
         display: flex;
@@ -31,8 +33,8 @@
         align-items: flex-start;
         border: 1px solid grey;
     }
-    
-    .tabs{
+
+    .tabs {
         width: 100%;
         overflow: hidden;
         border-bottom: 1px solid gray;
@@ -40,168 +42,226 @@
     }
 
     .tablink {
-            background-color: #fff;
-            outline: none;
-            cursor: pointer;
-            padding: 10px 20px;
-            font-size: 16px;
-            /* width: 20%;
+        background-color: #fff;
+        outline: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        font-size: 16px;
+        /* width: 20%;
             float: left; */
-            margin: 0;
-            border: 1px solid gray;
+        margin: 0;
+        border: 1px solid gray;
     }
 
     .tablink:hover {
-            background-color: #ddd;
+        background-color: #ddd;
     }
-   .tabs:nth-child(2){
-    padding-left: 20px;
-   }
-   .evencolumn{
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
 
-   }
-   .evencolumn>*{
-    width: 50%;
-    flex-basis: 100%;
-    border: 2px solid gray;
-   }
-   .left-column{
-    padding-top: 40px;
-   }
-   .row{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding: 5px 10px;
-    
-   }
-   .row:nth-child(1){
-    background-color: rgb(158, 237, 237);
-    
-   }
-   .row p{
-    padding: 10px;
-   }
-   .row p:nth-child(1){
-    flex: 1;
-   }
-   .row p:nth-child(2){
-    flex: 3;
-   }
-   .row p:nth-child(3){
-    flex: 3;
-   }
-   .row p:nth-child(4){
-    flex: 3;
-   }
-   .right-column{
-    overflow: hidden;
-   }
-   .right-column img{
-    width: 50%;
-   }
-   .right-column h2{
-    font-size: 30px;
-   }
+    .tabs:nth-child(2) {
+        padding-left: 20px;
+    }
+
+    .evencolumn {
+        width: 100%;
+        height: 100%;
+        display: none;
+        justify-content: space-evenly;
+
+    }
+
+    .evencolumn>* {
+        width: 50%;
+        height: 100%;
+        flex-basis: 100%;
+        border: 2px solid gray;
+    }
+
+    .left-column {
+        padding-top: 40px;
+    }
+
+    .row {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 5px 10px;
+
+    }
+
+    .row:nth-child(1) {
+        background-color: rgb(158, 237, 237);
+
+    }
+
+    .row p {
+        padding: 10px;
+    }
+
+    .row p:nth-child(1) {
+        flex: 1;
+    }
+
+    .row p:nth-child(2) {
+        flex: 3;
+    }
+
+    .row p:nth-child(3) {
+        flex: 3;
+    }
+
+    .row p:nth-child(4) {
+        flex: 3;
+    }
+
+    .right-column {
+        overflow: hidden;
+    }
+
+    .right-column img {
+        width: 50%;
+    }
+
+    .right-column h2 {
+        font-size: 30px;
+    }
+
+    /* function for selected table */
+    .selected {
+        background-color: yellow;
+    }
+
+    .hidden {
+        display: none;
+    }
    /* function for selected table */
    .selected-row {
-        background-color: yellow;
-        
+        background-color: yellow; 
     }
     /* image and text at the same line */
 
 
 </style>
 <body>
+
     <div class="container">
-            <div class="tabs">
-                <button class="tablink" onclick="openTab(event, 'cashier')">New Cashier</button>
-                <button class="tablink" onclick="openTab(event, 'drink')">New Drink</button>
-                <button class="tablink" onclick="openTab(event, 'food')">New Food</button>
-                <button class="tablink" onclick="openTab(event, 'category')">New Category</button>
-                <button class="tablink" onclick="openTab(event, 'orders')">Orders History</button>
-                <button class="tablink" onclick="openTab(event, 'table')">Manage Table</button>
-            </div>
-            <div class="tabs">
-                <button class="tablink" id="btn_cashier">Cashier</button>
-                <button class="tablink" id="btn_drinks">Drink</button>
-                <button class="tablink" id="btn_foods">Food</button>
-            </div>
-            <div class="evencolumn">
-                <div class="left-column">
-                   <div class="row">
-                        <p>No</p>
-                        <p>Cashier Name</p>
-                        <p>Login</p>
-                        <p>Action</p>
-                   </div>
+        <div class="tabs">
+
+            <a href="/new_cashier">   
+                <button class="tablink" id="btn_newcashier" onclick="openTab(event, 'cashier')">New Cashier</button>
+            </a>
+            <a href="/new_drink">
+                <button class="tablink" id="btn_newdrink" onclick="openTab(event, 'drink')">New Drink</button>
+            </a>
+            <a href="/new_food">
+                <button class="tablink" id="btn_newfood" onclick="openTab(event, 'food')">New Food</button>
+            </a>
+           <a href="/new_category">
+                <button class="tablink" id="btn_category" onclick="openTab(event, 'category')">New Category</button>
+           </a>
+           <a href="/order_histories">
+                <button class="tablink" id="btn_orderhis" onclick="openTab(event, 'orders')">Orders History</button>
+           </a>
+           <a href="/manage_table">
+                <button class="tablink" id="btn_managetab" onclick="openTab(event, 'table')">Manage Table</button>
+           </a>
+            
+           
+        </div>
+
+        <div class="tabs">
+            <button class="tablink" id="btn_cashier">Cashier</button>
+            <button class="tablink" id="btn_drinks">Drink</button>
+            <button class="tablink" id="btn_foods">Food</button>
+        </div>
+        <!-- cashier -->
+        <div class="evencolumn">
+            <div class="left-column">
                 <div class="row">
-                    <!-- <div class="drinkClass"> -->
-                        <div id="drinkContent">
-                            <div>
-                                <span style="width: 100px;">ID</span>
-                                <span>DrinkName</span>
-                                <span>Action</span>
-                            </div>
-                        <!-- drink -->
-                            <!-- <div>
-                                <div th:each="drink : ${dashboardData.drinks}" class="data-row ">
-                                    <span th:text="${drink.getDrink_id()}"></span>
-                                    <span th:text="${drink.getDrinkName()}"></span>
-                                    <span style="margin-left: 100px;"><a th:href="@{/drink/edit/{id}(id=${drink.getDrink_id()})}">Edit</a></span>
-                                    <span><a th:href="@{/drink/delete/{id}(id=${drink.getDrink_id()})}">Delete</a></span>
-                                </div>
-                            </div> -->
-                        </div>
+                    <p>No</p>
+                    <p>Cashier Name</p>
+                    <p>Login</p>
+                    <p>Action</p>
+                </div>
+                <div class="row">
+                    <div th:each="user : ${dashboardData.users}" class="data-row" >
+                        <!-- <span th:text="${user.getName()}"></span> -->
+                    <div th:onclick="showInfo([[${user.getName()}]] ,[[${user.getUsername()}]], [[${user.getSex()}]]  ,[[${user.getDob()}]], [[${user.getHiredDate()}]], [[${user.getImage()}]] )" type="button">
+                        <span th:text="${user.getName()}"></span>
+                        <span th:text="${user.getUsername()}"></span>
+                        <span><a th:href="@{/user/edit/{id}(id=${user.getUser_id()})}">Edit</a></span>
+                        <span><a th:href="@{/user/delete/{id}(id=${user.getUser_id()})}">Delete</a></span>
                         
-                    <!-- </div> -->
-
-                    <div id="cashierContent" >
-                        <!-- display on the right side -->
-                        <div>
-                            <div th:each="user : ${dashboardData.users}" class="data-row" >
-                                    <!-- <span th:text="${user.getName()}"></span> -->
-                                <div th:onclick="showInfo([[${user.getName()}]] ,[[${user.getUsername()}]], [[${user.getSex()}]]  ,[[${user.getDob()}]], [[${user.getHiredDate()}]], [[${user.getImage()}]] )" type="button">
-                                    <span th:text="${user.getName()}"></span>
-                                    <span th:text="${user.getUsername()}"></span>
-                                    <span><a th:href="@{/user/edit/{id}(id=${user.getUser_id()})}">Edit</a></span>
-                                    <span><a th:href="@{/user/delete/{id}(id=${user.getUser_id()})}">Delete</a></span>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-                    
-                    <table id="foodsContent" hidden>
-                        <thead>
-                            <!-- <tr>
-                                <th>Name</th>
-                                <th>Username</th>
-                            </tr> -->
-                        </thead>
-                
-                        <tbody>
-                            <tr>
-                                <td><h1>Setthika</h1></td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
-                
-                </div>
-                <div class="right-column">
-                    <h2>Cashier information</h2>
-                    <div id="showInfo" class="w-3/5">
-
-                    </div>  
-                </div>
-                
+            </div>
 
 
             </div>
+            <div class="right-column">
+                <h2>Cashier information</h2>
+                <div id="showInfo" class="w-3/5">
+    
+                </div>  
+            </div>
+        </div>
+        <!-- drink -->
+        <div class="evencolumn">
+            <div class="left-column">
+                <div class="row">
+                    <p>ID</p>
+                    <p>DrinkName</p>
+                    <p></p>
+                    <p>Action</p>
+                </div>
+                <div class="row">
+                    <!-- here is where to write logic -->
+                    <p>1</p>
+                    <p>Milk tea</p>
+                    <p></p>
+                    <p> <span>Edit</span>
+                        <span>Delete</span>
+                    </p>
+                </div>
+
+
+            </div>
+            <div class="right-column">
+                <h2>Drink information</h2>
+                <div id="showInfo" class="w-3/5">
+    
+                </div>  
+            </div>
+        </div>
+        <!-- food -->
+        <div class="evencolumn">
+            <div class="left-column">
+                <div class="row">
+                    <p>No</p>
+                    <p>Cashier Name</p>
+                    <p>Login</p>
+                    <p>Action</p>
+                </div>
+                <div class="row">
+                    <p>No</p>
+                    <p>Cashier Name</p>
+                    <p>Login</p>
+                    <p> <span>Edit</span>
+                        <span>Delete</span>
+                    </p>
+                </div>
+
+
+            </div>
+            <div class="right-column">
+                <h2>Cashier information</h2>
+                <div id="showInfo" class="w-3/5">
+    
+                </div>  
+            </div>
+        </div>
+
+
+       
     </div>
 
    
@@ -298,6 +358,28 @@
                 clickedRow.classList.add('selected-row');
                 previousClickedRow = clickedRow;
             }
+        }
+
+
+        let evencolumn = document.querySelectorAll('.evencolumn')
+        let cashier = document.getElementById('btn_cashier')
+        let drink = document.getElementById('btn_drinks')
+        let food = document.getElementById('btn_foods')
+        evencolumn[0].style.display = "flex";
+        cashier.onclick = () => {
+            evencolumn[0].style.display = "flex";
+            evencolumn[1].style.display = "none";
+            evencolumn[2].style.display = "none";
+        }
+        drink.onclick = () => {
+            evencolumn[0].style.display = "none";
+            evencolumn[1].style.display = "flex";
+            evencolumn[2].style.display = "none";
+        }
+        food.onclick = () => {
+            evencolumn[0].style.display = "none";
+            evencolumn[1].style.display = "none";
+            evencolumn[2].style.display = "flex";
         }
 
     </script>

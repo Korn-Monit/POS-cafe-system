@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drink Selection By ID</title>
+    <style>
+        body{
+            height: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .content{
+            width: 1020px;
+            height: 600px;
+            display: flex;
+            background-color: aliceblue;
+        }
+        .left{
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            margin: 0px auto;
+            background-color: aquamarine;
+        }
+        .right{
+            display: flex;
+            width: 50%;
+            margin: 0px auto;
+            background-color: wheat;
+        }
+        .categoryMenu{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-items: center;
+            width: 490px;
+            height: 100px;
+            margin: 5px auto;
+            overflow-x: auto;
+        }
+        .boxCate{
+            width: 90px;
+            height: 90px;
+            margin: 0px 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: greenyellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="left">
+            <a th:each="drink : ${drinks}"
+                th:href="@{/drinkSelect/{id} (id = ${drink.getCategory_id()})}"
+                class="categoryMenu">
+                <div href=""
+                    th:each="category : ${categories}"
+                    >
+                    <span th:text="${category.getName()}" class="boxCate"></span>
+                </div>
+            </a>
+            <div class="drinkMenu">
+                
+            </div>
+        </div>
+        <div class="right">
+
+        </div>
+    </div>
+
+    <script>
+        function getDrinks(id) {
+
+        }
+
+    </script>
+</body>
+</html>

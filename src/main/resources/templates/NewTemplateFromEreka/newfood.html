@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>newcashier</title>
+
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+        font-size: inherit;
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Courier New', Courier, monospace;
+        background-color: lightgrey;
+    }
+
+    .form {
+        width: 900px;
+        height: 550px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        padding: 40px;
+        border-top-left-radius: 60px;
+        border-bottom-right-radius: 60px;
+        z-index: 999;
+        background: #fff;
+        position: relative;
+    }
+
+    .form .title {
+        position: relative;
+        margin-bottom: 50px;
+    }
+
+    .form .title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: 1px solid rgb(160, 135, 250);
+        height: 1px;
+        width: 80%;
+    }
+
+    .form .title h4 {
+        font-weight: 600;
+        font-size: 32px;
+    }
+
+    .form .title p {
+        font-size: 18px;
+    }
+
+    .form .even-column {
+        display: flex;
+        align-items: center;
+    }
+
+    .form .even-column>* {
+        flex-basis: 100%;
+        /* border: 1px solid black; */
+    }
+
+    .form .even-column .child .input-element {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .form .even-column .child .input-element label {
+        position: absolute;
+        font-size: 12px;
+        left: 0px;
+        background: black;
+        width: 110px;
+        color: #fff;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 15px;
+        border-radius: 5px;
+        font-weight: 600;
+    }
+
+    .form .even-column .child .input-element input {
+        width: 100%;
+        padding: 5px 10px;
+        border: 1px solid rgb(53, 85, 100);
+        border-radius: 5px;
+        outline: none;
+        padding-left: 120px;
+        padding-right: 30px;
+    }
+
+    .form .even-column .child .input-element:nth-child(4) div {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        right: 5px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .form .even-column .child .input-element:nth-child(4) div i {
+        width: 100%;
+        height: fit-content;
+        margin-top: 2px;
+        cursor: pointer;
+    }
+
+    .form .even-column .child .button-element {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form .even-column .child .button-element button {
+        border: none;
+        padding: 7px 0;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .form .even-column .child .button-element button:nth-child(1) {
+        flex: 3;
+        background: rgb(0, 0, 0);
+        color: #fff;
+    }
+
+    .form .even-column .child .button-element button:nth-child(2) {
+        flex: 1;
+        background: rgb(199, 199, 199);
+        color: #fff;
+    }
+
+    .form .even-column .child2 {
+        height: 300px;
+        display: flex;
+        gap: 60px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form .even-column .child2 .image-container {
+        border: 1px solid slategray;
+        border-radius: 10px;
+        height: 200px;
+        width: 300px;
+        overflow: hidden;
+    }
+
+    .form .even-column .child2 .image-container img {
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .form .even-column .child2 .image-container span {
+        font-size: 32px;
+        width: 100%;
+        height: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: slategray;
+    }
+
+    .form .even-column .child2 .file input {
+        display: none;
+    }
+
+    .form .even-column .child2 .file label {
+        padding: 7px 40px;
+        background: rgb(0, 0, 0);
+        border-radius: 20px;
+        color: #fff;
+        font-weight: 800px;
+        cursor: pointer;
+    }
+
+
+
+    /* container */
+
+
+    .containernew {
+        width: 400px;
+        background: #fff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1001;
+        padding: 20px 20px;
+        border-radius: 10px;
+        display: none;
+    }
+
+    .containernew .box1 {
+        border-bottom: 1px solid silver;
+        display: flex;
+        align-items: center;
+        padding: 0 5px;
+
+    }
+
+    .containernew .box2 {
+        padding: 5px;
+        width: 100%;
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 5px;
+        padding-right: 15px;
+    }
+
+    .containernew .box2 input {
+        height: 20px;
+        border: 1px solid silver;
+    }
+
+    .containernew label {
+        width: 120px;
+    }
+
+    .containernew span {
+        width: 10px;
+    }
+
+    .containernew .input {
+        display: flex;
+        align-items: center;
+
+    }
+
+    .containernew .button {
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        gap: 5px;
+    }
+
+    .containernew .button input {
+
+        text-align: center;
+        padding: 5px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+
+    }
+
+    .containernew .button input:nth-child(1) {
+        flex: 3;
+        background-color: rgb(0, 0, 0);
+
+    }
+
+    .containernew .button input:nth-child(2) {
+        flex: 1;
+        background-color: #909090;
+    }
+
+    /*  */
+
+    .overlay {
+        z-index: 1000;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: rgb(0, 0, 0);
+        opacity: 0.2;
+        display: none;
+    }
+
+
+    /* adding */
+
+    #category {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        font-size: 12px;
+        top: 40px;
+        right: 20px;
+        background: rgb(243, 243, 243);
+        z-index: 999;
+        padding: 5px 15px;
+        height: auto;
+        border-radius: 10px;
+        display: none;
+    }
+
+    #category p {
+        border: 1px solid rgb(0, 0, 0);
+        padding: 5px 10px;
+        border-radius: 10px;
+        color: rgb(0, 0, 0);
+        cursor: pointer;
+    }
+
+    .icon {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        top: 60px;
+        right: 40px;
+        z-index: 999;
+        color: black;
+    }
+
+    .icon a {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid black;
+
+    }
+</style>
+
+<body>
+    <div class="form">
+        <a class="icon" href="/adminDashboard">
+            <div class="svg">
+
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+
+            </div>
+        </a>
+
+        <div class="title">
+            <h4>NEW CASHIER</h4>
+            <p>Input cashier information</p>
+        </div>
+        <div class="even-column">
+            <div class="child">
+                <div class="input-element">
+                    <label for="">Name</label>
+                    <input type="text">
+                </div>
+                <div class="input-element">
+                    <label for="">Gender</label>
+                    <input type="text">
+                </div>
+                <div class="input-element">
+                    <label for="">DOB</label>
+                    <input type="date">
+                </div>
+                <div class="input-element">
+                    <label for="">Username</label>
+                    <input type="text">
+
+                </div>
+                <div class="input-element">
+                    <label for="">Password</label>
+                    <input type="password">
+                </div>
+                <div class="button-element">
+                    <button>Done</button>
+                    <button>Cancel</button>
+                </div>
+            </div>
+            <div class="child2">
+                <div class="image-container">
+                    <img src="" alt="" id="output">
+                    <span>Image</span>
+                </div>
+                <div class="file">
+                    <label for="file">Upload</label>
+                    <input name="file" id="file" type="file" onchange="loadFile(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="containernew" id="popup">
+        <div class="box1">
+            <h3>New Category</h3>
+
+        </div>
+        <div class="box2">
+            <div class="input">
+                <label for="catecode">Category code </label><span>: </span>
+                <input type="text" id="catecode"><br>
+
+            </div>
+            <div class="input">
+                <label for="catecode">Category name </label><span>: </span>
+                <input type="text" id="catename"><br>
+
+            </div>
+
+        </div>
+        <div class="button">
+            <input type="button" value="OK" id="agree">
+            <input type="button" value="Cancel" id="cancel">
+
+
+        </div>
+
+    </div>
+    <div class="overlay" id="overlay"></div>
+</body>
+<script>
+    var loadFile = function (event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('output');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+
+    const button_add = document.getElementById('add_category')
+    const overlay = document.getElementById('overlay')
+    const popup = document.getElementById('popup')
+    const cancel = document.getElementById('cancel')
+    const agree = document.getElementById('agree')
+
+    const select_type = document.getElementById("select_type")
+    const drop_category = document.getElementById("category")
+    var track_click = true
+
+    drop_category.querySelectorAll("p").forEach((child) => {
+        child.onclick = () => {
+            document.getElementById('category_value').value = child.innerHTML
+            drop_category.style.display = "none"
+            track_click = true
+        }
+    })
+
+    select_type.onclick = () => {
+        (track_click) ? (drop_category.style.display = "flex") : (drop_category.style.display = "none")
+        track_click = !track_click
+    }
+
+    button_add.onclick = () => {
+        overlay.style.display = "block"
+        popup.style.display = "block"
+    }
+
+    cancel.onclick = () => {
+        overlay.style.display = "none"
+        popup.style.display = "none"
+    }
+
+    agree.onclick = () => {
+        overlay.style.display = "none"
+        popup.style.display = "none"
+    }
+
+</script>
+
+</html>

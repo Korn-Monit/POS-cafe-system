@@ -1,9 +1,9 @@
 package gp8.itc.cafe.Controller;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,8 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import java.io.File;
 import java.io.IOException;
-
-import com.mysql.cj.util.StringUtils;
 
 import gp8.itc.cafe.Controller.DB.RepositoryCafeTable;
 import gp8.itc.cafe.Controller.DB.RepositoryDrink;
@@ -54,13 +52,13 @@ public class Controller {
 
     @RequestMapping(method=RequestMethod.POST, value="/login")
     @ResponseBody
-    //@ModelAttribute("User") this allows us to access method in User class
+    //@ModelAttribute("User") this allows us to access method in User class and also add class in view file html
     public Object processLoginForm(@ModelAttribute("User") User login) {
         String username = login.getUsername();
         String password = login.getPassword();
         String type = login.getType();
         // User user = repositoryLogin.getUserByEmail(login.getEmail());
-        if (userService.loginTest(username, password, type)) {
+        if (userService.loginTest(username, password, type)){
             if(type.equals("admin")) {
                 return new RedirectView(" /adminDashboard");
             }
@@ -109,10 +107,6 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
-
         addCashierRepos.save(user);
 
         return new RedirectView("addCashier");  
@@ -243,18 +237,76 @@ public class Controller {
     //table
     @Autowired
     private RepositoryCafeTable repositoryCafeTable;
-
-    @GetMapping("/index")
+    //manage table
+    @GetMapping("/manageTable")
     public Object test() {
-        return new ModelAndView("index");
+        return new ModelAndView("manageTable");
     }
 
-    @RequestMapping(method=RequestMethod.POST, value="/index")
-    @ResponseBody
+    @PostMapping("/manageTable/add")
     public Object processLoginForm(@ModelAttribute("CafeTable") CafeTable cafeTable) {
-        //System.out.println(cafeTable.getTableNumber());
         repositoryCafeTable.save(cafeTable);
-        return new RedirectView("/index");  
+        return new RedirectView("/manageTable");  
+    }
+
+    //table selection
+    @GetMapping("/tableSelect")
+    public Object tableView(Model model) {
+        model.addAttribute("tables", repositoryCafeTable.findAll());
+        return new ModelAndView("CashierPart/tableSelection");
+    }
+
+    //add table
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
+    @PostMapping("/tableSelect/add")
+    public Object addTable(@RequestParam("tablenumber") Integer number) {
+
+        if (number > 0 && number <= 100) {
+            Long rowExisted = repositoryCafeTable.count();
+            if (rowExisted > number) {
+                for (int i = 1; i <= rowExisted; i++) {
+                    if (i > number) {
+                        repositoryCafeTable.deleteById(i);
+                    }
+                }
+            } else if (rowExisted < number) {
+                String sql = "ALTER TABLE cafe_table AUTO_INCREMENT = 1";
+                jdbcTemplate.execute(sql);
+
+                for (int i = (int) (rowExisted + 1); i <= number; i++) {
+                    CafeTable cafeTable = new CafeTable();
+                    cafeTable.setTablenumber(i);
+                    cafeTable.setAvailability(1);
+                    repositoryCafeTable.save(cafeTable);
+                }
+            }
+            Long newRowCount = repositoryCafeTable.count();
+            if (newRowCount % 2 == 0) {
+                for (int i = 1; i <= newRowCount; i++) {
+                    CafeTable cafeTable = repositoryCafeTable.findById(i).get();
+                    if (i <= newRowCount / 2) {
+                        cafeTable.setAvailability(1);
+                    } else {
+                        cafeTable.setAvailability(0);
+                    }
+                    repositoryCafeTable.save(cafeTable);
+                }
+            } else {
+                for (int i = 1; i <= newRowCount; i++) {
+                    CafeTable cafeTable = repositoryCafeTable.findById(i).get();
+                    if (i <= (newRowCount / 2) + 1) {
+                        cafeTable.setAvailability(1);
+                    } else {
+                        cafeTable.setAvailability(0);
+                    }
+                    repositoryCafeTable.save(cafeTable);
+                }
+            }
+            return new RedirectView("/manageTable");
+        }
+        return new RedirectView("/manageTable?invalid");
     }
 
     //drink
@@ -366,5 +418,48 @@ public class Controller {
         drinkSizeRepository.save(drinkSize);
 
         return new RedirectView("/drinkDE");
+    }
+
+
+    @GetMapping(path = "/new_cashier")
+    public Object newCashier(){
+        return new ModelAndView("addCashierNew");
+    }
+
+    @GetMapping(path = "/new_drink")
+    public Object newDrink(){
+        return new ModelAndView("newDrink");
+    }
+
+    @GetMapping(path = "/new_food")
+    public Object newFood(){
+        return new ModelAndView("newFood");
+    }
+
+    @GetMapping(path = "/new_category")
+    public Object newCategory(){
+        return new ModelAndView("newCategory");
+    }
+
+    @GetMapping(path = "/order_histories")
+    public Object orderHistories(){
+        return new ModelAndView("orderHistories");
+    }
+
+    @GetMapping(path = "/manage_table")
+    public Object manageTable(){
+        return new ModelAndView("manageTable");
+    }
+
+    // Drink selection
+    @GetMapping("/drinkSelect")
+    public Object drinkSelection() {
+        return new ModelAndView("drinkSelection");
+    }
+
+    //Cashier Dashboard
+    @GetMapping("/cashierDashboard")
+    public Object cashierDashboard() {
+        return new ModelAndView("cashierDashboard");
     }
 }

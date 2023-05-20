@@ -28,6 +28,9 @@ public class Drink {
     @Column(name="drink_id")
     private int drink_id;
 
+    @Column(name = "price")
+    private int price;
+
     @Column(name="drink_name")
     private String drinkName;
 
@@ -50,6 +53,14 @@ public class Drink {
         inverseJoinColumns = @JoinColumn(name = "addon_id")
     )
     private List<Addon> addons = new ArrayList<>();
+
+    public int getPrice(){
+        return price;
+    }
+
+    public void setPrice(int price){
+        this.price = price;
+    }
 
     public int getDrink_id() {
         return drink_id;

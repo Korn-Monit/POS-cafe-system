@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashier Web Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.drink-list {
+    flex: 1;
+    background-color: #f1f1f1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.drink-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.order-info {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+}
+
+</style>
+<body>
+    <header>
+        <h1>Cashier Web Page</h1>
+        <nav>
+            <ul>
+                <li><a href="#" class="category-link" data-category="cool">Cool Drinks</a></li>
+                <li><a href="#" class="category-link" data-category="hot">Hot Drinks</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="drink-list" id="drinkList">
+            <!-- Drink items will be dynamically added here -->
+        </div>
+        <div class="order-info" id="orderInfo">
+            <!-- Order information will be displayed here -->
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+<script>
+    // Sample data for demonstration
+const drinks = [
+    { name: 'Cool Drink 1', category: 'cool' },
+    { name: 'Cool Drink 2', category: 'cool' },
+    { name: 'Hot Drink 1', category: 'hot' },
+    { name: 'Hot Drink 2', category: 'hot' }
+];
+
+// Function to filter and display drinks based on category
+function displayDrinks(category) {
+    const drinkList = document.getElementById('drinkList');
+    drinkList.innerHTML = '';
+
+    const filteredDrinks = drinks.filter(drink => drink.category === category);
+
+    filteredDrinks.forEach(drink => {
+        const drinkItem = document.createElement('div');
+        drinkItem.classList.add('drink-item');
+        drinkItem.textContent = drink.name;
+
+        drinkItem.addEventListener('click', () => {
+            displayOrderInfo(drink);
+        });
+
+        drinkList.appendChild(drinkItem);
+    });
+}
+
+// Function to display order information
+function displayOrderInfo(drink) {
+    const orderInfo = document.getElementById('orderInfo');
+    orderInfo.innerHTML = '';
+
+    const orderItem = document.createElement('div');
+    orderItem.textContent = `Selected Drink: ${drink.name}`;
+
+    orderInfo.appendChild
+    orderItem.appendChild(orderInfo);
+
+    orderInfo.appendChild(orderItem);
+    }
+
+    // Event listener for category links
+    const categoryLinks = document.querySelectorAll('.category-link');
+
+    categoryLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        const category = link.dataset.category;
+        displayDrinks(category);
+    });
+    });
+
+    // Display drinks initially based on the first category
+    const initialCategory = categoryLinks[0].dataset.category;
+    displayDrinks(initialCategory);
+
+
+</script>
+</html>
