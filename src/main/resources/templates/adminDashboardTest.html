@@ -146,22 +146,22 @@
     <div class="container">
         <div class="tabs">
 
-            <a href="/new_cashier">   
+            <a href="/adminDashboard/addCashier">   
                 <button class="tablink" id="btn_newcashier" onclick="openTab(event, 'cashier')">New Cashier</button>
             </a>
-            <a href="/new_drink">
+            <a href="/adminDashboard/addDrink">
                 <button class="tablink" id="btn_newdrink" onclick="openTab(event, 'drink')">New Drink</button>
             </a>
             <a href="/new_food">
                 <button class="tablink" id="btn_newfood" onclick="openTab(event, 'food')">New Food</button>
             </a>
-           <a href="/new_category">
+           <a href="/adminDashboard/addDrinkCategory">
                 <button class="tablink" id="btn_category" onclick="openTab(event, 'category')">New Category</button>
            </a>
            <a href="/order_histories">
                 <button class="tablink" id="btn_orderhis" onclick="openTab(event, 'orders')">Orders History</button>
            </a>
-           <a href="/manage_table">
+           <a href="/adminDashboard/manageTable">
                 <button class="tablink" id="btn_managetab" onclick="openTab(event, 'table')">Manage Table</button>
            </a>
             
@@ -233,7 +233,7 @@
             </div>
         </div>
         <!-- food -->
-        <div class="evencolumn">
+        <!-- <div class="evencolumn">
             <div class="left-column">
                 <div class="row">
                     <p>No</p>
@@ -258,7 +258,7 @@
     
                 </div>  
             </div>
-        </div>
+        </div> -->
 
 
        
@@ -266,64 +266,6 @@
 
    
     <script>
-        function openTab(event, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablink");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            if (tabName === "cashier"){
-                window.open("/addCashier", "_blank"); // Open cashier.html in a new tab
-                // location.href="/addCashier";
-            }
-            else if(tabName === "drink") {
-                location.href="/addDrink";
-            }
-
-            else{
-                document.getElementById(tabName).style.display = "block";
-                event.currentTarget.className += " active";
-            }
-        }
-
-        const cashierButton = document.getElementById('btn_cashier');
-        const drinkButton = document.getElementById('btn_drinks');
-        const foodButton = document.getElementById('btn_foods');
-
-        const contentCashier = document.getElementById('cashierContent');
-        const contentDrink = document.getElementById('drinkContent');
-        const contentFood = document.getElementById('foodsContent');
-
-        cashierButton.addEventListener("click", ()=>{
-            contentCashier.hidden = false;
-            contentDrink.hidden = true;
-            contentFood.hidden = true;
-            cashierButton.style.background = "#ddd";
-            drinkButton.style.background = "#f1f1f1";
-            foodButton.style.background = "#f1f1f1";
-
-        })
-        drinkButton.addEventListener("click", ()=> {
-            contentCashier.hidden = true;
-            contentDrink.hidden = false;
-            contentFood.hidden = true;
-            cashierButton.style.background = "#f1f1f1";
-            drinkButton.style.background = "#ddd";
-            foodButton.style.background = "#f1f1f1";
-        
-        })
-        foodButton.addEventListener("click", ()=>{
-            contentCashier.hidden = true;
-            contentDrink.hidden = true;
-            contentFood.hidden = false;
-            cashierButton.style.background = "#f1f1f1";
-            drinkButton.style.background = "#f1f1f1";
-            foodButton.style.background = "#ddd";
-        })
 
         //click display function
         let previousClickedRow = null;

@@ -23,10 +23,10 @@ public class CafeTable {
     int table_id;
 
     @Column(name = "number")
-    double tablenumber;
+    int tablenumber;
 
     @Column(name = "availability")
-    double availability;
+    int availability;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<Invoice> invoices;
@@ -43,7 +43,7 @@ public class CafeTable {
         return tablenumber;
     }
 
-    public void setTablenumber(double tablenumber) {
+    public void setTablenumber(int tablenumber) {
         this.tablenumber = tablenumber;
     }
 
@@ -51,7 +51,7 @@ public class CafeTable {
         return availability;
     }
 
-    public void setAvailability(double availability) {
+    public void setAvailability(int availability) {
         this.availability = availability;
     }
 

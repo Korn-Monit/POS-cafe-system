@@ -56,19 +56,27 @@
     <div class="content">
         <div class="left">
             <div class="categoryMenu">
-                <div th:each="category : ${categories}"
-                    th:onclick=""
+                <a th:each="category : ${categories}"
+                    th:text="${category.getName()}"
+                    th:href="@{/drinkSelect/{id} (id = ${category.getDrink_categoryId()})}"
                     class="boxCate">
-                    <span th:text="${category.getName()}" ></span>
-                </div>
+                    <!-- <span th:text="${category.getName()}"></span> -->
+                </a>
             </div>
             <div class="drinkMenu">
-
+                
             </div>
         </div>
         <div class="right">
 
         </div>
     </div>
+
+    <script>
+        // function getDrinks(id) {
+        //     location.href = `/drinkSelect/{${id}})`;
+        // }
+
+    </script>
 </body>
 </html>

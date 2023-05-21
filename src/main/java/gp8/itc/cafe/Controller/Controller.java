@@ -1,4 +1,5 @@
 package gp8.itc.cafe.Controller;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -76,12 +77,12 @@ public class Controller {
     //Add cashier
     @Autowired
     private RepositoryUser addCashierRepos;
-    @GetMapping("/addCashier")
+    @GetMapping("/adminDashboard/addCashier")
     public Object addCashier() {
         return new ModelAndView("addCashierNew");
     }
 
-    @PostMapping("/addCashier")
+    @PostMapping("/adminDashboard/addCashier")
     @ResponseBody
     // MultipartFile is a class in Spring Framework that represents a file that has been uploaded via a form in a web application. It is typically used for handling file uploads in Spring applications
     public Object processAddCashierForm(@RequestParam("name") String nom, @RequestParam("sex") String gender, @RequestParam("dob") String dateOfBirth, @RequestParam("username") String unom, @RequestParam("password") String pass, @RequestParam("hd") String hiredDate ,@RequestParam("file") MultipartFile limage) {
@@ -109,7 +110,7 @@ public class Controller {
         }
         addCashierRepos.save(user);
 
-        return new RedirectView("addCashier");  
+        return new RedirectView("/adminDashboard/addCashier");  
     }
 
     //delete user
@@ -163,14 +164,6 @@ public class Controller {
     @Autowired
     private RepositoryDrinkCategory repositoryDrinkCategory;
     
-
-    // @GetMapping("/testThemeLeaf")
-    // public ModelAndView adminDashboard() {
-    //     List<Drink> drinks = repositoryDrink.findAll(); 
-    //     ModelAndView modelAndView = new ModelAndView("/testThemeLeaf");
-    //     modelAndView.addObject("drinks", drinks); // Add the drinks to the model
-    //     return modelAndView;
-    // }
 
     @GetMapping("/adminDashboard")
     public ModelAndView adminDashboard1() {
@@ -238,15 +231,15 @@ public class Controller {
     @Autowired
     private RepositoryCafeTable repositoryCafeTable;
     //manage table
-    @GetMapping("/manageTable")
+    @GetMapping("/adminDashboard/manageTable")
     public Object test() {
         return new ModelAndView("manageTable");
     }
 
-    @PostMapping("/manageTable/add")
+    @PostMapping("/adminDashboard/manageTable")
     public Object processLoginForm(@ModelAttribute("CafeTable") CafeTable cafeTable) {
         repositoryCafeTable.save(cafeTable);
-        return new RedirectView("/manageTable");  
+        return new RedirectView("/adminDashboard/manageTable");  
     }
 
     //table selection
@@ -259,8 +252,8 @@ public class Controller {
     //add table
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
-    @PostMapping("/tableSelect/add")
+
+    @PostMapping("/tableSelect")
     public Object addTable(@RequestParam("tablenumber") Integer number) {
 
         if (number > 0 && number <= 100) {
@@ -319,12 +312,12 @@ public class Controller {
     @Autowired
     RepositoryDrinkCategory drinkCategoryRepository;
 
-    @GetMapping("/addDrink")
+    @GetMapping("/adminDashboard/addDrink")
     public Object addDrink() {
         return new ModelAndView("addDrink");
     }
 
-    @PostMapping("/addDrink")
+    @PostMapping("/adminDashboard/addDrink")
     @ResponseBody
     // MultipartFile is a class in Spring Framework that represents a file that has been uploaded via a form in a web application. It is typically used for handling file uploads in Spring applications
     public Object processAddDrinkForm(@RequestParam("drinkName") String drinkNom, @RequestParam("drinkPrice") double drinkPrix, @RequestParam("drinkNote") String note, @RequestParam("categoryName") String categoryNom, @RequestParam("file") MultipartFile limage) {
@@ -363,7 +356,25 @@ public class Controller {
         drinkName.setSizeId(drinkSize);
         drinkRepository.save(drinkName);
 
-        return new RedirectView("/addDrink");  
+        return new RedirectView("/adminDashboard/addDrink");  
+    }
+
+    //add drink category
+    @Autowired
+    RepositoryDrinkCategory catRepos;
+    @GetMapping("/adminDashboard/addDrinkCategory")
+    public Object addDrinkCategory() {
+        return new ModelAndView("addCategory");
+    }
+
+
+    @PostMapping("/adminDashboard/addDrinkCategory")
+    public Object addDrinkCategoryToDB(@RequestParam("category") String cat) {
+        DrinkCategory category = new DrinkCategory();
+        category.setName(cat);
+        catRepos.save(category);
+
+        return new RedirectView("/adminDashboard/addDrinkCategory");
     }
 
     //delete drink
@@ -380,22 +391,17 @@ public class Controller {
         return new RedirectView("/adminDashboard");
     }
 
-    //edit drink
+    
 
-    //go to drink
-    // @GetMapping("/drinkDE")
-    // public Object drinkCategory(Model model) {
-    //     model.addAttribute("drinks", drinkRepository.findAll());
-    //     return new ModelAndView("drinkDE");
-    // }
-
-    //then to edit
+    //dit drink
     @GetMapping("/drink/edit/{id}")
     public Object editDrink(@PathVariable Integer id, Model model) {
         Drink drink = drinkRepository.findById(id).get();
         model.addAttribute("drink", drink);
         return new ModelAndView("/editDrink");
     }
+
+
 
     @PostMapping("/drink/{id}")
     public Object drinkUpdated(@PathVariable Integer id,
@@ -420,41 +426,62 @@ public class Controller {
         return new RedirectView("/drinkDE");
     }
 
+    //header of admin dashboard
+    // @GetMapping(path = "/adminDashboard/newCashier")
+    // public Object newCashier(){
+    //     return new ModelAndView("addCashierNew");
+    // }
 
-    @GetMapping(path = "/new_cashier")
-    public Object newCashier(){
-        return new ModelAndView("addCashierNew");
-    }
+    // @GetMapping(path = "/new_drink")
+    // public Object newDrink(){
+    //     return new ModelAndView("newDrink");
+    // }
 
-    @GetMapping(path = "/new_drink")
-    public Object newDrink(){
-        return new ModelAndView("newDrink");
-    }
+    // @GetMapping(path = "/new_food")
+    // public Object newFood(){
+    //     return new ModelAndView("newFood");
+    // }
 
-    @GetMapping(path = "/new_food")
-    public Object newFood(){
-        return new ModelAndView("newFood");
-    }
+    // @GetMapping(path = "/adminDashboard/addDrinkCategory")
+    // public Object newCategory(){
+    //     return new ModelAndView("addCategory");
+    // }
 
-    @GetMapping(path = "/new_category")
-    public Object newCategory(){
-        return new ModelAndView("newCategory");
-    }
+    // @GetMapping(path = "/order_histories")
+    // public Object orderHistories(){
+    //     return new ModelAndView("orderHistories");
+    // }
 
-    @GetMapping(path = "/order_histories")
-    public Object orderHistories(){
-        return new ModelAndView("orderHistories");
-    }
+    // @GetMapping(path = "/manage_table")
+    // public Object manageTable(){
+    //     return new ModelAndView("manageTable");
+    // }
 
-    @GetMapping(path = "/manage_table")
-    public Object manageTable(){
-        return new ModelAndView("manageTable");
-    }
 
     // Drink selection
+
     @GetMapping("/drinkSelect")
-    public Object drinkSelection() {
-        return new ModelAndView("drinkSelection");
+    public Object drinkSelection(Model model) {
+        model.addAttribute("categories", drinkCategoryRepository.findAll());
+        return new ModelAndView("CashierPart/drinkSelection");
+    }
+
+    @GetMapping("/drinkSelect/{id}")
+    public Object showDrinkByCategory(@PathVariable Integer id, Model model) {
+
+        List<Integer> num = new ArrayList<Integer>();
+
+        List<Drink> drinks = repositoryDrink.findAll();
+        
+        for(Drink drink : drinks) {
+            if(id == drink.getCategory_id().getDrink_categoryId()) {
+                num.add(drink.getDrink_id());
+            }
+        }
+        model.addAttribute("categories", repositoryDrinkCategory.findAll());
+        model.addAttribute("drinks", repositoryDrink.findAllById(num));
+        num.clear();
+        return new ModelAndView("CashierPart/drinkSelectById");
     }
 
     //Cashier Dashboard

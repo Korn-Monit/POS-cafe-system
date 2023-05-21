@@ -135,44 +135,48 @@ body{
     }
 </style>
 <body>
-    <div class="container" id="popup">
-        <a class="icon" href="/adminDashboard">
-            <div class="svg">
-        
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                    class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+    <form th:action="@{/adminDashboard/addDrinkCategory}" method="post">
+        <div class="container" id="popup">
+            <a class="icon" href="/adminDashboard">
+                <div class="svg">
+            
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+            
+                </div>
+            </a>
+            
+            <div class="box1">
+                <h3>New Category</h3>
         
             </div>
-        </a>
+            <div class="box2">
+                <!-- not use -->
+                <div class="input" style="display: none;">
+                    <label for="catecode">Category code </label><span>: </span>
+                    <input type="text" id="catecode"><br>
         
-        <div class="box1">
-            <h3>New Category</h3>
-    
-        </div>
-        <div class="box2">
-            <div class="input">
-                <label for="catecode">Category code </label><span>: </span>
-                <input type="text" id="catecode"><br>
-    
+                </div>
+                <div class="input">
+                    <label for="catecode">Category name </label><span>: </span>
+                    <input type="text" id="catename" name="category"><br>
+        
+                </div>
+        
             </div>
-            <div class="input">
-                <label for="catecode">Category name </label><span>: </span>
-                <input type="text" id="catename"><br>
-    
+            <div class="button">
+                <button type="submmit">Ok</button>
+                <input type="button" value="Cancel" id="cancel">
+        
+        
             </div>
-    
+        
         </div>
-        <div class="button">
-            <input type="button" value="OK" id="agree">
-            <input type="button" value="Cancel" id="cancel">
-    
-    
-        </div>
-    
-    </div>
+    </form>
+
     
 </body>
 </html>

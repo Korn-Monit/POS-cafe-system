@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drink Selection</title>
+    <title>Drink Selection By ID</title>
     <style>
         body{
             height: 700px;
@@ -27,6 +27,7 @@
         }
         .right{
             display: flex;
+            flex-direction: column;
             width: 50%;
             margin: 0px auto;
             background-color: wheat;
@@ -56,25 +57,41 @@
     <div class="content">
         <div class="left">
             <div class="categoryMenu">
-                <div th:each="category : ${categories}"
+                <a th:each="category : ${categories}"
                     th:text="${category.getName()}"
-                    th:onclick="getDrinks([[${category.getDrink_categoryId()}]])"
+                    th:href="@{/drinkSelect/{id} (id = ${category.getDrink_categoryId()})}"
                     class="boxCate">
-                    <span th:text="${category.getName()}"></span>
-                </div>
+                    <!-- <span th:text="${category.getName()}"></span> -->
+                </a>
             </div>
             <div class="drinkMenu">
-                
+                <div th:each="drink : ${drinks}"
+                    th:text="${drink.getDrinkName()}"
+                    th:onclick="showDrinkInfo([[${drink.getDrinkName}]])"
+                    type="button"
+                    class="boxCate">
+                </div>
             </div>
         </div>
         <div class="right">
-
+            <h2>Drink Information</h2>
+            <div id="showDrink" class="">
+                
+            </div>
         </div>
     </div>
 
     <script>
-        function getDrinks(id) {
-            location.href = `/drinkSelect/{id} (id = ${id})`;
+        let content = '';
+
+        function showDrinkInfo(drinkName) {
+            let showDrink = document.getElementById('showDrink');
+
+            content += `
+                    <span>${drinkName}</span>
+                    <br>
+                    `;
+            showDrink.innerHTML = content;
         }
 
     </script>
