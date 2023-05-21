@@ -23,8 +23,8 @@ public class History{
     @Column(name = "id")
     private int history_id;
 
-    @Column(name = "table_number")
-    private int tableNumber;
+    // @Column(name = "table_number")
+    // private int tableNumber;
 
     @Column(name = "price")
     private int price;
@@ -51,14 +51,14 @@ public class History{
     }
 
 
-    public int getTableNumber() {
-        return tableNumber;
-    }
+    // public int getTableNumber() {
+    //     return tableNumber;
+    // }
 
 
-    public void setTableNumber(int tableNumber) {
-        this.tableNumber = tableNumber;
-    }
+    // public void setTableNumber(int tableNumber) {
+    //     this.tableNumber = tableNumber;
+    // }
 
 
     public int getPrice() {

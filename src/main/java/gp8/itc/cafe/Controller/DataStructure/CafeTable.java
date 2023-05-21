@@ -28,8 +28,8 @@ public class CafeTable {
     @Column(name = "availability")
     int availability;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
-    private List<Invoice> invoices;
+    // @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    // private List<Invoice> invoices;
 
     public int getTable_id() {
         return table_id;
@@ -55,13 +55,13 @@ public class CafeTable {
         this.availability = availability;
     }
 
-    public List<Invoice> getInvoices() {
-        return invoices;
-    }
+    // public List<Invoice> getInvoices() {
+    //     return invoices;
+    // }
 
-    public void setInvoices(List<Invoice> invoices) {
-        this.invoices = invoices;
-    }
+    // public void setInvoices(List<Invoice> invoices) {
+    //     this.invoices = invoices;
+    // }
 
 
 

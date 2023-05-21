@@ -273,7 +273,7 @@ body{
     }
     </style>
     <!-- change this and all name attribute of input tags -->
-    <form th:action="@{/drink/{id} (id = ${drink.getDrink_id()})}" th:object="${drink}" method="post">
+    <form th:action="@{/drink/{id} (id = ${drink.getDrink_id()})} " th:object="${drink}" enctype="multipart/form-data" method="post">
         <div class="form">
             <div class="title">
                 <h4>EDIT DRINK</h4>

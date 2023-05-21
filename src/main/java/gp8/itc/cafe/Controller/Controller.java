@@ -61,10 +61,10 @@ public class Controller {
         // User user = repositoryLogin.getUserByEmail(login.getEmail());
         if (userService.loginTest(username, password, type)){
             if(type.equals("admin")) {
-                return new RedirectView(" /adminDashboard");
+                return new RedirectView("/adminDashboard");
             }
             else{
-                return new RedirectView(" /tableSelect");
+                return new RedirectView("/tableSelect");
             }
             // return new ModelAndView("loginSuccess");
         } else {
@@ -94,7 +94,7 @@ public class Controller {
         user.setUsername(unom);
         user.setPassword(pass);
         user.setHiredDate(hiredDate);
-        user.setType("Cashier");
+        user.setType("cashier");
         // the .getOriginalFileName extract image name
         String fileName = limage.getOriginalFilename();
         //if fileName is "C:/path/to/my_image.jpg", then cleanFileName will contain "my_image.jpg", which is the extracted filename from the file path.
@@ -122,6 +122,7 @@ public class Controller {
         userRepository.deleteById(id);
         return new RedirectView("/adminDashboard");
     }
+
     //edit user
     @GetMapping("/user/edit/{id}")
     public Object editUser(@PathVariable Integer id, Model model) {
@@ -132,8 +133,9 @@ public class Controller {
 
     @PostMapping("/user/{id}")
     public Object userUpdated(@PathVariable Integer id,
-                            @RequestParam("username") String usernom,
-                            @RequestParam("password") String passmot, @RequestParam("file") MultipartFile limage) {
+                            @RequestParam("name") String nom, @RequestParam("sex") String gender, @RequestParam("dob") String dobirth,
+                            @RequestParam("username") String myusername,
+                            @RequestParam("password") String passmot, @RequestParam("hd") String hiredDate  ,@RequestParam("file") MultipartFile limage) {
         User user = userRepository.findById(id).get();
         String fileName = limage.getOriginalFilename();
         //if fileName is "C:/path/to/my_image.jpg", then cleanFileName will contain "my_image.jpg", which is the extracted filename from the file path.
@@ -146,9 +148,13 @@ public class Controller {
             user.setImage(Base64.getEncoder().encodeToString(limage.getBytes()));
         } catch (IOException e) {
             e.printStackTrace();
-        }                        
-        user.setUsername(usernom);
+        }
+        user.setName(nom);    
+        user.setSex(gender);    
+        user.setDob(dobirth);                
+        user.setUsername(myusername);
         user.setPassword(passmot);
+        user.setHiredDate(hiredDate);
 
         userRepository.save(user);
 
@@ -237,7 +243,7 @@ public class Controller {
     }
 
     @PostMapping("/adminDashboard/manageTable")
-    public Object processLoginForm(@ModelAttribute("CafeTable") CafeTable cafeTable) {
+    public Object processLoginForm(@ModelAttribute("CafeTable") CafeTable cafeTable){
         repositoryCafeTable.save(cafeTable);
         return new RedirectView("/adminDashboard/manageTable");  
     }

@@ -40,14 +40,14 @@ public class User {
     @Column(name = "date_of_birth")
     private String dob;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
-    private List<Invoice> invoices;
+    // @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    // private List<Invoice> invoices;
     
     @OneToMany(mappedBy = "history_id", cascade = CascadeType.ALL)
     private List<History> history;
 
     @Lob
-    @Column(name = "image", length = 9000)
+    @Column(name = "image", length = 1000000)
     private String cashierImage;
 
     @Column(name = "hired_date")
@@ -57,7 +57,6 @@ public class User {
         return hd;
     }
 
-
     public void setHiredDate(String hd) {
         this.hd = hd;
     }
@@ -65,7 +64,6 @@ public class User {
     public String getImage() {
         return cashierImage;
     }
-
 
     public void setImage(String cashierImage) {
         this.cashierImage = cashierImage;
@@ -131,14 +129,14 @@ public class User {
     }
 
 
-    public List<Invoice> getInvoices() {
-        return invoices;
-    }
+    // public List<Invoice> getInvoices() {
+    //     return invoices;
+    // }
 
 
-    public void setInvoices(List<Invoice> invoices) {
-        this.invoices = invoices;
-    }
+    // public void setInvoices(List<Invoice> invoices) {
+    //     this.invoices = invoices;
+    // }
 
 
     public List<History> getHistory() {

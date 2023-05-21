@@ -38,9 +38,9 @@ public class Invoice {
     @JoinColumn(name = "drink_category_id")
     private DrinkCategory drinkCategoryId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "table_id")
-    private CafeTable cafeTableId;
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "table_id")
+    // private CafeTable cafeTableId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="history_id")
@@ -49,8 +49,8 @@ public class Invoice {
     @Column(name = "drink")
     private String drink;
 
-    @Column(name = "number")
-    private int number;
+    // @Column(name = "number")
+    // private int number;
 
     @Column(name = "price")
     private double price;
@@ -58,17 +58,17 @@ public class Invoice {
     @Column(name = "timestamp")
     private String timestamp;
 
-    @Column(name = "status")
-    private String status;
+    // @Column(name = "status")
+    // private String status;
 
     @Column(name = "issueByCashier")
-    private String issueByCashier;
+    private int issueByCashier;
 
     @Column(name = "branch")
     private String branch;
 
-    @Column(name = "note")
-    private String note;
+    // @Column(name = "note")
+    // private String note;
 
     public int getId() {
         return id;
@@ -102,13 +102,13 @@ public class Invoice {
         this.drinkCategoryId = drinkCategoryId;
     }
 
-    public CafeTable getCafeTableId() {
-        return cafeTableId;
-    }
+    // public CafeTable getCafeTableId() {
+    //     return cafeTableId;
+    // }
 
-    public void setCafeTableId(CafeTable cafeTableId) {
-        this.cafeTableId = cafeTableId;
-    }
+    // public void setCafeTableId(CafeTable cafeTableId) {
+    //     this.cafeTableId = cafeTableId;
+    // }
 
     public History getHistoryId() {
         return historyId;
@@ -126,13 +126,13 @@ public class Invoice {
         this.drink = drink;
     }
 
-    public int getNumber() {
-        return number;
-    }
+    // public int getNumber() {
+    //     return number;
+    // }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
+    // public void setNumber(int number) {
+    //     this.number = number;
+    // }
 
     public double getPrice() {
         return price;
@@ -150,19 +150,19 @@ public class Invoice {
         this.timestamp = timestamp;
     }
 
-    public String getStatus() {
-        return status;
-    }
+    // public String getStatus() {
+    //     return status;
+    // }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    // public void setStatus(String status) {
+    //     this.status = status;
+    // }
 
-    public String getIssueByCashier() {
+    public int getIssueByCashier() {
         return issueByCashier;
     }
 
-    public void setIssueByCashier(String issueByCashier) {
+    public void setIssueByCashier(int issueByCashier) {
         this.issueByCashier = issueByCashier;
     }
 
@@ -174,17 +174,11 @@ public class Invoice {
         this.branch = branch;
     }
 
-    public String getNote() {
-        return note;
-    }
+    // public String getNote() {
+    //     return note;
+    // }
 
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-
-
-
-
-
+    // public void setNote(String note) {
+    //     this.note = note;
+    // }
 }
