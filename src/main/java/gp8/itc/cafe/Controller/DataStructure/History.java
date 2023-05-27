@@ -36,69 +36,63 @@ public class History{
     @JoinColumn(name = "user_id")
     private User userId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drink_sizeId")
+    private DrinkSize drinkSizeId;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<Invoice> invoices;
-
 
     public int getHistory_id() {
         return history_id;
     }
 
-
     public void setHistory_id(int history_id) {
         this.history_id = history_id;
     }
-
-
-    // public int getTableNumber() {
-    //     return tableNumber;
-    // }
-
-
-    // public void setTableNumber(int tableNumber) {
-    //     this.tableNumber = tableNumber;
-    // }
-
 
     public int getPrice() {
         return price;
     }
 
-
     public void setPrice(int price) {
         this.price = price;
     }
-
 
     public String getDate() {
         return date;
     }
 
-
     public void setDate(String date) {
         this.date = date;
     }
-
 
     public User getUserId() {
         return userId;
     }
 
-
     public void setUserId(User userId) {
         this.userId = userId;
     }
 
+    public DrinkSize getDrinkSizeId() {
+        return drinkSizeId;
+    }
+
+    public void setDrinkSizeId(DrinkSize drinkSizeId) {
+        this.drinkSizeId = drinkSizeId;
+    }
 
     public List<Invoice> getInvoices() {
         return invoices;
     }
 
-
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
     }
+
+    
+    
 
     
 }

@@ -19,8 +19,8 @@ public class DrinkSize {
     @Column(name = "id")
     private int drink_sizeId;
 
-    @OneToMany(mappedBy = "sizeId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Drink> drink;
+    @OneToMany(mappedBy = "drinkSizeId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<History> history;
 
     @Column(name = "size")
     private String size;
@@ -36,12 +36,12 @@ public class DrinkSize {
         this.drink_sizeId = drink_sizeId;
     }
 
-    public List<Drink> getDrink() {
-        return drink;
+    public List<History> getHistory() {
+        return history;
     }
 
-    public void setDrink(List<Drink> drink) {
-        this.drink = drink;
+    public void setHistory(List<History> history) {
+        this.history = history;
     }
 
     public String getSize() {
@@ -59,4 +59,9 @@ public class DrinkSize {
     public void setPrice(double price) {
         this.price = price;
     }
+
+
+    
+
+
 }

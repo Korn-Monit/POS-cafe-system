@@ -29,7 +29,7 @@ public class Drink {
     private int drink_id;
 
     @Column(name = "price")
-    private int price;
+    private Float price;
 
     @Column(name="drink_name")
     private String drinkName;
@@ -37,10 +37,6 @@ public class Drink {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drink_category_Id")
     private DrinkCategory category_id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drink_size_id")
-    private DrinkSize sizeId;
 
     @Lob
     @Column(name = "image", length = 9000)
@@ -54,20 +50,20 @@ public class Drink {
     )
     private List<Addon> addons = new ArrayList<>();
 
-    public int getPrice(){
-        return price;
-    }
-
-    public void setPrice(int price){
-        this.price = price;
-    }
-
     public int getDrink_id() {
         return drink_id;
     }
 
     public void setDrink_id(int drink_id) {
         this.drink_id = drink_id;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
     public String getDrinkName() {
@@ -86,14 +82,6 @@ public class Drink {
         this.category_id = category_id;
     }
 
-    public DrinkSize getSizeId() {
-        return sizeId;
-    }
-
-    public void setSizeId(DrinkSize sizeId) {
-        this.sizeId = sizeId;
-    }
-
     public String getImage() {
         return image;
     }
@@ -109,4 +97,6 @@ public class Drink {
     public void setAddons(List<Addon> addons) {
         this.addons = addons;
     }
+
+    
 }

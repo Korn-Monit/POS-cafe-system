@@ -31,18 +31,20 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        border: 1px solid grey;
+        border: 3px solid black;
+        border-radius: 1%;
     }
 
     .tabs {
         width: 100%;
         overflow: hidden;
-        border-bottom: 1px solid gray;
+        /* border-bottom: 1px solid gray; */
         display: flex;
+ 
     }
 
     .tablink {
-        background-color: #fff;
+        background-color: black;
         outline: none;
         cursor: pointer;
         padding: 10px 20px;
@@ -51,6 +53,8 @@
             float: left; */
         margin: 0;
         border: 1px solid gray;
+        color: white;
+        border-bottom: 5px;
     }
 
     .tablink:hover {
@@ -73,11 +77,14 @@
         width: 50%;
         height: 100%;
         flex-basis: 100%;
-        border: 2px solid gray;
+        border: 2px solid black;
     }
 
     .left-column {
         padding-top: 40px;
+        width: 150px;
+        height: 500px;
+        margin-top: 15px;
     }
 
     .row {
@@ -114,7 +121,9 @@
     }
 
     .right-column {
+        margin-top: 15px;
         overflow: hidden;
+        height: 500px;
     }
 
     .right-column img {
@@ -138,7 +147,13 @@
         background-color: yellow; 
     }
     /* image and text at the same line */
-
+    .btntab{
+        background-color: black;
+        color: white;
+    }
+    .thistab{
+        border-radius: 0 0 0 10%;
+    }
 
 </style>
 <body>
@@ -147,14 +162,14 @@
         <div class="tabs">
 
             <a href="/adminDashboard/addCashier">   
-                <button class="tablink" id="btn_newcashier" onclick="openTab(event, 'cashier')">New Cashier</button>
+                <button class="tablink thistab" id="btn_newcashier" onclick="openTab(event, 'cashier')">New Cashier</button>
             </a>
             <a href="/adminDashboard/addDrink">
                 <button class="tablink" id="btn_newdrink" onclick="openTab(event, 'drink')">New Drink</button>
             </a>
-            <a href="/new_food">
+            <!-- <a href="/new_food">
                 <button class="tablink" id="btn_newfood" onclick="openTab(event, 'food')">New Food</button>
-            </a>
+            </a> -->
            <a href="/adminDashboard/addDrinkCategory">
                 <button class="tablink" id="btn_category" onclick="openTab(event, 'category')">New Category</button>
            </a>
@@ -164,14 +179,12 @@
            <a href="/adminDashboard/manageTable">
                 <button class="tablink" id="btn_managetab" onclick="openTab(event, 'table')">Manage Table</button>
            </a>
-            
-           
         </div>
 
         <div class="tabs">
             <button class="tablink" id="btn_cashier">Cashier</button>
             <button class="tablink" id="btn_drinks">Drink</button>
-            <button class="tablink" id="btn_foods">Food</button>
+            <!-- <button class="tablink" id="btn_foods">Food</button> -->
         </div>
         <!-- cashier -->
         <div class="evencolumn">
@@ -231,37 +244,7 @@
     
                 </div>  
             </div>
-        </div>
-        <!-- food -->
-        <!-- <div class="evencolumn">
-            <div class="left-column">
-                <div class="row">
-                    <p>No</p>
-                    <p>Cashier Name</p>
-                    <p>Login</p>
-                    <p>Action</p>
-                </div>
-                <div class="row">
-                    <p>No</p>
-                    <p>Cashier Name</p>
-                    <p>Login</p>
-                    <p> <span>Edit</span>
-                        <span>Delete</span>
-                    </p>
-                </div>
-
-
-            </div>
-            <div class="right-column">
-                <h2>Cashier information</h2>
-                <div id="showInfo" class="w-3/5">
-    
-                </div>  
-            </div>
-        </div> -->
-
-
-       
+        </div>   
     </div>
 
    

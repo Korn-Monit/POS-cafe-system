@@ -117,7 +117,7 @@ public class Controller {
     @Autowired
     RepositoryUser userRepository;
     @GetMapping("/user/delete/{id}")
-    public Object deleteUser(@PathVariable Integer id) {
+    public Object deleteUser(@PathVariable Integer id){
         //User user = userRepository.findById(id).get();
         userRepository.deleteById(id);
         return new RedirectView("/adminDashboard");
@@ -238,15 +238,16 @@ public class Controller {
     private RepositoryCafeTable repositoryCafeTable;
     //manage table
     @GetMapping("/adminDashboard/manageTable")
-    public Object test() {
+    public Object test(Model model) {
+        model.addAttribute("tableCount", repositoryCafeTable.count());
         return new ModelAndView("manageTable");
     }
 
-    @PostMapping("/adminDashboard/manageTable")
-    public Object processLoginForm(@ModelAttribute("CafeTable") CafeTable cafeTable){
-        repositoryCafeTable.save(cafeTable);
-        return new RedirectView("/adminDashboard/manageTable");  
-    }
+    // @PostMapping("/adminDashboard/manageTable")
+    // public Object processLoginForm(@ModelAttribute("CafeTable") CafeTable cafeTable){
+    //     repositoryCafeTable.save(cafeTable);
+    //     return new RedirectView("/adminDashboard/manageTable");  
+    // }
 
     //table selection
     @GetMapping("/tableSelect")
@@ -259,9 +260,8 @@ public class Controller {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @PostMapping("/tableSelect")
-    public Object addTable(@RequestParam("tablenumber") Integer number) {
-
+    @PostMapping("/adminDashboard/manageTable")
+    public Object processCreateTable(@RequestParam("tablenumber") Integer number) {
         if (number > 0 && number <= 100) {
             Long rowExisted = repositoryCafeTable.count();
             if (rowExisted > number) {
@@ -303,9 +303,9 @@ public class Controller {
                     repositoryCafeTable.save(cafeTable);
                 }
             }
-            return new RedirectView("/manageTable");
+            return new RedirectView("/adminDashboard/manageTable");
         }
-        return new RedirectView("/manageTable?invalid");
+        return new RedirectView("/adminDashboard/manageTable?invalid");
     }
 
     //drink
@@ -320,13 +320,13 @@ public class Controller {
 
     @GetMapping("/adminDashboard/addDrink")
     public Object addDrink() {
-        return new ModelAndView("addDrink");
+        return new ModelAndView("addDrinkNew");
     }
 
     @PostMapping("/adminDashboard/addDrink")
     @ResponseBody
     // MultipartFile is a class in Spring Framework that represents a file that has been uploaded via a form in a web application. It is typically used for handling file uploads in Spring applications
-    public Object processAddDrinkForm(@RequestParam("drinkName") String drinkNom, @RequestParam("drinkPrice") double drinkPrix, @RequestParam("drinkNote") String note, @RequestParam("categoryName") String categoryNom, @RequestParam("file") MultipartFile limage) {
+    public Object processAddDrinkForm(@RequestParam("drinkName") String drinkNom, @RequestParam("drinkPrice") Float drinkPrix, @RequestParam("drinkNote") String note, @RequestParam("categoryName") String categoryNom, @RequestParam("file") MultipartFile limage) {
 
         Drink drinkName = new Drink();
         drinkName.setDrinkName(drinkNom);
@@ -344,22 +344,22 @@ public class Controller {
             e.printStackTrace();
         }
 
-        DrinkSize drinkSize = new DrinkSize();
-        drinkSize.setPrice(drinkPrix);
+        // DrinkSize drinkSize = new DrinkSize();
+        // drinkSize.setPrice(drinkPrix);
 
         DrinkCategory drinkCategory = new DrinkCategory();
         drinkCategory.setDescription(note);
         drinkCategory.setName(categoryNom);
 
         // drinkRepository.save(drinkName);
-        drinkSizeRepository.save(drinkSize);
+        // drinkSizeRepository.save(drinkSize);
         drinkCategoryRepository.save(drinkCategory);
         
         //insert foreign key
         drinkName.setCategory_id(drinkCategory);
         // drinkRepository.save(drinkName);
 
-        drinkName.setSizeId(drinkSize);
+        // drinkName.setSizeId(drinkSize);
         drinkRepository.save(drinkName);
 
         return new RedirectView("/adminDashboard/addDrink");  
@@ -388,12 +388,12 @@ public class Controller {
     public Object deleteDrink(@PathVariable Integer id) {
         Drink drink = drinkRepository.findById(id).get();
         int cateID = drink.getCategory_id().getDrink_categoryId();
-        int sizeID = drink.getSizeId().getDrink_sizeId();
-        
+        // int sizeID = drink.getSizeId().getDrink_sizeId();
+
         drinkRepository.deleteById(id);
         drinkCategoryRepository.deleteById(cateID);
-        drinkSizeRepository.deleteById(sizeID);
-
+        // drinkSizeRepository.deleteById(sizeID);
+        
         return new RedirectView("/adminDashboard");
     }
 
@@ -416,18 +416,18 @@ public class Controller {
                             @RequestParam("drinkNote") String note) {
         Drink drink = drinkRepository.findById(id).get();
         int cateID = drink.getCategory_id().getDrink_categoryId();
-        int sizeID = drink.getSizeId().getDrink_sizeId();
+        // int sizeID = drink.getSizeId().getDrink_sizeId();
 
         DrinkCategory drinkCategory = drinkCategoryRepository.findById(cateID).get();
-        DrinkSize drinkSize = drinkSizeRepository.findById(sizeID).get();
+        // DrinkSize drinkSize = drinkSizeRepository.findById(sizeID).get();
     
         drink.setDrinkName(drinkNom);
-        drinkSize.setPrice(drinkPrix);
+        // drinkSize.setPrice(drinkPrix);
         drinkCategory.setDescription(note);
 
         drinkRepository.save(drink);
         drinkCategoryRepository.save(drinkCategory);
-        drinkSizeRepository.save(drinkSize);
+        // drinkSizeRepository.save(drinkSize);
 
         return new RedirectView("/drinkDE");
     }
