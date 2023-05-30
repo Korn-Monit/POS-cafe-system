@@ -42,13 +42,13 @@ public class Drink {
     @Column(name = "image", length = 9000)
     private String image;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "drink_addon",
-        joinColumns = @JoinColumn(name = "drink_id"),
-        inverseJoinColumns = @JoinColumn(name = "addon_id")
-    )
-    private List<Addon> addons = new ArrayList<>();
+    // @ManyToMany(cascade = CascadeType.ALL)
+    // @JoinTable(
+    //     name = "drink_addon",
+    //     joinColumns = @JoinColumn(name = "drink_id"),
+    //     inverseJoinColumns = @JoinColumn(name = "addon_id")
+    // )
+    // private List<Addon> addons = new ArrayList<>();
 
     public int getDrink_id() {
         return drink_id;
@@ -90,13 +90,13 @@ public class Drink {
         this.image = image;
     }
 
-    public List<Addon> getAddons() {
-        return addons;
-    }
+    // public List<Addon> getAddons() {
+    //     return addons;
+    // }
 
-    public void setAddons(List<Addon> addons) {
-        this.addons = addons;
-    }
+    // public void setAddons(List<Addon> addons) {
+    //     this.addons = addons;
+    // }
 
     
 }

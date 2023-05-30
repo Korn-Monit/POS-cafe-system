@@ -4,143 +4,287 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cashier Web Page</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<style>
-    body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
+    <title>Document</title>
+    <html xmlns:th="http://www.thymeleaf.org"></html>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
 
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-}
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
+      
 
-nav ul li {
-    display: inline-block;
-    margin-right: 10px;
-}
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-}
-
-main {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-}
-
-.drink-list {
-    flex: 1;
-    background-color: #f1f1f1;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-.drink-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-
-.order-info {
-    flex: 1;
-    background-color: #fff;
-    padding: 20px;
-}
-
-</style>
-<body>
-    <header>
-        <h1>Cashier Web Page</h1>
-        <nav>
-            <ul>
-                <li><a href="#" class="category-link" data-category="cool">Cool Drinks</a></li>
-                <li><a href="#" class="category-link" data-category="hot">Hot Drinks</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <div class="drink-list" id="drinkList">
-            <!-- Drink items will be dynamically added here -->
-        </div>
-        <div class="order-info" id="orderInfo">
-            <!-- Order information will be displayed here -->
-        </div>
-    </main>
-    <script src="script.js"></script>
-</body>
-
-<script>
-    // Sample data for demonstration
-const drinks = [
-    { name: 'Cool Drink 1', category: 'cool' },
-    { name: 'Cool Drink 2', category: 'cool' },
-    { name: 'Hot Drink 1', category: 'hot' },
-    { name: 'Hot Drink 2', category: 'hot' }
-];
-
-// Function to filter and display drinks based on category
-function displayDrinks(category) {
-    const drinkList = document.getElementById('drinkList');
-    drinkList.innerHTML = '';
-
-    const filteredDrinks = drinks.filter(drink => drink.category === category);
-
-    filteredDrinks.forEach(drink => {
-        const drinkItem = document.createElement('div');
-        drinkItem.classList.add('drink-item');
-        drinkItem.textContent = drink.name;
-
-        drinkItem.addEventListener('click', () => {
-            displayOrderInfo(drink);
-        });
-
-        drinkList.appendChild(drinkItem);
-    });
-}
-
-// Function to display order information
-function displayOrderInfo(drink) {
-    const orderInfo = document.getElementById('orderInfo');
-    orderInfo.innerHTML = '';
-
-    const orderItem = document.createElement('div');
-    orderItem.textContent = `Selected Drink: ${drink.name}`;
-
-    orderInfo.appendChild
-    orderItem.appendChild(orderInfo);
-
-    orderInfo.appendChild(orderItem);
+        .left::-webkit-scrollbar {
+        width: 5px;
     }
 
-    // Event listener for category links
-    const categoryLinks = document.querySelectorAll('.category-link');
+    .left::-webkit-scrollbar-thumb {
+    background-color: black;
+    border-radius: 20px;
+    }
 
-    categoryLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        const category = link.dataset.category;
-        displayDrinks(category);
+    .left::-webkit-scrollbar-track {
+    background-color: #CBD5E0;
+    border-radius: 5px;
+    }
+      
+
+
+
+    </style>
+    
+</head>
+<body class="bg-white w-screen h-screen p-[20px]">
+    <div class="bg-[#F5F7FB] w-full h-full rounded-[30px] flex flex-col items-center justify-center ">
+        <h2 class="font-bold text-[40px] text-align flex justify-center font-montserrat">Drink Selection</h2>
+        <hr class="w-[95%] h-[2px] bg-black mx-7">
+        <div class="flex justify-center w-full h-[87%] mx-auto">
+            <div class="left w-[70%] h-full rounded-lg overflow-auto">
+              
+                <form action="/listDrink" method="get">
+                    <div class="flex flex-wrap gap-4 p-4 mx-[15px]">
+                        <div th:each="category : ${categories}">
+                            <button class="category-button w-[100px] h-[30px] p-5 flex justify-center items-center bg-[#F5F7FB] rounded-2xl border-2 border-gray-500 font-semibold text-slate-700 font-montserrat active:bg-black active:text-white active:black" type="submit" name="category" th:value="${category.id}" th:text="${category.name}">
+                                <!-- <img class="w-[50px] h-[50px] rounded-lg" alt="" th:src="*{'data:image/jpeg;base64,'+{category.image_url } }"></button> -->
+                        </div>
+                    </div>
+                </form>
+                <!-- <hr class="w-[80%] h-[3px] bg-gray-300 ml-8"> -->
+
+                <div class="flex justify-content gap-[20px] mx-[15px] p-5 flex-wrap overflow-y-auto">
+                    <div class="drink-box flex flex-col w-[400px] h-[200px] bg-white rounded-lg border-2 border-gray-300 p-4" th:each="drink : ${drinks}">
+                       <div  class="flex gap-4">
+                        <div>
+                             <img class="w-[110px] h-[120px] rounded-lg" alt="" th:src="*{'data:image/jpeg;base64,'+{drink.image_url} }">
+                             <div class="flex items-center mt-[5px]">
+                                <button class="decreaseButton px-3 py-1 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-300 focus:outline-none">-</button>
+                                <input class="countInput w-10 px-3 py-1 text-center bg-white text-gray-700" type="text" value="0" readonly>
+                                <button class="increaseButton px-3 py-1 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-300 focus:outline-none">+</button>
+                              </div>
+                              
+                        </div>
+                        <div class="flex flex-col">
+                            <div>
+                                <!-- <p th:text="'id:' + ${drink.id}"></p> -->
+                              <p class="drinkName font-bold my-[5px]" th:text="${drink.name}"></p> 
+                              <p class="drinkPrice font-bold my-[5px]" ></p>
+                              
+                              <p class="font-semibold"> Size: </p>
+                            </div>
+                            <div class="flex justify-content gap-2 mt-[5px]">
+                                 <button class="size-button w-[70px] h-[2px] p-4 flex justify-center items-center bg-[#F5F7FB] rounded-[60px] border-2 border-gray-500 font-semibold text-slate-700 text-sm active:bg-black active:text-white active:black" id="smallButton"  data-size-id="1"> small </button>
+                                <button  class="size-button w-[70px] h-[2px] p-4 flex justify-center items-center bg-[#F5F7FB] rounded-[60px] border-2 border-gray-500 font-semibold text-slate-700 text-sm active:bg-black active:text-white active:black" id="mediumButton" data-size-id="2"> medium </button>
+                                <button  class="size-button w-[70px] h-[2px] p-4 flex justify-center items-center bg-[#F5F7FB] rounded-[60px] border-2 border-gray-500 font-semibold text-slate-700 text-sm active:bg-black active:text-white active:black" id="largeButton"  data-size-id="3"> large </button>   
+                            </div>
+                            <div>
+                                <button class="order-button w-[200px] h-[3px] p-4 flex justify-center items-center bg-black rounded-[60px] border-2 border-gray-500 font-semibold text-white m-[15px] active:bg-[#F5F7FB] active:text-black" id="orderButton"> Order </button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right w-[25%] bg-white border-2 rounded-[20px] m-[20px]">
+                <h2 class="p-5 align-items font-bold">Order information</h2>
+              <form action="/saveOrder" method="post" id="orderForm">
+                  <div id="orderInfo"></div>    
+                  <!-- <button class="w-[200px] h-[3px] p-4 flex justify-center items-center bg-black rounded-[60px] border-2 border-gray-500 font-semibold text-white m-[15px] active:bg-[#F5F7FB] active:text-black" id="clearButton"> clear </button> -->
+                  <button class="w-[200px] h-[3px] p-4 flex justify-center items-center bg-black rounded-[60px] border-2 border-gray-500 font-semibold text-white m-[15px] active:bg-[#F5F7FB] active:text-black" id="confirmButton"> confirm order </button>
+
+                  <!-- Hidden input field to store the order data -->
+                  <input type="hidden" name="orderData" id="orderData">
+              </form>
+              <button class="w-[200px] h-[3px] p-4 flex justify-center items-center bg-black rounded-[60px] border-2 border-gray-500 font-semibold text-white m-[15px] active:bg-[#F5F7FB] active:text-black" id="clearButton"> clear </button>
+              </div>
+        </div>
+    </div>
+</body>
+<script>
+    const buttons = document.querySelectorAll('.category-button');
+    const clearButton = document.getElementById('clearButton');
+    const orderInfoElement = document.getElementById('orderInfo');
+
+    //ui of admin dashboard
+    document.addEventListener('DOMContentLoaded', () => {
+    const decreaseButtons = document.querySelectorAll('.decreaseButton');
+    const increaseButtons = document.querySelectorAll('.increaseButton');
+    const countInputs = document.querySelectorAll('.countInput');
+    const drinkNameElements = document.querySelectorAll('.drinkName');
+    const drinkPriceElements = document.querySelectorAll('.drinkPrice');
+    const sizeButtons = document.querySelectorAll('.size-button');
+    const orderButtons = document.querySelectorAll('.order-button');
+    const orderInfoElement = document.getElementById('orderInfo');
+
+
+
+
+    const sizePrices = {
+        1: 2.99, // Replace with the actual price for small size
+        2: 3.99, // Replace with the actual price for medium size
+        3: 4.99, // Replace with the actual price for large size
+    };
+
+    for (let i = 0; i < decreaseButtons.length; i++) {
+        let quantity = 0;
+        let selectedSize = '';
+
+        decreaseButtons[i].addEventListener('click', () => {
+        if (quantity > 0) {
+            quantity--;
+            countInputs[i].value = quantity;
+        }
+        });
+
+        increaseButtons[i].addEventListener('click', () => {
+        quantity++;
+        countInputs[i].value = quantity;
+        });
+
+        for (let j = 0; j < sizeButtons.length; j++) {
+        sizeButtons[j].addEventListener('click', () => {
+            const sizeId = sizeButtons[j].getAttribute('data-size-id');
+            selectedSize = getSizeName(sizeId);
+            const price = sizePrices[sizeId];
+            drinkPriceElements[i].innerText = price.toFixed(2);
+
+            // Remove the 'selected' class from all size buttons within the current container
+            const sizeButtonsInContainer = sizeButtons[i].parentElement.querySelectorAll('.size-button');
+            for (let k = 0; k < sizeButtonsInContainer.length; k++) {
+            sizeButtonsInContainer[k].classList.remove('selected');
+            }
+
+        // Add the 'selected' class to the clicked size button
+        sizeButtons[j].classList.add('selected');
+      });
+    }
+
+    orderButtons[i].addEventListener('click', () => {
+      const drinkName = drinkNameElements[i].innerText;
+      const price = parseFloat(drinkPriceElements[i].innerText);
+      const quantity = parseInt(countInputs[i].value);
+      const selectedSize = getSelectedSize(i);
+      const orderItem = {
+        drinkName,
+        price,
+        quantity,
+        selectedSize,
+
+        // Submit the form programmatically
+        // const orderForm = document.getElementById('orderForm');
+        // orderForm.submit();
+      };
+
+      // Save the order item to local storage
+      let orderInfo = JSON.parse(localStorage.getItem('orderInfo')) || [];
+      orderInfo.push(orderItem);
+      localStorage.setItem('orderInfo', JSON.stringify(orderInfo));
+
+      // Create a new order information element
+      const newOrderInfoElement = document.createElement('div');
+      newOrderInfoElement.innerHTML = formatOrderInfo(orderItem);
+
+      //print data from localstorage
+      // Retrieve the order data from localStorage
+      const orderData = JSON.parse(localStorage.getItem('orderInfo'));
+      // Print the retrieved order data on the console
+      console.log(orderData);
+
+      // Append the new order information to the existing order information div
+      orderInfoElement.appendChild(newOrderInfoElement);
     });
+  }
+
+  // Display the existing order information in the right div
+    let orderInfo = JSON.parse(localStorage.getItem('orderInfo')) || [];
+    orderInfo.forEach((orderItem) => {
+    const newOrderInfoElement = document.createElement('div');
+    newOrderInfoElement.innerHTML = formatOrderInfo(orderItem);
+    orderInfoElement.appendChild(newOrderInfoElement);
+  });
+
+  function getSizeName(sizeId) {
+    if (sizeId === '1') {
+      return 'Small';
+    } else if (sizeId === '2') {
+      return 'Medium';
+    } else if (sizeId === '3') {
+      return 'Large';
+    }
+  }
+
+  function getSelectedSize(index) {
+    const drinkBox = document.getElementsByClassName('drink-box')[index];
+    const selectedSizeButton = drinkBox.querySelector('.size-button.selected');
+    return selectedSizeButton.innerText;
+  }
+
+  function formatOrderInfo(orderItem) {
+    return `Drink: ${orderItem.drinkName}<br>Quantity: ${orderItem.quantity}<br>Size: ${orderItem.selectedSize}<br>Price: ${orderItem.price.toFixed(2)}<br>`;
+  }
+  
+});
+
+  //save into db
+  function submitOrderForm(){
+      // Retrieve the order data from localStorage
+      // const orderData = JSON.parse(localStorage.getItem('orderInfo'));
+      let orderData = JSON.parse(localStorage.getItem('orderInfo')) || [];
+
+      // Print the retrieved order data on the console
+      console.log(orderData);
+
+      // Convert the order data to a string
+      const orderDataString = JSON.stringify(orderData);
+
+
+      // Set the order data to the hidden input field
+      const orderDataField = document.getElementById('orderData');
+      orderDataField.value = orderDataString;
+
+      // Submit the form programmatically
+      const orderForm = document.getElementById('orderForm');
+      orderForm.submit();
+    }
+
+  const confirmButton = document.getElementById('confirmButton');
+  confirmButton.addEventListener('click', submitOrderForm);
+  
+
+    // Function to clear the order information from local storage
+    // function clearOrderInfo() {
+    //     localStorage.removeItem('orderInfo');
+    // }
+
+    // // Call the function to clear the order information on page refresh
+    // window.addEventListener('beforeunload', clearOrderInfo);
+
+    // Function to clear the order information from local storage
+    function clearOrderInfoOnRefresh() {
+    if (performance.navigation.type === 1) {
+        localStorage.removeItem('orderInfo');
+    }
+}
+
+    // Call the function to clear the order information on page refresh
+    window.addEventListener('beforeunload', clearOrderInfoOnRefresh);
+
+    clearButton.addEventListener('click', () => {
+        localStorage.removeItem('orderInfo');
+        orderInfoElement.innerHTML = ''; // Clear the content of the orderInfo element
+});
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+    buttons.forEach(btn => {
+      btn.classList.remove('bg-black', 'text-white', 'border-black');
+      btn.removeAttribute('disabled');
     });
-
-    // Display drinks initially based on the first category
-    const initialCategory = categoryLinks[0].dataset.category;
-    displayDrinks(initialCategory);
-
+    this.classList.add('bg-black', 'text-white', 'border-black');
+    // this.setAttribute('disabled', 'disabled');
+  });
+});
 
 </script>
+
+
 </html>

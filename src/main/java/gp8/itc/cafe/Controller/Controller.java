@@ -4,6 +4,7 @@ import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+
+
 import java.io.File;
 import java.io.IOException;
 
@@ -25,11 +31,14 @@ import gp8.itc.cafe.Controller.DB.RepositoryCafeTable;
 import gp8.itc.cafe.Controller.DB.RepositoryDrink;
 import gp8.itc.cafe.Controller.DB.RepositoryDrinkCategory;
 import gp8.itc.cafe.Controller.DB.RepositoryDrinkSize;
+import gp8.itc.cafe.Controller.DB.RepositoryOrderHistory;
 import gp8.itc.cafe.Controller.DB.RepositoryUser;
 import gp8.itc.cafe.Controller.DataStructure.CafeTable;
 import gp8.itc.cafe.Controller.DataStructure.Drink;
 import gp8.itc.cafe.Controller.DataStructure.DrinkCategory;
 import gp8.itc.cafe.Controller.DataStructure.DrinkSize;
+import gp8.itc.cafe.Controller.DataStructure.OrderData;
+import gp8.itc.cafe.Controller.DataStructure.OrderHistory;
 import gp8.itc.cafe.Controller.DataStructure.User;
 
 import gp8.itc.cafe.Controller.Service.UserService;
@@ -495,4 +504,86 @@ public class Controller {
     public Object cashierDashboard() {
         return new ModelAndView("cashierDashboard");
     }
+
+    //save order
+    @Autowired
+    RepositoryOrderHistory orderRepo;
+    @Autowired
+    RepositoryDrink drinkRepo;
+    @Autowired
+    RepositoryDrinkCategory drinkCategoryRepo;
+
+    @GetMapping("/saveOrder")
+    public Object index() {
+        return new ModelAndView("Cashier");
+    }
+
+    // @GetMapping("/listDrink")
+    // public String getDrinksByCategory(@RequestParam("category") int categoryId, Model model) {
+    //     try {
+    //         List<Drink> drinks = drinkRepo.findByCategory_id(categoryId);
+    //         model.addAttribute("drinks", drinks);
+    //         List<DrinkCategory> categories = (List<DrinkCategory>) drinkCategoryRepo.findAll();
+    //         model.addAttribute("categories", categories);
+    //     } catch (DataAccessException ex) {
+    //         ex.printStackTrace(); // Print the stack trace for debugging
+    //         // Perform any necessary error handling or logging
+    //         // You can add an error message to the model and redirect to an error page, for example:
+    //         model.addAttribute("errorMessage", "An error occurred while retrieving drinks.");
+    //         return "errorPage";
+    //     }
+    
+    //     return "listDrink";
+    // }
+
+    @GetMapping("/listDrink")
+    public Object getDrinksByCategory(@RequestParam("category") int categoryId, Model model) {
+        try {
+            List<Drink> drinks = drinkRepo.findByCategory_id(categoryId);
+            model.addAttribute("drinks", drinks);
+            List<DrinkCategory> categories = (List<DrinkCategory>) drinkCategoryRepo.findAll();
+            model.addAttribute("categories", categories);
+        } catch (DataAccessException ex) {
+            ex.printStackTrace(); // Print the stack trace for debugging
+            // Perform any necessary error handling or logging
+            // You can create an error object or return a generic error message, for example:
+            return new Object();
+        }
+
+        return model; // You can return the model object or any other custom object
+    }
+    
+    @PostMapping("/saveOrder")
+    public String saveOrder(@RequestParam("orderData") String orderDataString) {
+        try {
+            // Use ObjectMapper to convert the JSON string to a List<OrderData>
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<OrderData> orderDataList = objectMapper.readValue(orderDataString, new TypeReference<List<OrderData>>() {});
+    
+            for (OrderData orderData : orderDataList) {
+                // Create a new 'orders' object for each order item
+                OrderHistory order = new OrderHistory();
+    
+                // Access individual OrderData object properties
+                String drinkName = orderData.getDrinkName();
+                String drinkSize = orderData.getSelectedSize();
+                Float price = orderData.getPrice();
+                int quantity = orderData.getQuantity();
+    
+                order.setDrinkName(drinkName);
+                order.setDrinkSize(drinkSize);
+                order.setPrice(price);
+                order.setQuantity(quantity);
+    
+                orderRepo.save(order);
+            }
+    
+            // Redirect to a success page or return a response
+            return "redirect:/welcome";
+        } catch (Exception e) {
+            // Handle any exceptions during deserialization
+            e.printStackTrace();
+            return "redirect:/errorPage";
+        }
+    }   
 }
