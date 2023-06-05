@@ -18,10 +18,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-// le nom de table
-@Table(name ="drink")
+@Table(name ="Drink")
 public class Drink {
-    //Table
+
     @Id
     //generate the id automatically and increase the id too
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +34,9 @@ public class Drink {
     private String drinkName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drink_category_Id")
+    @JoinColumn(name = "category_id")
     private DrinkCategory category_id;
+    
 
     @Lob
     @Column(name = "image", length = 9000)
@@ -97,6 +97,4 @@ public class Drink {
     // public void setAddons(List<Addon> addons) {
     //     this.addons = addons;
     // }
-
-    
 }

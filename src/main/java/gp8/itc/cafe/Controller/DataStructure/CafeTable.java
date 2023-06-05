@@ -39,7 +39,7 @@ public class CafeTable {
         this.table_id = table_id;
     }
 
-    public double getTablenumber() {
+    public int getTablenumber() {
         return tablenumber;
     }
 
@@ -47,7 +47,7 @@ public class CafeTable {
         this.tablenumber = tablenumber;
     }
 
-    public double getAvailability() {
+    public int getAvailability() {
         return availability;
     }
 

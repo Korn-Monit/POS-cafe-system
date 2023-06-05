@@ -12,7 +12,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="drinkCategory")
+@Table(name="DrinkCategory")
 public class DrinkCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class DrinkCategory {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "category_id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category_id", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Drink> drink;
 
     public int getDrink_categoryId() {

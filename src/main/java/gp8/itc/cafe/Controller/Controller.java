@@ -2,6 +2,7 @@ package gp8.itc.cafe.Controller;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -31,12 +32,14 @@ import gp8.itc.cafe.Controller.DB.RepositoryCafeTable;
 import gp8.itc.cafe.Controller.DB.RepositoryDrink;
 import gp8.itc.cafe.Controller.DB.RepositoryDrinkCategory;
 import gp8.itc.cafe.Controller.DB.RepositoryDrinkSize;
+import gp8.itc.cafe.Controller.DB.RepositoryInvoice;
 import gp8.itc.cafe.Controller.DB.RepositoryOrderHistory;
 import gp8.itc.cafe.Controller.DB.RepositoryUser;
 import gp8.itc.cafe.Controller.DataStructure.CafeTable;
 import gp8.itc.cafe.Controller.DataStructure.Drink;
 import gp8.itc.cafe.Controller.DataStructure.DrinkCategory;
 import gp8.itc.cafe.Controller.DataStructure.DrinkSize;
+import gp8.itc.cafe.Controller.DataStructure.Invoice;
 import gp8.itc.cafe.Controller.DataStructure.OrderData;
 import gp8.itc.cafe.Controller.DataStructure.OrderHistory;
 import gp8.itc.cafe.Controller.DataStructure.User;
@@ -270,7 +273,7 @@ public class Controller {
     private JdbcTemplate jdbcTemplate;
 
     @PostMapping("/adminDashboard/manageTable")
-    public Object processCreateTable(@RequestParam("tablenumber") Integer number) {
+    public Object processCreateTable(@RequestParam("tablenumber") Integer number){
         if (number > 0 && number <= 100) {
             Long rowExisted = repositoryCafeTable.count();
             if (rowExisted > number) {
@@ -338,7 +341,7 @@ public class Controller {
     public Object processAddDrinkForm(@RequestParam("drinkName") String drinkNom, @RequestParam("drinkPrice") Float drinkPrix, @RequestParam("drinkNote") String note, @RequestParam("categoryName") String categoryNom, @RequestParam("file") MultipartFile limage) {
 
         Drink drinkName = new Drink();
-        drinkName.setDrinkName(drinkNom);
+
         // the .getOriginalFileName extract image name
         String fileName = limage.getOriginalFilename();
         //if fileName is "C:/path/to/my_image.jpg", then cleanFileName will contain "my_image.jpg", which is the extracted filename from the file path.
@@ -353,22 +356,38 @@ public class Controller {
             e.printStackTrace();
         }
 
-        // DrinkSize drinkSize = new DrinkSize();
-        // drinkSize.setPrice(drinkPrix);
+        // Get the category ID based on the category name
+        Optional<DrinkCategory> categoryOptional = drinkCategoryRepository.findByName(categoryNom);
+        if (categoryOptional.isPresent()) {
+            DrinkCategory category = categoryOptional.get();
+            drinkName.setCategory_id(category);
 
-        DrinkCategory drinkCategory = new DrinkCategory();
-        drinkCategory.setDescription(note);
-        drinkCategory.setName(categoryNom);
+        } else {
+            // Handle the case where the category does not exist
+            // ModelAndView mav = new ModelAndView("error");
+            // mav.addObject("errorMessage", "Invalid category");
+            // return mav;
 
-        // drinkRepository.save(drinkName);
-        // drinkSizeRepository.save(drinkSize);
-        drinkCategoryRepository.save(drinkCategory);
-        
-        //insert foreign key
-        drinkName.setCategory_id(drinkCategory);
-        // drinkRepository.save(drinkName);
+            // DrinkSize drinkSize = new DrinkSize();
+            // drinkSize.setPrice(drinkPrix);
 
-        // drinkName.setSizeId(drinkSize);
+            DrinkCategory drinkCategory = new DrinkCategory();
+            drinkCategory.setDescription(note);
+            drinkCategory.setName(categoryNom);
+
+            // drinkRepository.save(drinkName);
+            // drinkSizeRepository.save(drinkSize);
+            drinkCategoryRepository.save(drinkCategory);
+            
+            //insert foreign key
+            drinkName.setCategory_id(drinkCategory);
+            // drinkRepository.save(drinkName);
+
+            // drinkName.setSizeId(drinkSize);
+            drinkRepository.save(drinkName);
+        }
+        drinkName.setDrinkName(drinkNom);
+        drinkName.setPrice(drinkPrix);
         drinkRepository.save(drinkName);
 
         return new RedirectView("/adminDashboard/addDrink");  
@@ -441,44 +460,12 @@ public class Controller {
         return new RedirectView("/drinkDE");
     }
 
-    //header of admin dashboard
-    // @GetMapping(path = "/adminDashboard/newCashier")
-    // public Object newCashier(){
-    //     return new ModelAndView("addCashierNew");
-    // }
-
-    // @GetMapping(path = "/new_drink")
-    // public Object newDrink(){
-    //     return new ModelAndView("newDrink");
-    // }
-
-    // @GetMapping(path = "/new_food")
-    // public Object newFood(){
-    //     return new ModelAndView("newFood");
-    // }
-
-    // @GetMapping(path = "/adminDashboard/addDrinkCategory")
-    // public Object newCategory(){
-    //     return new ModelAndView("addCategory");
-    // }
-
-    // @GetMapping(path = "/order_histories")
-    // public Object orderHistories(){
-    //     return new ModelAndView("orderHistories");
-    // }
-
-    // @GetMapping(path = "/manage_table")
-    // public Object manageTable(){
-    //     return new ModelAndView("manageTable");
-    // }
-
 
     // Drink selection
-
     @GetMapping("/drinkSelect")
     public Object drinkSelection(Model model) {
         model.addAttribute("categories", drinkCategoryRepository.findAll());
-        return new ModelAndView("CashierPart/drinkSelection");
+        return new ModelAndView("CashierPart/calculateprice");
     }
 
     @GetMapping("/drinkSelect/{id}")
@@ -518,43 +505,38 @@ public class Controller {
         return new ModelAndView("Cashier");
     }
 
+    @GetMapping("/listDrink")
+    public ModelAndView getDrinksByCategory(@RequestParam("category") int categoryId, Model model) {
+        List<Drink> drinks = drinkRepo.findByCategoryID(categoryId);
+        model.addAttribute("drinks", drinks);
+        List<DrinkCategory> categories = (List<DrinkCategory>) drinkCategoryRepo.findAll();
+        model.addAttribute("categories", categories);
+    
+        ModelAndView modelAndView = new ModelAndView("CashierPart/cashierDashboard", model.asMap());
+        return modelAndView;
+    }
+    
+    
+
     // @GetMapping("/listDrink")
-    // public String getDrinksByCategory(@RequestParam("category") int categoryId, Model model) {
+    // public Object getDrinksByCategory(@RequestParam("category") int categoryId, Model model) {
     //     try {
-    //         List<Drink> drinks = drinkRepo.findByCategory_id(categoryId);
+    //         List<Drink> drinks = drinkRepo.findByCategoryID(categoryId);
     //         model.addAttribute("drinks", drinks);
     //         List<DrinkCategory> categories = (List<DrinkCategory>) drinkCategoryRepo.findAll();
     //         model.addAttribute("categories", categories);
     //     } catch (DataAccessException ex) {
     //         ex.printStackTrace(); // Print the stack trace for debugging
     //         // Perform any necessary error handling or logging
-    //         // You can add an error message to the model and redirect to an error page, for example:
-    //         model.addAttribute("errorMessage", "An error occurred while retrieving drinks.");
-    //         return "errorPage";
+    //         // You can create an error object or return a generic error message, for example:
+    //         return new Object();
     //     }
-    
-    //     return "listDrink";
+
+    //     return model; // You can return the model object or any other custom object
     // }
-
-    @GetMapping("/listDrink")
-    public Object getDrinksByCategory(@RequestParam("category") int categoryId, Model model) {
-        try {
-            List<Drink> drinks = drinkRepo.findByCategory_id(categoryId);
-            model.addAttribute("drinks", drinks);
-            List<DrinkCategory> categories = (List<DrinkCategory>) drinkCategoryRepo.findAll();
-            model.addAttribute("categories", categories);
-        } catch (DataAccessException ex) {
-            ex.printStackTrace(); // Print the stack trace for debugging
-            // Perform any necessary error handling or logging
-            // You can create an error object or return a generic error message, for example:
-            return new Object();
-        }
-
-        return model; // You can return the model object or any other custom object
-    }
     
     @PostMapping("/saveOrder")
-    public String saveOrder(@RequestParam("orderData") String orderDataString) {
+    public RedirectView saveOrder(@RequestParam("orderData") String orderDataString) {
         try {
             // Use ObjectMapper to convert the JSON string to a List<OrderData>
             ObjectMapper objectMapper = new ObjectMapper();
@@ -579,11 +561,99 @@ public class Controller {
             }
     
             // Redirect to a success page or return a response
-            return "redirect:/welcome";
+            return new RedirectView("/tableSelect");
         } catch (Exception e) {
             // Handle any exceptions during deserialization
             e.printStackTrace();
-            return "redirect:/errorPage";
+            // return "redirect:/errorPage";
         }
-    }   
+        return null;
+    }
+    
+    //invoice
+
+    @Autowired
+    RepositoryInvoice invoiceRepo;
+
+    @Autowired
+    RepositoryDrink drinkRepos;
+
+    // @Autowired
+    // SizeRepo sizeRepo;
+
+    @Autowired
+    RepositoryCafeTable tableRepo;
+
+
+    // @PostMapping("/invoice")
+    // public String saveOrder(@RequestParam("orderData") String orderDataString, @RequestParam("selectedTableId") String selectedTableId,
+    //                         @RequestParam("total") String total, @RequestParam("change") String change) {
+    //     try {
+    //         // Use ObjectMapper to convert the JSON string to a List<OrderData>
+    //         ObjectMapper objectMapper = new ObjectMapper();
+    //         List<OrderData> orderDataList = objectMapper.readValue(orderDataString,
+    //                 new TypeReference<List<OrderData>>() {
+    //                 });
+
+    //         for (OrderData orderData : orderDataList) {
+    //             // Create a new 'orders' object for each order item
+    //             Invoice invoices = new invoice();
+    //             // orders order = new orders();
+    //         //     temporary tmp = new temporary();
+
+    //             // Access individual OrderData object properties
+    //             String drinkName = orderData.getDrinkName();
+    //             String drinkSize = orderData.getSelectedSize();
+    //             BigDecimal price = orderData.getPrice();
+    //             int quantity = orderData.getQuantity();
+
+    //         //     //retreive drink name id and size id based on names
+    //             Optional<drink_size> drinkSizeOptional = sizeRepo.findByName(drinkSize);
+    //             Optional<drink> drinkOptional = drinkRepos.findByName(drinkName);
+    //             if (drinkSizeOptional.isPresent() && drinkOptional.isPresent()) {
+    //                 // drink_categories category = categoryOptional.get();
+    //                 // drink.setCategory_id(category);
+    //                 drink_size size = drinkSizeOptional.get();
+    //                 invoices.setDrink_size_id(size);
+    //                 // order.setDrink_size_id(size);
+    //                 // tmp.setDrink_size_id(size);
+
+    //                 drink drink = drinkOptional.get();
+    //                 invoices.setDrink_id(drink);
+    //                 // order.setDrink_id(drink);
+    //                 // tmp.setDrink_id(drink);
+
+    //             } else {
+    //                 // Handle the case where the category does not exist
+    //                 ModelAndView mav = new ModelAndView("error");
+    //                 mav.addObject("errorMessage", "Invalid category");
+    //                 return "listDrink";
+    //             }
+    //             tables table = tableRepo.findById(Integer.parseInt(selectedTableId));
+    //             BigDecimal totalValue = new BigDecimal(total);
+    //             BigDecimal changeValue = new BigDecimal(change);
+    //             // BigDecimal totals = new BigDecimal(total);
+    //             // BigDecimal changed = new BigDecimal(change);
+                
+    //             invoices.setTable_id(table);
+    //             invoices.setDrinkName(drinkName);
+    //             invoices.setDrinkSize(drinkSize);
+    //             invoices.setQuantity(quantity);
+    //             invoices.setChanged(changeValue);
+    //             invoices.setTotal(totalValue);
+    //             // invoices.setChanged(changed);
+    //             // invoices.setTotal(totals);
+                
+    //             invoiceRepo.save(invoices);
+                
+    //          }
+
+    //         // Redirect to a success page or return a response
+    //         return "receipt";
+    //     } catch (Exception e) {
+    //         // Handle any exceptions during deserialization
+    //         e.printStackTrace();
+    //         return "redirect:/errorPage";
+    //     }
+    // }
 }

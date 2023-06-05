@@ -6,34 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Table Selection</title>
     <style>
-        body{
+        body {
             height: 700px;
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
+            /* background-image: url("/image/table_background.jpg"); */
+            background-size: cover;
+            background-repeat: no-repeat;
         }
-        .content{
+        .content {
             width: 1020px;
             height: 500px;
             display: flex;
-            background-color: aquamarine;
-        }
-        .left{
-            width: 50%;
-            display: flex;
             flex-wrap: wrap;
-            gap: 11px;
-            background-color: rgb(211, 219, 203);
+            background-color: rgb(255, 255, 255);
             padding: 18px;
             overflow-y: auto;
-        }
-        .right{
-            width: 50%;
-            background-color: aliceblue;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            border: 2px black solid;
+            gap: 11px;
+            margin-top: 20px;
         }
         .box1{
             width: 90px;
@@ -41,8 +34,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: greenyellow;
+            background-color: rgb(65, 227, 57);
             cursor: pointer;
+            border-radius: 10px;
+            border: 2px solid black;
         }
         .box2{
             width: 90px;
@@ -52,6 +47,8 @@
             align-items: center;
             background-color: red;
             cursor: pointer;
+            border-radius: 10px;
+            border: 2px solid gray;
         }
         .box3{
             width: 90px;
@@ -70,16 +67,32 @@
             justify-content: center;
             background-color: yellow;
         }
+        .centered {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .table_title {
+            text-align: center;
+            margin-bottom: 20px; /* Add this line */
+        }
     </style>
 </head>
 <body>
+    
+    <div class="centered">
+        <div class="table_title">
+          <h1>Table Selection</h1>
+        </div>
+    </div>
     <div class="content">
-        <div class="left">
+        <!-- <div class="left"> -->
             <div th:each="table : ${tables}">
                 <div th:switch="${table.getAvailability()}">
                     <div th:case="'1'"
                         th:id="${table.getTable_id()}"
-                        th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])"
+                        th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])" th:data-table-id="${table.table_id}" onclick="showConfirmation(this)"
                         th:ondblclick="orderProduct([[${table.getAvailability()}]])"
                         type="button"
                         class="box1">
@@ -88,6 +101,7 @@
                     <div th:case="0"
                         th:id="${table.getTable_id()}"
                         th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])"
+                        th:data-table-id="${table.table_id}" onclick="showConfirmation(this)"
                         th:ondblclick="orderProduct([[${table.getAvailability()}]])"
                         type="button"
                         class="box2">
@@ -96,6 +110,7 @@
                     <div th:case="*"
                         th:id="${table.getTable_id()}"
                         th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])"
+                        th:data-table-id="${table.table_id}" onclick="showConfirmation(this)"
                         th:ondblclick="orderProduct([[${table.getAvailability()}]])"
                         type="button"
                         class="box3">
@@ -103,38 +118,53 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="right">
+        <!-- </div> -->
+        <!-- <div class="right">
             <h2>Table information</h2>
             <div id="showInfo" class="info">
                 
             </div>
-        </div>
+        </div> -->
     </div>
 
     <script>
 
-        function showTableInfo(number , status) {
-            let showInfo = document.getElementById('showInfo');
-            let content = '';
+    // function storeTableId(tableId) {
+    //     localStorage.setItem('selectedTableId', tableId);
+    //     // Redirect to another page or perform other actions
+    // }
+
+    function showConfirmation(element) {
+        confirmationPopup.style.display = "block";
+        overlay.style.display = "block";
+        
+        const tableId = element.getAttribute('data-table-id');
+        localStorage.setItem('selectedTableId', tableId);
+        // tableIdInput.value = tableId;
+        console.log(tableId);
+    }
+
+        // function showTableInfo(number , status) {
+        //     let showInfo = document.getElementById('showInfo');
+        //     let content = '';
 
 
-            if(status == 1) {
-                content = `
-                    <span>Table: ${number}</span>
-                    <br>
-                    <span>Status: avaialable</span>
-                    `;
-            }
-            else{
-                content = `
-                    <span>Table: ${number}</span>
-                    <br>
-                    <span>Status: unavaialable</span>
-                    `;
-            }
-            showInfo.innerHTML = content;
-        }
+        //     if(status == 1) {
+        //         content = `
+        //             <span>Table: ${number}</span>
+        //             <br>
+        //             <span>Status: avaialable</span>
+        //             `;
+        //     }
+        //     else{
+        //         content = `
+        //             <span>Table: ${number}</span>
+        //             <br>
+        //             <span>Status: unavaialable</span>
+        //             `;
+        //     }
+        //     showInfo.innerHTML = content;
+        // }
         function orderProduct(available) {
             if(available == 1) {
                 location.href="/drinkSelect";

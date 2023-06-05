@@ -2,10 +2,12 @@ package gp8.itc.cafe.Controller.DataStructure;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -38,6 +40,10 @@ public class OrderHistory {
 
     @Column(name = "price")
     private Float price;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "table_id")
+    private TableOrder table_id;
 
     public int getId() {
         return id;
@@ -79,5 +85,11 @@ public class OrderHistory {
         this.price = price;
     }
 
-    
+    public TableOrder getTable_id() {
+        return table_id;
+    }
+
+    public void setTable_id(TableOrder table_id) {
+        this.table_id = table_id;
+    }
 }
