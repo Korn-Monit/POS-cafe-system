@@ -27,6 +27,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import gp8.itc.cafe.Controller.DB.RepositoryCafeTable;
 import gp8.itc.cafe.Controller.DB.RepositoryDrink;
@@ -42,6 +43,7 @@ import gp8.itc.cafe.Controller.DataStructure.DrinkSize;
 import gp8.itc.cafe.Controller.DataStructure.Invoice;
 import gp8.itc.cafe.Controller.DataStructure.OrderData;
 import gp8.itc.cafe.Controller.DataStructure.OrderHistory;
+import gp8.itc.cafe.Controller.DataStructure.Temporary;
 import gp8.itc.cafe.Controller.DataStructure.User;
 
 import gp8.itc.cafe.Controller.Service.UserService;
@@ -506,7 +508,7 @@ public class Controller {
     }
 
     @GetMapping("/listDrink")
-    public ModelAndView getDrinksByCategory(@RequestParam("category") int categoryId, Model model) {
+    public ModelAndView getDrinksByCategory(@RequestParam("category") int categoryId, Model model){
         List<Drink> drinks = drinkRepo.findByCategoryID(categoryId);
         model.addAttribute("drinks", drinks);
         List<DrinkCategory> categories = (List<DrinkCategory>) drinkCategoryRepo.findAll();
@@ -517,8 +519,7 @@ public class Controller {
     }
     
     
-
-    @GetMapping("/listDrink")
+    // @GetMapping("/listDrink")
     // public Object getDrinksByCategory(@RequestParam("category") int categoryId, Model model) {
     //     try {
     //         List<Drink> drinks = drinkRepo.findByCategoryID(categoryId);
@@ -531,7 +532,6 @@ public class Controller {
     //         // You can create an error object or return a generic error message, for example:
     //         return new Object();
     //     }
-
     //     return model; // You can return the model object or any other custom object
     // }
     
@@ -549,7 +549,7 @@ public class Controller {
                 // Access individual OrderData object properties
                 String drinkName = orderData.getDrinkName();
                 String drinkSize = orderData.getSelectedSize();
-                Float price = orderData.getPrice();
+                BigDecimal price = orderData.getPrice();
                 int quantity = orderData.getQuantity();
     
                 order.setDrinkName(drinkName);
@@ -578,12 +578,111 @@ public class Controller {
     @Autowired
     RepositoryDrink drinkRepos;
 
-    // @Autowired
-    // SizeRepo sizeRepo;
+    @Autowired
+    RepositoryDrinkSize sizeRepo;
 
     @Autowired
     RepositoryCafeTable tableRepo;
 
+    // @PostMapping("/invoice")
+    // public String saveOrder(@RequestParam("orderData") String orderDataString,
+    //         @RequestParam("selectedTableId") String selectedTableId,
+    //         @RequestParam("total") String total, @RequestParam("change") String change, Model model) {
+    //     try {
+            // Use ObjectMapper to convert the JSON string to a List<OrderData>
+            // ObjectMapper objectMapper = new ObjectMapper();
+            // List<OrderData> orderDataList = objectMapper.readValue(orderDataString,
+            //         new TypeReference<List<OrderData>>() {
+            //         });
 
-    
+            // for (OrderData orderData : orderDataList) {
+                // Create a new 'orders' object for each order item
+                // Invoice invoices = new Invoice();
+                // orders order = new orders();
+                // Temporary tmp = new Temporary();
+
+                // Access individual OrderData object properties
+                // String drinkName = orderData.getDrinkName();
+                // String drinkSize = orderData.getSelectedSize();
+                // BigDecimal price = orderData.getPrice();
+                // int quantity = orderData.getQuantity();
+
+                // //retreive drink name id and size id based on names
+                // Optional<DrinkSize> drinkSizeOptional = sizeRepo.findByName(drinkSize);
+                // Optional<Drink> drinkOptional = drinkRepo.findByName(drinkName);
+                // Optional<user> userOptional = userRepo.findByEmail("test4@gamil.com");
+
+                // if (drinkSizeOptional.isPresent() && drinkOptional.isPresent()) {
+
+                //     DrinkSize size = drinkSizeOptional.get();
+                //     invoices.setDrink_size_id(size);
+                    // order.setDrink_size_id(size);
+                    // tmp.setDrink_size_id(size);
+
+                    // Drink drink = drinkOptional.get();
+                    // invoices.setDrink_id(drink);
+                    // order.setDrink_id(drink);
+                    // tmp.setDrink_id(drink);
+
+                    // Optional<user> userOptional = userRepo.findByEmail("test1@gmail.com");
+                    // if (userOptional.isPresent()) {
+                    //     user users = userOptional.get();
+                    //     invoices.setUsername(users);
+                    // } else {
+                    //     // Handle the case where the user does not exist
+                    //     ModelAndView mav = new ModelAndView("error");
+                    //     mav.addObject("errorMessage", "Invalid user");
+                    //     return "listDrink";
+                    // }
+
+                    // user users = userOptional.get();
+                    // invoices.setUsername(users);
+
+                // } else {
+                    // Handle the case where the category does not exist
+                //     ModelAndView mav = new ModelAndView("error");
+                //     mav.addObject("errorMessage", "Invalid category");
+                //     return "listDrink";
+                // }
+                // CafeTable table = tableRepo.findById(Integer.parseInt(selectedTableId));
+                // BigDecimal totalValue = new BigDecimal(total);
+                // BigDecimal changeValue = new BigDecimal(change);
+
+                // Optional<user> userOptional = userRepo.findByEmail("test1@gamil.com");
+                // if(userOptional.isPresent()){
+                // user users = userOptional.get();
+
+                // invoices.setUsername(users);
+                // }
+
+                // invoices.setTable_id(table);
+                // invoices.setDrinkName(drinkName);
+                // invoices.setDrinkSize(drinkSize);
+                // invoices.setQuantity(quantity);
+                // invoices.setPrice(price);
+                // invoices.setChanged(changeValue);
+                // invoices.setTotal(totalValue);
+
+                // tmp.setTable_id(table);
+                // tmp.setDrinkName(drinkName);
+                // tmp.setDrinkSize(drinkSize);
+                // tmp.setQuantity(quantity);
+                // tmp.setChanged(changeValue);
+                // tmp.setTotal(totalValue);
+                // tmp.setPrice(price);
+                
+
+                // invoiceRepo.save(invoices);
+                // tmpRepo.save(tmp);
+
+            // }
+            // model.addAttribute("invoices", invoices);
+            // Redirect to a success page or return a response
+        //     return "redirect:/receipt";
+        // } catch (Exception e) {
+            // Handle any exceptions during deserialization
+    //         e.printStackTrace();
+    //         return "redirect:/errorPage";
+    //     }
+    // }
 }

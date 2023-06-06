@@ -1,5 +1,7 @@
 package gp8.itc.cafe.Controller.DataStructure;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -39,7 +41,7 @@ public class OrderHistory {
     private int quantity;
 
     @Column(name = "price")
-    private Float price;
+    private BigDecimal price;
 
     // @ManyToOne(fetch=FetchType.LAZY)
     // @JoinColumn(name = "table_id")
@@ -77,11 +79,11 @@ public class OrderHistory {
         this.quantity = quantity;
     }
 
-    public Float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

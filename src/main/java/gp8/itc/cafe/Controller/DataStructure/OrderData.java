@@ -1,10 +1,12 @@
 package gp8.itc.cafe.Controller.DataStructure;
 
+import java.math.BigDecimal;
+
 public class OrderData {
     private String drinkName;
     private String selectedSize;
     private int quantity;
-    private Float price;
+    private BigDecimal price;
     
     public String getDrinkName() {
         return drinkName;
@@ -25,10 +27,10 @@ public class OrderData {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    public Float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
-    public void setPrice(Float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     } 
 }

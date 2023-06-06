@@ -1,6 +1,5 @@
 package gp8.itc.cafe.Controller.DataStructure;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,66 +8,50 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
 import jakarta.persistence.Table;
 
-
 @Entity
-@Table(name = "invoice")
+@Table(name="invoice")
 public class Invoice {
-
     @Id
-    //generate the id automatically and increase the id too
+    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
-    // @OneToMany(mappedBy = "receipt_id", cascade = CascadeType.ALL)
-    // private List<Receipt> receipts;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drink_id", referencedColumnName = "drink_id")
+    private Drink drink_id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drink_size_id", referencedColumnName = "drink_sizeId")
+    private DrinkSize drink_size_id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User userId;
+    @JoinColumn(name = "table_id", referencedColumnName = "table_id")
+    private CafeTable table_id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drink_id")
-    private Drink drinkId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drink_category_id")
-    private DrinkCategory drinkCategoryId;
-
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "table_id")
-    // private CafeTable cafeTableId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="history_id")
-    private History historyId;
-
-    @Column(name = "drink")
-    private String drink;
-
-    // @Column(name = "number")
-    // private int number;
+    @ManyToOne
+    @JoinColumn(name = "username", referencedColumnName = "user_id")
+    private User username;
 
     @Column(name = "price")
-    private double price;
+    private Float price;
 
-    @Column(name = "timestamp")
-    private String timestamp;
+    @Column(name = "drinkName")
+    private String drinkName;
 
-    // @Column(name = "status")
-    // private String status;
+    @Column(name = "drinkSize")
+    private String drinkSize;
 
-    @Column(name = "issueByCashier")
-    private int issueByCashier;
+    @Column(name = "quantity")
+    private int quantity;
 
-    @Column(name = "branch")
-    private String branch;
+    @Column(name = "total")
+    private Float total;
 
-    // @Column(name = "note")
-    // private String note;
+    @Column(name = "changed")
+    private Float changed;
+
 
     public int getId() {
         return id;
@@ -78,107 +61,83 @@ public class Invoice {
         this.id = id;
     }
 
-    public User getUserId() {
-        return userId;
-    }
-
-    public void setUserId(User userId) {
-        this.userId = userId;
-    }
-
-    public Drink getDrinkId() {
-        return drinkId;
-    }
-
-    public void setDrinkId(Drink drinkId) {
-        this.drinkId = drinkId;
-    }
-
-    public DrinkCategory getDrinkCategoryId() {
-        return drinkCategoryId;
-    }
-
-    public void setDrinkCategoryId(DrinkCategory drinkCategoryId) {
-        this.drinkCategoryId = drinkCategoryId;
-    }
-
-    // public CafeTable getCafeTableId() {
-    //     return cafeTableId;
-    // }
-
-    // public void setCafeTableId(CafeTable cafeTableId) {
-    //     this.cafeTableId = cafeTableId;
-    // }
-
-    public History getHistoryId() {
-        return historyId;
-    }
-
-    public void setHistoryId(History historyId) {
-        this.historyId = historyId;
-    }
-
-    public String getDrink() {
-        return drink;
-    }
-
-    public void setDrink(String drink) {
-        this.drink = drink;
-    }
-
-    // public int getNumber() {
-    //     return number;
-    // }
-
-    // public void setNumber(int number) {
-    //     this.number = number;
-    // }
-
-    public double getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+    public String getDrinkName() {
+        return drinkName;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    public void setDrinkName(String drinkName) {
+        this.drinkName = drinkName;
     }
 
-    // public String getStatus() {
-    //     return status;
-    // }
-
-    // public void setStatus(String status) {
-    //     this.status = status;
-    // }
-
-    public int getIssueByCashier() {
-        return issueByCashier;
+    public String getDrinkSize() {
+        return drinkSize;
     }
 
-    public void setIssueByCashier(int issueByCashier) {
-        this.issueByCashier = issueByCashier;
+    public void setDrinkSize(String drinkSize) {
+        this.drinkSize = drinkSize;
     }
 
-    public String getBranch() {
-        return branch;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setBranch(String branch) {
-        this.branch = branch;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    // public String getNote() {
-    //     return note;
-    // }
+    public Float getTotal() {
+        return total;
+    }
 
-    // public void setNote(String note) {
-    //     this.note = note;
-    // }
+    public void setTotal(Float total) {
+        this.total = total;
+    }
+
+    public Float getChanged() {
+        return changed;
+    }
+
+    public void setChanged(Float changed) {
+        this.changed = changed;
+    }
+
+    public Drink getDrink_id() {
+        return drink_id;
+    }
+
+    public void setDrink_id(Drink drink_id) {
+        this.drink_id = drink_id;
+    }
+
+    public DrinkSize getDrink_size_id() {
+        return drink_size_id;
+    }
+
+    public void setDrink_size_id(DrinkSize drink_size_id) {
+        this.drink_size_id = drink_size_id;
+    }
+
+    public CafeTable getTable_id() {
+        return table_id;
+    }
+
+    public void setTable_id(CafeTable table_id) {
+        this.table_id = table_id;
+    }
+
+    public User getUsername() {
+        return username;
+    }
+
+    public void setUsername(User username) {
+        this.username = username;
+    }
 }

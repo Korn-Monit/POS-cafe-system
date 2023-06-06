@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 public class DrinkSize {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "drink_sizeId")
     private int drink_sizeId;
 
     @OneToMany(mappedBy = "drinkSizeId", cascade = CascadeType.ALL, orphanRemoval = true)

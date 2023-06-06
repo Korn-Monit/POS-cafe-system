@@ -17,4 +17,5 @@ public interface RepositoryDrink extends JpaRepository<Drink, Integer>{
         // retrieve a list of drinks that belong to a specific category.
         @Query("SELECT d FROM Drink d WHERE d.category_id.drink_categoryId = :category_id")
         List<Drink> findByCategoryID(@Param("category_id") int category_id);
+
 }

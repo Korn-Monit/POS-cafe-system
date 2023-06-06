@@ -19,7 +19,7 @@ public class CafeTable {
     @Id
     //generate the id automatically and increase the id too
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="table_id")
     int table_id;
 
     @Column(name = "number")

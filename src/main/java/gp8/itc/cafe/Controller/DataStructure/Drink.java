@@ -11,9 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -37,7 +35,6 @@ public class Drink {
     @JoinColumn(name = "category_id")
     private DrinkCategory category_id;
     
-
     @Lob
     @Column(name = "image", length = 9000)
     private String image;
@@ -89,12 +86,4 @@ public class Drink {
     public void setImage(String image) {
         this.image = image;
     }
-
-    // public List<Addon> getAddons() {
-    //     return addons;
-    // }
-
-    // public void setAddons(List<Addon> addons) {
-    //     this.addons = addons;
-    // }
 }

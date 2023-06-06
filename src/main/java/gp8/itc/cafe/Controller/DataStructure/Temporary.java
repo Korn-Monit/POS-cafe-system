@@ -19,24 +19,56 @@ public class Temporary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "drink_id", referencedColumnName = "id")
-    // private Drink drink_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drink_id", referencedColumnName = "drink_id")
+    private Drink drink_id;
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "drink_size_id", referencedColumnName = "id")
-    // private DrinkSize drink_size_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drink_size_id", referencedColumnName = "drink_sizeId")
+    private DrinkSize drink_size_id;
 
-    // @ManyToOne
-    // @JoinColumn(name = "table_id", referencedColumnName = "id")
-    // private CafeTable table_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "table_id", referencedColumnName = "table_id")
+    private CafeTable table_id;
 
-    // @ManyToOne
-    // @JoinColumn(name = "username", referencedColumnName = "id")
-    // private user username;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "username", referencedColumnName = "user_id")
+    private User username;
 
     @Column(name = "price")
     private Float price;
+
+    public Drink getDrink_id() {
+        return drink_id;
+    }
+
+    public void setDrink_id(Drink drink_id) {
+        this.drink_id = drink_id;
+    }
+
+    public DrinkSize getDrink_size_id() {
+        return drink_size_id;
+    }
+
+    public void setDrink_size_id(DrinkSize drink_size_id) {
+        this.drink_size_id = drink_size_id;
+    }
+
+    public CafeTable getTable_id() {
+        return table_id;
+    }
+
+    public void setTable_id(CafeTable table_id) {
+        this.table_id = table_id;
+    }
+
+    public User getUsername() {
+        return username;
+    }
+
+    public void setUsername(User username) {
+        this.username = username;
+    }
 
     @Column(name = "drinkName")
     private String drinkName;
@@ -53,8 +85,6 @@ public class Temporary {
     @Column(name = "changed")
     private Float changed;
 
-    @Column(name = "table_id")
-    private int table_id;
 
     public int getId() {
         return id;
@@ -112,13 +142,5 @@ public class Temporary {
         this.changed = changed;
     }
 
-    public int getTable_id() {
-        return table_id;
-    }
-
-    public void setTable_id(int table_id) {
-        this.table_id = table_id;
-    }
-
-    
+  
 }
