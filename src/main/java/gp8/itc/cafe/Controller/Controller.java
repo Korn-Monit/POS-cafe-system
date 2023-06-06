@@ -35,6 +35,7 @@ import gp8.itc.cafe.Controller.DB.RepositoryDrinkCategory;
 import gp8.itc.cafe.Controller.DB.RepositoryDrinkSize;
 import gp8.itc.cafe.Controller.DB.RepositoryInvoice;
 import gp8.itc.cafe.Controller.DB.RepositoryOrderHistory;
+import gp8.itc.cafe.Controller.DB.RepositoryTemporary;
 import gp8.itc.cafe.Controller.DB.RepositoryUser;
 import gp8.itc.cafe.Controller.DataStructure.CafeTable;
 import gp8.itc.cafe.Controller.DataStructure.Drink;
@@ -322,6 +323,10 @@ public class Controller {
         return new RedirectView("/adminDashboard/manageTable?invalid");
     }
 
+
+    
+
+
     //drink
 
     //add drink
@@ -584,105 +589,116 @@ public class Controller {
     @Autowired
     RepositoryCafeTable tableRepo;
 
-    // @PostMapping("/invoice")
-    // public String saveOrder(@RequestParam("orderData") String orderDataString,
-    //         @RequestParam("selectedTableId") String selectedTableId,
-    //         @RequestParam("total") String total, @RequestParam("change") String change, Model model) {
-    //     try {
-            // Use ObjectMapper to convert the JSON string to a List<OrderData>
-            // ObjectMapper objectMapper = new ObjectMapper();
-            // List<OrderData> orderDataList = objectMapper.readValue(orderDataString,
-            //         new TypeReference<List<OrderData>>() {
-            //         });
+    @Autowired
+    RepositoryTemporary tmpRepo; 
 
-            // for (OrderData orderData : orderDataList) {
-                // Create a new 'orders' object for each order item
-                // Invoice invoices = new Invoice();
-                // orders order = new orders();
-                // Temporary tmp = new Temporary();
+    @PostMapping("/invoice")
+    public String saveOrder(@RequestParam("orderData") String orderDataString,
+            @RequestParam("selectedTableId") String selectedTableId,
+            @RequestParam("total") String total, @RequestParam("change") String change, Model model) {
+        try {
+            //Use ObjectMapper to convert the JSON string to a List<OrderData>
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<OrderData> orderDataList = objectMapper.readValue(orderDataString,
+                    new TypeReference<List<OrderData>>() {
+                    });
 
-                // Access individual OrderData object properties
-                // String drinkName = orderData.getDrinkName();
-                // String drinkSize = orderData.getSelectedSize();
-                // BigDecimal price = orderData.getPrice();
-                // int quantity = orderData.getQuantity();
+            for (OrderData orderData : orderDataList) {
+                //Create a new 'orders' object for each order item
+                Invoice invoices = new Invoice();
 
-                // //retreive drink name id and size id based on names
-                // Optional<DrinkSize> drinkSizeOptional = sizeRepo.findByName(drinkSize);
-                // Optional<Drink> drinkOptional = drinkRepo.findByName(drinkName);
-                // Optional<user> userOptional = userRepo.findByEmail("test4@gamil.com");
+                Temporary tmp = new Temporary();
 
-                // if (drinkSizeOptional.isPresent() && drinkOptional.isPresent()) {
+                //Access individual OrderData object properties
+                String drinkName = orderData.getDrinkName();
+                String drinkSize = orderData.getSelectedSize();
+                BigDecimal price = orderData.getPrice();
+                int quantity = orderData.getQuantity();
 
-                //     DrinkSize size = drinkSizeOptional.get();
-                //     invoices.setDrink_size_id(size);
-                    // order.setDrink_size_id(size);
-                    // tmp.setDrink_size_id(size);
+                //retreive drink name id and size id based on names
+                Optional<DrinkSize> drinkSizeOptional = sizeRepo.findBySize(drinkSize);
+                Optional<Drink> drinkOptional = drinkRepo.findByDrinkName(drinkName);
+        
 
-                    // Drink drink = drinkOptional.get();
-                    // invoices.setDrink_id(drink);
-                    // order.setDrink_id(drink);
-                    // tmp.setDrink_id(drink);
+                if (drinkSizeOptional.isPresent() && drinkOptional.isPresent()) {
 
-                    // Optional<user> userOptional = userRepo.findByEmail("test1@gmail.com");
-                    // if (userOptional.isPresent()) {
-                    //     user users = userOptional.get();
-                    //     invoices.setUsername(users);
-                    // } else {
-                    //     // Handle the case where the user does not exist
-                    //     ModelAndView mav = new ModelAndView("error");
-                    //     mav.addObject("errorMessage", "Invalid user");
-                    //     return "listDrink";
-                    // }
+                    DrinkSize size = drinkSizeOptional.get();
+                    invoices.setDrink_size_id(size);
+   
+                    tmp.setDrink_size_id(size);
 
-                    // user users = userOptional.get();
-                    // invoices.setUsername(users);
+                    Drink drink = drinkOptional.get();
+                    invoices.setDrink_id(drink);
 
-                // } else {
+                    tmp.setDrink_id(drink);
+
+                } else {
                     // Handle the case where the category does not exist
-                //     ModelAndView mav = new ModelAndView("error");
-                //     mav.addObject("errorMessage", "Invalid category");
-                //     return "listDrink";
-                // }
-                // CafeTable table = tableRepo.findById(Integer.parseInt(selectedTableId));
-                // BigDecimal totalValue = new BigDecimal(total);
-                // BigDecimal changeValue = new BigDecimal(change);
+                    ModelAndView mav = new ModelAndView("error");
+                    mav.addObject("errorMessage", "Invalid category");
+                    return "listDrink";
+                }
+                Optional<CafeTable> table = tableRepo.findById(Integer.parseInt(selectedTableId));
+                BigDecimal totalValue = new BigDecimal(total);
+                BigDecimal changeValue = new BigDecimal(change);
 
-                // Optional<user> userOptional = userRepo.findByEmail("test1@gamil.com");
-                // if(userOptional.isPresent()){
-                // user users = userOptional.get();
 
-                // invoices.setUsername(users);
-                // }
+                invoices.setTable(table);
+                invoices.setDrinkName(drinkName);
+                invoices.setDrinkSize(drinkSize);
+                invoices.setQuantity(quantity);
+                invoices.setPrice(price);
+                invoices.setChanged(changeValue);
+                invoices.setTotal(totalValue);
 
-                // invoices.setTable_id(table);
-                // invoices.setDrinkName(drinkName);
-                // invoices.setDrinkSize(drinkSize);
-                // invoices.setQuantity(quantity);
-                // invoices.setPrice(price);
-                // invoices.setChanged(changeValue);
-                // invoices.setTotal(totalValue);
-
-                // tmp.setTable_id(table);
-                // tmp.setDrinkName(drinkName);
-                // tmp.setDrinkSize(drinkSize);
-                // tmp.setQuantity(quantity);
-                // tmp.setChanged(changeValue);
-                // tmp.setTotal(totalValue);
-                // tmp.setPrice(price);
+                tmp.setTable(table);
+                tmp.setDrinkName(drinkName);
+                tmp.setDrinkSize(drinkSize);
+                tmp.setQuantity(quantity);
+                tmp.setChanged(changeValue);
+                tmp.setTotal(totalValue);
+                tmp.setPrice(price);
                 
 
-                // invoiceRepo.save(invoices);
-                // tmpRepo.save(tmp);
+                invoiceRepo.save(invoices);
+                tmpRepo.save(tmp);
 
-            // }
-            // model.addAttribute("invoices", invoices);
+            }
+
             // Redirect to a success page or return a response
-        //     return "redirect:/receipt";
-        // } catch (Exception e) {
+            return "redirect:/receipt";
+        } catch (Exception e) {
             // Handle any exceptions during deserialization
-    //         e.printStackTrace();
-    //         return "redirect:/errorPage";
-    //     }
+            e.printStackTrace();
+            return "redirect:/errorPage";
+        }
+    }
+
+    // @GetMapping("/receipt")
+    // public Object receipt( Model model) {
+    //     List<Invoice> invoices = (List<Invoice>) invoiceRepo.findAll();
+    //     List<Temporary> tmp =  (List<Temporary>) tmpRepo.findAll();
+    //     model.addAttribute("receipt", invoices);
+    //     model.addAttribute("invoices", tmp);
+    //     return new ModelAndView("CashierPart/receipt");
     // }
+
+    @GetMapping("/receipt")
+    public String receipt( Model model) {
+
+        List<Invoice> invoices = (List<Invoice>) invoiceRepo.findAll();
+        List<Temporary> tmp =  (List<Temporary>) tmpRepo.findAll();
+        model.addAttribute("receipt", invoices);
+        model.addAttribute("invoices", tmp);
+        return "CashierPart/receipt";
+    }
+
+    @PostMapping("/clearInvoice")
+    public String clearTable() {
+        // Logic to clear the table in the database
+        tmpRepo.deleteAll();
+        // tableRepository.clearTable(); // Replace `clearTable()` with the appropriate method in your repository
+        
+        return "redirect:/listDrink?category=1"; // Redirect to a success page after clearing the table
+    }
 }

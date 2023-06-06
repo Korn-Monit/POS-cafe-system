@@ -1,5 +1,8 @@
 package gp8.itc.cafe.Controller.DataStructure;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,16 +29,16 @@ public class Invoice {
     @JoinColumn(name = "drink_size_id", referencedColumnName = "drink_sizeId")
     private DrinkSize drink_size_id;
 
-    @ManyToOne
-    @JoinColumn(name = "table_id", referencedColumnName = "table_id")
-    private CafeTable table_id;
+    // @ManyToOne
+    // @JoinColumn(name = "table_id", referencedColumnName = "table_id")
+    // private Optional<CafeTable> table_id;
 
     @ManyToOne
     @JoinColumn(name = "username", referencedColumnName = "user_id")
     private User username;
 
     @Column(name = "price")
-    private Float price;
+    private BigDecimal price;
 
     @Column(name = "drinkName")
     private String drinkName;
@@ -47,11 +50,35 @@ public class Invoice {
     private int quantity;
 
     @Column(name = "total")
-    private Float total;
+    private BigDecimal total;
 
     @Column(name = "changed")
-    private Float changed;
+    private BigDecimal changed;
 
+    @Column(name = "table_id")
+    private Integer tableId;
+
+    public Integer getTableId() {
+        return tableId;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "table_id", referencedColumnName = "table_id", insertable = false, updatable = false)
+    private CafeTable table;
+    
+    public void setTableId(Integer tableId) {
+        this.tableId = tableId;
+    }
+    
+    public Optional<CafeTable> getTable() {
+        return Optional.ofNullable(table);
+    }
+    
+    public void setTable(Optional<CafeTable> table) {
+        this.table = table.orElse(null);
+        this.tableId = table.map(CafeTable::getTable_id).orElse(null);
+    }
+    
 
     public int getId() {
         return id;
@@ -61,11 +88,11 @@ public class Invoice {
         this.id = id;
     }
 
-    public Float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -93,19 +120,19 @@ public class Invoice {
         this.quantity = quantity;
     }
 
-    public Float getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Float total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
-    public Float getChanged() {
+    public BigDecimal getChanged() {
         return changed;
     }
 
-    public void setChanged(Float changed) {
+    public void setChanged(BigDecimal changed) {
         this.changed = changed;
     }
 
@@ -125,13 +152,13 @@ public class Invoice {
         this.drink_size_id = drink_size_id;
     }
 
-    public CafeTable getTable_id() {
-        return table_id;
-    }
+    // public Optional<CafeTable> getTable_id() {
+    //     return table_id;
+    // }
 
-    public void setTable_id(CafeTable table_id) {
-        this.table_id = table_id;
-    }
+    // public void setTable_id(Optional<CafeTable> table_id) {
+    //     this.table_id = table_id;
+    // }
 
     public User getUsername() {
         return username;
@@ -140,4 +167,12 @@ public class Invoice {
     public void setUsername(User username) {
         this.username = username;
     }
+
+    // public Optional<CafeTable> getTable_id() {
+    //     return table_id;
+    // }
+
+    // public void setTable_id(Optional<CafeTable> table_id) {
+    //     this.table_id = table_id;
+    // }
 }

@@ -18,4 +18,6 @@ public interface RepositoryDrink extends JpaRepository<Drink, Integer>{
         @Query("SELECT d FROM Drink d WHERE d.category_id.drink_categoryId = :category_id")
         List<Drink> findByCategoryID(@Param("category_id") int category_id);
 
+        Optional<Drink> findByDrinkName(String drinkName);
+
 }

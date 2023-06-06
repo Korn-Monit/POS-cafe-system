@@ -7,6 +7,6 @@ import gp8.itc.cafe.Controller.DataStructure.DrinkSize;
 
 public interface RepositoryDrinkSize extends JpaRepository<DrinkSize, Integer>{
 
-    // Optional<DrinkSize> findByName(String drinkSize);
+    Optional<DrinkSize> findBySize(String drinkSize);
     
 }

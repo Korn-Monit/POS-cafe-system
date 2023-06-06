@@ -40,8 +40,8 @@ public class History{
     @JoinColumn(name = "drink_sizeId")
     private DrinkSize drinkSizeId;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
-    private List<Invoice> invoices;
+    // @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    // private List<Invoice> invoices;
 
     public int getHistory_id() {
         return history_id;
@@ -83,13 +83,13 @@ public class History{
         this.drinkSizeId = drinkSizeId;
     }
 
-    public List<Invoice> getInvoices() {
-        return invoices;
-    }
+    // public List<Invoice> getInvoices() {
+    //     return invoices;
+    // }
 
-    public void setInvoices(List<Invoice> invoices) {
-        this.invoices = invoices;
-    }
+    // public void setInvoices(List<Invoice> invoices) {
+    //     this.invoices = invoices;
+    // }
 
     
     

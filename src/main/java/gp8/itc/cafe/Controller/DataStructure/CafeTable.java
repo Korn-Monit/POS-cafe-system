@@ -55,6 +55,13 @@ public class CafeTable {
         this.availability = availability;
     }
 
+    public boolean isPresent() {
+        return false;
+    }
+
+
+
+
     // public List<Invoice> getInvoices() {
     //     return invoices;
     // }
