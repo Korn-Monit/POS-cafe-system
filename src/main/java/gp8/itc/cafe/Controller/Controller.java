@@ -518,7 +518,7 @@ public class Controller {
     
     
 
-    // @GetMapping("/listDrink")
+    @GetMapping("/listDrink")
     // public Object getDrinksByCategory(@RequestParam("category") int categoryId, Model model) {
     //     try {
     //         List<Drink> drinks = drinkRepo.findByCategoryID(categoryId);
@@ -585,75 +585,5 @@ public class Controller {
     RepositoryCafeTable tableRepo;
 
 
-    // @PostMapping("/invoice")
-    // public String saveOrder(@RequestParam("orderData") String orderDataString, @RequestParam("selectedTableId") String selectedTableId,
-    //                         @RequestParam("total") String total, @RequestParam("change") String change) {
-    //     try {
-    //         // Use ObjectMapper to convert the JSON string to a List<OrderData>
-    //         ObjectMapper objectMapper = new ObjectMapper();
-    //         List<OrderData> orderDataList = objectMapper.readValue(orderDataString,
-    //                 new TypeReference<List<OrderData>>() {
-    //                 });
-
-    //         for (OrderData orderData : orderDataList) {
-    //             // Create a new 'orders' object for each order item
-    //             Invoice invoices = new invoice();
-    //             // orders order = new orders();
-    //         //     temporary tmp = new temporary();
-
-    //             // Access individual OrderData object properties
-    //             String drinkName = orderData.getDrinkName();
-    //             String drinkSize = orderData.getSelectedSize();
-    //             BigDecimal price = orderData.getPrice();
-    //             int quantity = orderData.getQuantity();
-
-    //         //     //retreive drink name id and size id based on names
-    //             Optional<drink_size> drinkSizeOptional = sizeRepo.findByName(drinkSize);
-    //             Optional<drink> drinkOptional = drinkRepos.findByName(drinkName);
-    //             if (drinkSizeOptional.isPresent() && drinkOptional.isPresent()) {
-    //                 // drink_categories category = categoryOptional.get();
-    //                 // drink.setCategory_id(category);
-    //                 drink_size size = drinkSizeOptional.get();
-    //                 invoices.setDrink_size_id(size);
-    //                 // order.setDrink_size_id(size);
-    //                 // tmp.setDrink_size_id(size);
-
-    //                 drink drink = drinkOptional.get();
-    //                 invoices.setDrink_id(drink);
-    //                 // order.setDrink_id(drink);
-    //                 // tmp.setDrink_id(drink);
-
-    //             } else {
-    //                 // Handle the case where the category does not exist
-    //                 ModelAndView mav = new ModelAndView("error");
-    //                 mav.addObject("errorMessage", "Invalid category");
-    //                 return "listDrink";
-    //             }
-    //             tables table = tableRepo.findById(Integer.parseInt(selectedTableId));
-    //             BigDecimal totalValue = new BigDecimal(total);
-    //             BigDecimal changeValue = new BigDecimal(change);
-    //             // BigDecimal totals = new BigDecimal(total);
-    //             // BigDecimal changed = new BigDecimal(change);
-                
-    //             invoices.setTable_id(table);
-    //             invoices.setDrinkName(drinkName);
-    //             invoices.setDrinkSize(drinkSize);
-    //             invoices.setQuantity(quantity);
-    //             invoices.setChanged(changeValue);
-    //             invoices.setTotal(totalValue);
-    //             // invoices.setChanged(changed);
-    //             // invoices.setTotal(totals);
-                
-    //             invoiceRepo.save(invoices);
-                
-    //          }
-
-    //         // Redirect to a success page or return a response
-    //         return "receipt";
-    //     } catch (Exception e) {
-    //         // Handle any exceptions during deserialization
-    //         e.printStackTrace();
-    //         return "redirect:/errorPage";
-    //     }
-    // }
+    
 }

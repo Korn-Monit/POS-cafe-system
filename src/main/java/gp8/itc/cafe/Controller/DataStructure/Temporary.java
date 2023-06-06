@@ -11,10 +11,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "order_history")
-public class OrderHistory {
-
-
+@Table(name="temporary")
+public class Temporary {
 
     @Id
     @Column(nullable = false)
@@ -23,11 +21,22 @@ public class OrderHistory {
 
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "drink_id", referencedColumnName = "id")
-    // private drink drink_id;
+    // private Drink drink_id;
 
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "drink_size_id", referencedColumnName = "id")
-    // private drink_size drink_size_id;
+    // private DrinkSize drink_size_id;
+
+    // @ManyToOne
+    // @JoinColumn(name = "table_id", referencedColumnName = "id")
+    // private CafeTable table_id;
+
+    // @ManyToOne
+    // @JoinColumn(name = "username", referencedColumnName = "id")
+    // private user username;
+
+    @Column(name = "price")
+    private Float price;
 
     @Column(name = "drinkName")
     private String drinkName;
@@ -38,12 +47,14 @@ public class OrderHistory {
     @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "price")
-    private Float price;
+    @Column(name = "total")
+    private Float total;
 
-    // @ManyToOne(fetch=FetchType.LAZY)
-    // @JoinColumn(name = "table_id")
-    // private TableOrder table_id;
+    @Column(name = "changed")
+    private Float changed;
+
+    @Column(name = "table_id")
+    private int table_id;
 
     public int getId() {
         return id;
@@ -51,6 +62,14 @@ public class OrderHistory {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
     public String getDrinkName() {
@@ -77,19 +96,29 @@ public class OrderHistory {
         this.quantity = quantity;
     }
 
-    public Float getPrice() {
-        return price;
+    public Float getTotal() {
+        return total;
     }
 
-    public void setPrice(Float price) {
-        this.price = price;
+    public void setTotal(Float total) {
+        this.total = total;
     }
 
-    // public TableOrder getTable_id() {
-    //     return table_id;
-    // }
+    public Float getChanged() {
+        return changed;
+    }
 
-    // public void setTable_id(TableOrder table_id) {
-    //     this.table_id = table_id;
-    // }
+    public void setChanged(Float changed) {
+        this.changed = changed;
+    }
+
+    public int getTable_id() {
+        return table_id;
+    }
+
+    public void setTable_id(int table_id) {
+        this.table_id = table_id;
+    }
+
+    
 }

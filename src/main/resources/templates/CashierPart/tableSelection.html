@@ -88,36 +88,42 @@
     </div>
     <div class="content">
         <!-- <div class="left"> -->
-            <div th:each="table : ${tables}">
-                <div th:switch="${table.getAvailability()}">
-                    <div th:case="'1'"
-                        th:id="${table.getTable_id()}"
-                        th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])" th:data-table-id="${table.table_id}" onclick="showConfirmation(this)"
-                        th:ondblclick="orderProduct([[${table.getAvailability()}]])"
-                        type="button"
-                        class="box1">
-                        <span th:text="${table.getTablenumber()}"></span>
-                    </div>
-                    <div th:case="0"
-                        th:id="${table.getTable_id()}"
-                        th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])"
-                        th:data-table-id="${table.table_id}" onclick="showConfirmation(this)"
-                        th:ondblclick="orderProduct([[${table.getAvailability()}]])"
-                        type="button"
-                        class="box2">
-                        <span th:text="${table.getTablenumber()}"></span>
-                    </div>
-                    <div th:case="*"
-                        th:id="${table.getTable_id()}"
-                        th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])"
-                        th:data-table-id="${table.table_id}" onclick="showConfirmation(this)"
-                        th:ondblclick="orderProduct([[${table.getAvailability()}]])"
-                        type="button"
-                        class="box3">
-                        <span th:text="${table.getTablenumber()}"></span>
+            <form action="/drinkSelect" method="post">
+                
+            </form>
+                <div th:each="table : ${tables}">
+                    <div th:switch="${table.getAvailability()}">
+                        <div th:case="'1'"
+                             th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])"
+                             th:data-table-id="${table.getTable_id()}"
+                             onclick="storeTableId(this)"
+                             th:ondblclick="orderProduct([[${table.getAvailability()}]]); storeTableId(this)"
+                             type="button"
+                             class="box1">
+                            <span th:text="${table.getTablenumber()}"></span>
+                        </div>
+                        <div th:case="0"
+                             th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])"
+                             th:data-table-id="${table.getTable_id()}"
+                             onclick="storeTableId(this)"
+                             th:ondblclick="orderProduct([[${table.getAvailability()}]]); storeTableId(this)"
+                             type="button"
+                             class="box2">
+                            <span th:text="${table.getTablenumber()}"></span>
+                        </div>
+                        <div th:case="*"
+                             th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])"
+                             th:data-table-id="${table.getTable_id()}"
+                             onclick="storeTableId(this)"
+                             th:ondblclick="orderProduct([[${table.getAvailability()}]]); storeTableId(this)"
+                             type="button"
+                             class="box3">
+                            <span th:text="${table.getTablenumber()}"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+            
         <!-- </div> -->
         <!-- <div class="right">
             <h2>Table information</h2>
@@ -129,53 +135,44 @@
 
     <script>
 
-    // function storeTableId(tableId) {
-    //     localStorage.setItem('selectedTableId', tableId);
-    //     // Redirect to another page or perform other actions
-    // }
-
-    function showConfirmation(element) {
-        confirmationPopup.style.display = "block";
-        overlay.style.display = "block";
-        
-        const tableId = element.getAttribute('data-table-id');
+    function storeTableId(element) {
+        var tableId = element.getAttribute('data-table-id');
         localStorage.setItem('selectedTableId', tableId);
-        // tableIdInput.value = tableId;
-        console.log(tableId);
     }
 
-        // function showTableInfo(number , status) {
-        //     let showInfo = document.getElementById('showInfo');
-        //     let content = '';
+    // function showTableInfo(number , status) {
+    //     let showInfo = document.getElementById('showInfo');
+    //     let content = '';
 
 
-        //     if(status == 1) {
-        //         content = `
-        //             <span>Table: ${number}</span>
-        //             <br>
-        //             <span>Status: avaialable</span>
-        //             `;
-        //     }
-        //     else{
-        //         content = `
-        //             <span>Table: ${number}</span>
-        //             <br>
-        //             <span>Status: unavaialable</span>
-        //             `;
-        //     }
-        //     showInfo.innerHTML = content;
-        // }
-        function orderProduct(available) {
-            if(available == 1) {
-                location.href="/drinkSelect";
-            }
-            else if(available == 0) {
-                alert("This table is unavailable");
-            }
-            else{
-                alert("This table is serving");
-            }
+    //     if(status == 1) {
+    //         content = `
+    //             <span>Table: ${number}</span>
+    //             <br>
+    //             <span>Status: avaialable</span>
+    //             `;
+    //     }
+    //     else{
+    //         content = `
+    //             <span>Table: ${number}</span>
+    //             <br>
+    //             <span>Status: unavaialable</span>
+    //             `;
+    //     }
+    //     showInfo.innerHTML = content;
+    // }
+
+    function orderProduct(available) {
+        if(available == 1) {
+            location.href="/drinkSelect";
         }
+        else if(available == 0) {
+            alert("This table is unavailable");
+        }
+        else{
+            alert("This table is serving");
+        }
+    }
 
     </script>
 </body>
