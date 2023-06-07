@@ -594,7 +594,7 @@ public class Controller {
     RepositoryTemporary tmpRepo; 
 
     @PostMapping("/invoice")
-    public String saveOrder(@RequestParam("orderData") String orderDataString,
+    public RedirectView saveOrder(@RequestParam("orderData") String orderDataString,
             @RequestParam("selectedTableId") String selectedTableId,
             @RequestParam("total") String total, @RequestParam("change") String change, Model model) {
         try {
@@ -632,12 +632,12 @@ public class Controller {
                     invoices.setDrink_id(drink);
 
                     tmp.setDrink_id(drink);
-
-                } else {
-                    // Handle the case where the category does not exist
-                    ModelAndView mav = new ModelAndView("error");
-                    mav.addObject("errorMessage", "Invalid category");
-                    return "listDrink";
+                    
+                // else {
+                //     // Handle the case where the category does not exist
+                //     ModelAndView mav = new ModelAndView("error");
+                //     mav.addObject("errorMessage", "Invalid category");
+                //     return "listDrink";
                 }
                 Optional<CafeTable> table = tableRepo.findById(Integer.parseInt(selectedTableId));
                 BigDecimal totalValue = new BigDecimal(total);
@@ -667,11 +667,12 @@ public class Controller {
             }
 
             // Redirect to a success page or return a response
-            return "redirect:/receipt";
+            // return "redirect:/receipt";
+            return new RedirectView("/receipt");
         } catch (Exception e) {
             // Handle any exceptions during deserialization
             e.printStackTrace();
-            return "redirect:/errorPage";
+            return new RedirectView("/errorPage");
         }
     }
 
@@ -685,21 +686,26 @@ public class Controller {
     // }
 
     @GetMapping("/receipt")
-    public String receipt( Model model) {
-
+    public ModelAndView receipt(Model model) {
         List<Invoice> invoices = (List<Invoice>) invoiceRepo.findAll();
-        List<Temporary> tmp =  (List<Temporary>) tmpRepo.findAll();
+        List<Temporary> tmp = (List<Temporary>) tmpRepo.findAll();
         model.addAttribute("receipt", invoices);
         model.addAttribute("invoices", tmp);
-        return "CashierPart/receipt";
+    
+        // Create and return a ModelAndView object with the desired view name
+        ModelAndView modelAndView = new ModelAndView("receipt");
+        modelAndView.addObject("model", model);
+        return modelAndView;
     }
 
+
+
     @PostMapping("/clearInvoice")
-    public String clearTable() {
+    public Object clearTable() {
         // Logic to clear the table in the database
         tmpRepo.deleteAll();
         // tableRepository.clearTable(); // Replace `clearTable()` with the appropriate method in your repository
         
-        return "redirect:/listDrink?category=1"; // Redirect to a success page after clearing the table
+        return new RedirectView("/listDrink?category=1"); // Redirect to a success page after clearing the table
     }
 }
