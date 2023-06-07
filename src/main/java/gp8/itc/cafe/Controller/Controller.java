@@ -79,8 +79,9 @@ public class Controller {
                 return new RedirectView("/adminDashboard");
             }
             else{
-                return new RedirectView("/tableSelect");
+                return new RedirectView("/listDrink?category=1");
             }
+            
             // return new ModelAndView("loginSuccess");
         } else {
             return new ModelAndView("redirect:/login");
@@ -434,7 +435,7 @@ public class Controller {
 
     
 
-    //dit drink
+    //edit drink
     @GetMapping("/drink/edit/{id}")
     public Object editDrink(@PathVariable Integer id, Model model) {
         Drink drink = drinkRepository.findById(id).get();

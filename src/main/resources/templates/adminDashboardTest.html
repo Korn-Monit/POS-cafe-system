@@ -199,12 +199,12 @@
                 <div class="row">
                     <div th:each="user : ${dashboardData.users}" class="data-row" >
                         <!-- <span th:text="${user.getName()}"></span> -->
-                    <div th:onclick="showInfo([[${user.getName()}]] ,[[${user.getUsername()}]], [[${user.getSex()}]]  ,[[${user.getDob()}]], [[${user.getHiredDate()}]], [[${user.getImage()}]] )" type="button">
+                    <div th:onclick="showInfo([[${user.getUser_id()}]], [[${user.getName()}]] ,[[${user.getUsername()}]], [[${user.getSex()}]]  ,[[${user.getDob()}]], [[${user.getHiredDate()}]], [[${user.getImage()}]] )" type="button">
+                        <span th:text="${user.getUser_id()}"></span>
                         <span th:text="${user.getName()}"></span>
                         <span th:text="${user.getUsername()}"></span>
                         <span><a th:href="@{/user/edit/{id}(id=${user.getUser_id()})}">Edit</a></span>
                         <span><a th:href="@{/user/delete/{id}(id=${user.getUser_id()})}">Delete</a></span>
-                        
                     </div>
                 </div>
             </div>
@@ -229,19 +229,22 @@
                 </div>
                 <div class="row">
                     <!-- here is where to write logic -->
-                    <p>1</p>
-                    <p>Milk tea</p>
-                    <p></p>
-                    <p> <span>Edit</span>
-                        <span>Delete</span>
-                    </p>
+                    <div th:each="drink : ${dashboardData.drinks}" class="data-row" >
+                        <div th:onclick="showInfo1([[${drink.getDrink_id()}]], [[${drink.getDrinkName()}]] ,[[${drink.getPrice()}]], [[${drink.getImage()}]] )" type="button">
+                            <span th:text="${drink.getDrink_id()}"></span>
+                            <span th:text="${drink.getDrinkName()}"></span>
+                            <span th:text="${drink.getPrice()}"></span>
+                            <span><a th:href="@{/drink/edit/{id}(id=${drink.getDrink_id()})}">Edit</a></span>
+                            <span><a th:href="@{/drink/delete/{id}(id=${drink.getDrink_id()})}">Delete</a></span>
+                        </div>
+                    </div>
                 </div>
 
 
             </div>
             <div class="right-column">
                 <h2>Drink information</h2>
-                <div id="showInfo" class="w-3/5">
+                <div id="DrinkInfo" class="w-3/5">
     
                 </div>  
             </div>
@@ -253,7 +256,7 @@
 
         //click display function
         let previousClickedRow = null;
-        function showInfo(arg1, arg2, arg3, arg4, arg5, arg6) {
+        function showInfo(arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
             let showInfoElement = document.getElementById('showInfo');
 
             let imageElement = document.createElement('img');
@@ -263,10 +266,11 @@
 
             let content = `
                 <span style="margin-left: 300px;" class="py-2">Name: ${arg1}</span><br>
-                <span style="margin-left: 300px; class="py-2">Username: ${arg2}</span><br>
-                <span style="margin-left: 300px; class="py-2">Sex: ${arg3}</span><br>
-                <span style="margin-left: 300px; class="py-2">Date of Birth: ${arg4}</span><br>
-                <span style="margin-left: 300px; class="py-2">Hired Date: ${arg5}</span><br>
+                <span style="margin-left: 300px;" class="py-2">Name: ${arg2}</span><br>
+                <span style="margin-left: 300px; class="py-2">Username: ${arg3}</span><br>
+                <span style="margin-left: 300px; class="py-2">Sex: ${arg4}</span><br>
+                <span style="margin-left: 300px; class="py-2">Date of Birth: ${arg5}</span><br>
+                <span style="margin-left: 300px; class="py-2">Hired Date: ${arg6}</span><br>
             `;
 
             showInfoElement.innerHTML = '';

@@ -47,7 +47,7 @@ public class User {
     private List<History> history;
 
     @Lob
-    @Column(name = "image", length = 1000000)
+    @Column(name = "image", length = 100000)
     private String cashierImage;
 
     @Column(name = "hired_date")
