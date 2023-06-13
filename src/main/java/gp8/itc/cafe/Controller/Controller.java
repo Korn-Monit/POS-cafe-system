@@ -708,4 +708,14 @@ public class Controller {
         
         return new RedirectView("/listDrink?category=1"); // Redirect to a success page after clearing the table
     }
+    @Autowired
+    RepositoryInvoice invoiceRepos;
+    //order history
+    @GetMapping("/adminDashboard/orderHistory")
+    public ModelAndView orderHistory() {
+        ModelAndView modelAndView = new ModelAndView("orderHistories");
+        List<Invoice> entities = invoiceRepos.findAll();
+        modelAndView.addObject("entities", entities);
+        return modelAndView;
+    }
 }
