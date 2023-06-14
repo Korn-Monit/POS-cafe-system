@@ -22,7 +22,8 @@
         justify-content: center;
         align-items: center;
         font-family: 'Courier New', Courier, monospace;
-        background-color: whitesmoke
+        background-color: whitesmoke;
+
     }
 
     .container {
@@ -33,6 +34,7 @@
         align-items: flex-start;
         border: 4px solid #000;
         border-radius: 1%;
+
     }
 
     .tabs {
@@ -191,6 +193,9 @@
            <a href="/adminDashboard/manageTable">
                 <button class="tablink" id="btn_managetab" onclick="openTab(event, 'table')">Manage Table</button>
            </a>
+           <a href="/logout" style="margin-left: 323px;">
+                <button class="tablink" id="btn_managetab" onclick="openTab(event, 'logout')">Logout</button>
+            </a>
         </div>
         <div class="tabs">
             <button class="tablink" id="btn_cashier">Cashier</button>

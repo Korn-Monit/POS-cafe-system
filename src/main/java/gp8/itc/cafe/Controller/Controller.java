@@ -718,4 +718,10 @@ public class Controller {
         modelAndView.addObject("entities", entities);
         return modelAndView;
     }
+
+    //logout
+    @GetMapping("/logout")
+    public Object logout() {
+        return new ModelAndView("login");
+    }
 }
