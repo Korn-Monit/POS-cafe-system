@@ -133,6 +133,13 @@ body{
         border: 2px solid black;
         
     }
+    .button-element{
+        width: 350px;
+        height: 30px;
+        background-color: black;
+        color: white;
+        border-radius: 10px;
+    }
 </style>
 <body>
     <form th:action="@{/adminDashboard/addDrinkCategory}" method="post">
@@ -167,11 +174,9 @@ body{
                 </div>
         
             </div>
-            <div class="button">
-                <button type="submmit">Ok</button>
-                <input type="button" value="Cancel" id="cancel">
-        
-        
+            <div class="button-element">
+                <button class="button-element">Done</button>
+                <!-- <input type="button" value="Cancel" id="cancel"> -->
             </div>
         
         </div>

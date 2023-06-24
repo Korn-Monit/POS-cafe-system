@@ -23,6 +23,7 @@
         align-items: center;
         font-family: 'Courier New', Courier, monospace;
         background-color: whitesmoke;
+        
 
     }
 
@@ -34,6 +35,7 @@
         align-items: flex-start;
         border: 4px solid #000;
         border-radius: 1%;
+        
 
     }
 
@@ -167,105 +169,110 @@
     #showInfo{
         display: inline;
     }
+    .big-container{
+        background-image: url("https://i.pinimg.com/564x/28/fa/f6/28faf6993de4841588887606918bed96.jpg");
+    }
     
 
 </style>
 <body>
-
-    <div class="container">
-        <div class="tabs">
-
-            <a href="/adminDashboard/addCashier">   
-                <button class="tablink thistab" id="btn_newcashier" onclick="openTab(event, 'cashier')">New Cashier</button>
-            </a>
-            <a href="/adminDashboard/addDrink">
-                <button class="tablink" id="btn_newdrink" onclick="openTab(event, 'drink')">New Drink</button>
-            </a>
-            <!-- <a href="/new_food">
-                <button class="tablink" id="btn_newfood" onclick="openTab(event, 'food')">New Food</button>
-            </a> -->
-           <a href="/adminDashboard/addDrinkCategory">
-                <button class="tablink" id="btn_category" onclick="openTab(event, 'category')">New Category</button>
-           </a>
-           <a href="/order_histories">
-                <button class="tablink" id="btn_orderhis" onclick="openTab(event, 'orders')">Orders History</button>
-           </a>
-           <a href="/adminDashboard/manageTable">
-                <button class="tablink" id="btn_managetab" onclick="openTab(event, 'table')">Manage Table</button>
-           </a>
-           <a href="/logout" style="margin-left: 323px;">
-                <button class="tablink" id="btn_managetab" onclick="openTab(event, 'logout')">Logout</button>
-            </a>
-        </div>
-        <div class="tabs">
-            <button class="tablink" id="btn_cashier">Cashier</button>
-            <button class="tablink" id="btn_drinks">Drink</button>
-            <!-- <button class="tablink" id="btn_foods">Food</button> -->
-        </div>
-        <!-- cashier -->
-        <div class="evencolumn">
-            <div class="left-column">
-                <div class="rowUp">
-                    <span style="margin-left: 20px;">No</span> 
-                    <span style="margin-left: 20px;" >Cashier Name</span>
-                    <span style="margin-left: 40px;">Login</span>
-                    <span style="margin-left: 80px;" >Action</span>
-                </div>
-                <div class="row" >
-                    <div th:each="user : ${dashboardData.users}" class="data-row" >
-                        <!-- <span th:text="${user.getName()}"></span> -->
-                    <div th:onclick="showInfo([[${user.getUser_id()}]], [[${user.getName()}]] ,[[${user.getUsername()}]], [[${user.getSex()}]]  ,[[${user.getDob()}]], [[${user.getHiredDate()}]], [[${user.getImage()}]] )" type="button"  style="display: block;">
-                        <span style="margin-left: 5px;" th:text="${user.getUser_id()}"></span>
-                        <span style="margin-left: 40px;" th:text="${user.getName()}"></span>
-                        <span style="margin-left: 100px;" th:text="${user.getUsername()}"></span>
-                        <span style="margin-left: 75px;"><a th:href="@{/user/edit/{id}(id=${user.getUser_id()})}">Edit</a></span>
-                        <span><a th:href="@{/user/delete/{id}(id=${user.getUser_id()})}">Delete</a></span>
-                        
-                    </div>
-                </div>
-            </div>
-
-
-            </div>
-            <div class="right-column">
-                <h2>Cashier information</h2>
-                <div id="showInfo">
+    <div class="big-container">
+        <div class="container">
+            <div class="tabs">
     
-                </div>  
+                <a href="/adminDashboard/addCashier">   
+                    <button class="tablink thistab" id="btn_newcashier" onclick="openTab(event, 'cashier')">New Cashier</button>
+                </a>
+                <a href="/adminDashboard/addDrink">
+                    <button class="tablink" id="btn_newdrink" onclick="openTab(event, 'drink')">New Drink</button>
+                </a>
+                <!-- <a href="/new_food">
+                    <button class="tablink" id="btn_newfood" onclick="openTab(event, 'food')">New Food</button>
+                </a> -->
+               <a href="/adminDashboard/addDrinkCategory">
+                    <button class="tablink" id="btn_category" onclick="openTab(event, 'category')">New Category</button>
+               </a>
+               <a href="/adminDashboard/orderHistory">
+                    <button class="tablink" id="btn_orderhis" onclick="openTab(event, 'orders')">Orders History</button>
+               </a>
+               <a href="/adminDashboard/manageTable">
+                    <button class="tablink" id="btn_managetab" onclick="openTab(event, 'table')">Manage Table</button>
+               </a>
+               <a href="/logout" style="margin-left: 323px;">
+                    <button class="tablink" id="btn_managetab" onclick="openTab(event, 'logout')">Logout</button>
+                </a>
             </div>
-        </div>
-        <!-- drink -->
-        <div class="evencolumn">
-            <div class="left-column">
-                <div class="row">
-                    <span>ID</span>
-                    <span style="margin-left: 60px;">DrinkName</span>
-                    <span style="margin-left: 70px;">Price</span>
-                    <span style="margin-left: 80px;">Action</span>
-                </div>
-                <div class="row">
-                    <!-- here is where to write logic -->
-                    <div th:each="drink : ${dashboardData.drinks}" class="data-row" >
-                        <div th:onclick="showInfo1([[${drink.getDrink_id()}]], [[${drink.getDrinkName()}]] ,[[${drink.getPrice()}]], [[${drink.getImage()}]] )" type="button">
-                            <span th:text="${drink.getDrink_id()}"></span>
-                            <span style="margin-left: 60px;" th:text="${drink.getDrinkName()}"></span>
-                            <span style="margin-left: 80px;" th:text="${drink.getPrice()}"></span>
-                            <span style="margin-left: 90px;"><a th:href="@{/drink/edit/{id}(id=${drink.getDrink_id()})}">Edit</a></span>
-                            <span><a th:href="@{/drink/delete/{id}(id=${drink.getDrink_id()})}">Delete</a></span>
+            <div class="tabs rowUp">
+                <button class="tablink" id="btn_cashier">Cashier</button>
+                <button class="tablink" id="btn_drinks">Drink</button>
+                <!-- <button class="tablink" id="btn_foods">Food</button> -->
+            </div>
+            <!-- cashier -->
+            <div class="evencolumn">
+                <div class="left-column">
+                    <div class="rowUp">
+                        <span style="margin-left: 20px;"> <strong>No</strong></span> 
+                        <span style="margin-left: 20px;" > <strong>Cashier Name</strong></span>
+                        <span style="margin-left: 40px;"> <strong>Login</strong></span>
+                        <span style="margin-left: 80px;" > <strong>Action</strong></span>
+                    </div>
+                    <div class="row" >
+                        <div th:each="user : ${dashboardData.users}" class="data-row" >
+                            <!-- <span th:text="${user.getName()}"></span> -->
+                        <div th:onclick="showInfo([[${user.getUser_id()}]], [[${user.getName()}]] ,[[${user.getUsername()}]], [[${user.getSex()}]]  ,[[${user.getDob()}]], [[${user.getHiredDate()}]], [[${user.getImage()}]] )" type="button"  style="display: block;">
+                            <span style="margin-left: 5px;" th:text="${user.getUser_id()}"></span>
+                            <span style="margin-left: 40px;" th:text="${user.getName()}"></span>
+                            <span style="margin-left: 100px;" th:text="${user.getUsername()}"></span>
+                            <span style="margin-left: 75px;"><a th:href="@{/user/edit/{id}(id=${user.getUser_id()})}">Edit</a></span>
+                            <span><a th:href="@{/user/delete/{id}(id=${user.getUser_id()})}">Delete</a></span>
+                            
                         </div>
                     </div>
                 </div>
-
-
-            </div>
-            <div class="right-column">
-                <h2>Drink information</h2>
-                <div id="drinkInfo" class="w-3/5">
     
-                </div>  
+    
+                </div>
+                <div class="right-column">
+                    <h2>Cashier information</h2>
+                    <div id="showInfo">
+        
+                    </div>  
+                </div>
             </div>
-        </div>   
+            <!-- drink -->
+            <div class="evencolumn">
+                <div class="left-column">
+                    <div class="rowUp">
+                        <span> <strong>ID</strong></span>
+                        <span style="margin-left: 60px;"> <strong>DrinkName</strong></span>
+                        <span style="margin-left: 70px;"> <strong>Price</strong></span>
+                        <span style="margin-left: 80px;"> <strong>Action</strong></span>
+                    </div>
+                    <div class="row">
+                        <!-- here is where to write logic -->
+                        <div th:each="drink : ${dashboardData.drinks}" class="data-row" >
+                            <div th:onclick="showInfo1([[${drink.getDrink_id()}]], [[${drink.getDrinkName()}]] ,[[${drink.getPrice()}]], [[${drink.getImage()}]] )" type="button">
+                                <span th:text="${drink.getDrink_id()}"></span>
+                                <span style="margin-left: 60px;" th:text="${drink.getDrinkName()}"></span>
+                                <span style="margin-left: 80px;" th:text="${drink.getPrice()}"></span>
+                                <span style="margin-left: 90px;"><a th:href="@{/drink/edit/{id}(id=${drink.getDrink_id()})}">Edit</a></span>
+                                <span><a th:href="@{/drink/delete/{id}(id=${drink.getDrink_id()})}">Delete</a></span>
+                            </div>
+                        </div>
+                    </div>
+    
+    
+                </div>
+                <div class="right-column">
+                    <h2>Drink information</h2>
+                    <div id="drinkInfo" class="w-3/5">
+        
+                    </div>  
+                </div>
+            </div>   
+        </div>
     </div>
+    
 
    
     <script>
