@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    * {
+        box-sizing: border-box;
+        font-size: inherit;
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Courier New', Courier, monospace;
+        background-color: whitesmoke;
+        
+
+    }
+
+    .container {
+        width: 1100px;
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        border: 4px solid #000;
+        border-radius: 1%;
+        
+
+    }
+
+    .tabs {
+        width: 100%;
+        height: 80px;
+        overflow: hidden;
+        /* border-bottom: 1px solid gray; */
+        display: flex;
+ 
+    }
+
+    .tablink {
+        background-color: black;
+        outline: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        font-size: 16px;
+        /* width: 20%;
+            float: left; */
+        margin: 0;
+        border: 1px solid white;
+        color: white;
+        border-radius: 13px;
+    }
+
+    .tablink:hover {
+        background-color: #ddd;
+    }
+
+    .tabs:nth-child(2) {
+        background-color: #fff;
+        color: #000;
+    }
+
+    .evencolumn {
+        width: 100%;
+        height: 100%;
+        display: none;
+        justify-content: space-evenly;
+        
+
+    }
+
+    .evencolumn>* {
+        width: 50%;
+        height: 100%;
+        flex-basis: 100%;
+        border: 1px solid black;
+    }
+
+    .left-column {
+        padding-top: 40px;
+        width: 150px;
+        height: 500px;
+        margin-top: 15px;
+    }
+
+    .row {
+        width: 100%;
+        /* display: flex; */
+        /* align-items: center; */
+        padding: 5px 10px;
+    }
+
+    .row:nth-child(1) {
+        background-color: whitesmoke
+
+    }
+
+    .row p {
+        padding: 1%;
+    }
+
+    .row p:nth-child(1) {
+        flex: 1;
+    }
+
+    .row p:nth-child(2) {
+        flex: 3;
+    }
+
+    .row p:nth-child(3) {
+        flex: 3;
+    }
+
+    .row p:nth-child(4) {
+        flex: 3;
+    }
+
+    .right-column {
+        margin-top: 15px;
+        overflow: hidden;
+        height: 500px;
+    }
+
+    .right-column img {
+        width: 50%;
+    }
+
+    .right-column h2 {
+        font-size: 20px;
+        padding: 20px;
+    }
+
+    /* function for selected table */
+    .selected {
+        background-color: yellow;
+    }
+
+    .hidden {
+        display: none;
+    }
+   /* function for selected table */
+   .selected-row {
+        background-color: rgb(203, 175, 64); 
+    }
+    /* image and text at the same line */
+    .btntab{
+        background-color: black;
+        color: white;
+        
+    }
+    /* .thistab{
+        border-radius: 0 0 0 10%;
+    } */
+    /* .rowUp{
+        display: flex;
+        justify-content: space-evenly;
+    } */
+    #showInfo{
+        display: inline;
+    }
+    .big-container{
+        background-image: url("https://i.pinimg.com/564x/28/fa/f6/28faf6993de4841588887606918bed96.jpg");
+    }
+    
+
+</style>
+<body>
+    <div class="big-container">
+        <div class="container">
+            <div class="tabs">
+    
+                <a href="/adminDashboard/addCashier">   
+                    <button class="tablink thistab" id="btn_newcashier" onclick="openTab(event, 'cashier')">New Cashier</button>
+                </a>
+                <a href="/adminDashboard/addDrink">
+                    <button class="tablink" id="btn_newdrink" onclick="openTab(event, 'drink')">New Drink</button>
+                </a>
+                <!-- <a href="/new_food">
+                    <button class="tablink" id="btn_newfood" onclick="openTab(event, 'food')">New Food</button>
+                </a> -->
+               <a href="/adminDashboard/addDrinkCategory">
+                    <button class="tablink" id="btn_category" onclick="openTab(event, 'category')">New Category</button>
+               </a>
+               <a href="/adminDashboard/orderHistory">
+                    <button class="tablink" id="btn_orderhis" onclick="openTab(event, 'orders')">Orders History</button>
+               </a>
+               <a href="/adminDashboard/manageTable">
+                    <button class="tablink" id="btn_managetab" onclick="openTab(event, 'table')">Manage Table</button>
+               </a>
+               <a href="/logout" style="margin-left: 323px;">
+                    <button class="tablink" id="btn_managetab" onclick="openTab(event, 'logout')">Logout</button>
+                </a>
+            </div>
+            <div class="tabs rowUp">
+                <button class="tablink" id="btn_cashier">Cashier</button>
+                <button class="tablink" id="btn_drinks">Drink</button>
+                <!-- <button class="tablink" id="btn_foods">Food</button> -->
+            </div>
+            <!-- cashier -->
+            <div class="evencolumn">
+                <div class="left-column">
+                    <div class="rowUp">
+                        <span style="margin-left: 20px;"> <strong>No</strong></span> 
+                        <span style="margin-left: 20px;" > <strong>Cashier Name</strong></span>
+                        <span style="margin-left: 40px;"> <strong>Login</strong></span>
+                        <span style="margin-left: 80px;" > <strong>Action</strong></span>
+                    </div>
+                    <div class="row" >
+                        <div th:each="user : ${dashboardData.users}" class="data-row" >
+                            <!-- <span th:text="${user.getName()}"></span> -->
+                        <div th:onclick="showInfo([[${user.getUser_id()}]], [[${user.getName()}]] ,[[${user.getUsername()}]], [[${user.getSex()}]]  ,[[${user.getDob()}]], [[${user.getHiredDate()}]], [[${user.getImage()}]] )" type="button"  style="display: block;">
+                            <span style="margin-left: 5px;" th:text="${user.getUser_id()}"></span>
+                            <span style="margin-left: 40px;" th:text="${user.getName()}"></span>
+                            <span style="margin-left: 100px;" th:text="${user.getUsername()}"></span>
+                            <span style="margin-left: 75px;"><a th:href="@{/user/edit/{id}(id=${user.getUser_id()})}">Edit</a></span>
+                            <span><a th:href="@{/user/delete/{id}(id=${user.getUser_id()})}">Delete</a></span>
+                            
+                        </div>
+                    </div>
+                </div>
+    
+    
+                </div>
+                <div class="right-column">
+                    <h2>Cashier information</h2>
+                    <div id="showInfo">
+        
+                    </div>  
+                </div>
+            </div>
+            <!-- drink -->
+            <div class="evencolumn">
+                <div class="left-column">
+                    <div class="rowUp">
+                        <span> <strong>ID</strong></span>
+                        <span style="margin-left: 60px;"> <strong>DrinkName</strong></span>
+                        <span style="margin-left: 70px;"> <strong>Price</strong></span>
+                        <span style="margin-left: 80px;"> <strong>Action</strong></span>
+                    </div>
+                    <div class="row">
+                        <!-- here is where to write logic -->
+                        <div th:each="drink : ${dashboardData.drinks}" class="data-row" >
+                            <div th:onclick="showInfo1([[${drink.getDrink_id()}]], [[${drink.getDrinkName()}]] ,[[${drink.getPrice()}]], [[${drink.getImage()}]] )" type="button">
+                                <span th:text="${drink.getDrink_id()}"></span>
+                                <span style="margin-left: 60px;" th:text="${drink.getDrinkName()}"></span>
+                                <span style="margin-left: 80px;" th:text="${drink.getPrice()}"></span>
+                                <span style="margin-left: 90px;"><a th:href="@{/drink/edit/{id}(id=${drink.getDrink_id()})}">Edit</a></span>
+                                <span><a th:href="@{/drink/delete/{id}(id=${drink.getDrink_id()})}">Delete</a></span>
+                            </div>
+                        </div>
+                    </div>
+    
+    
+                </div>
+                <div class="right-column">
+                    <h2>Drink information</h2>
+                    <div id="drinkInfo" class="w-3/5">
+        
+                    </div>  
+                </div>
+            </div>   
+        </div>
+    </div>
+    
+
+   
+    <script>
+
+        //click display function
+        // let previousClickedRow = null;
+        // function showInfo(arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
+        //     let showInfoElement = document.getElementById('showInfo');
+
+        //     let imageElement = document.createElement('img');
+        //     imageElement.src = 'data:image/jpeg;base64,' + arg7;
+        //     imageElement.width = 190; // Set the desired width of the image
+        //     imageElement.height = 250; // Set the desired height of the image
+
+        //     let content = `
+        //     <p style="margin-left: 300px; margin-bottom:100px; display: inline;" class="py-2">Id: ${arg1}</p>
+        //     <p style="margin-left: 300px; display: inline;" class="py-2">Name: ${arg2}</p>
+        //     <p style="margin-left: 300px; display: inline;" class="py-2">Username: ${arg3}</p>
+        //     <p style="margin-left: 300px; display: inline;" class="py-2">Sex: ${arg4}</p>
+        //     <p style="margin-left: 300px; display: inline;" class="py-2">Date of Birth: ${arg5}</p>
+        //     <p style="margin-left: 300px; display: inline;" class="py-2">Hired Date: ${arg6}</p>
+        //     `;
+
+        //     showInfoElement.innerHTML = '';
+        //     showInfoElement.appendChild(imageElement);
+        //     showInfoElement.insertAdjacentHTML('beforeend', content);
+
+        //     // Remove CSS class from the previously clicked row
+        //     if (previousClickedRow) {
+        //         previousClickedRow.classList.remove('selected-row');
+        //     }
+
+        //     // Add CSS class to the clicked row
+        //     let clickedRow = event.target.closest('.data-row');
+        //     if (clickedRow) {
+        //         clickedRow.classList.add('selected-row');
+        //         previousClickedRow = clickedRow;
+        //     }
+        // }
+
+        let previousClickedRow = null;
+        function showInfo(arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
+            let showInfoElement = document.getElementById('showInfo');
+
+            let imageElement = document.createElement('img');
+            imageElement.src = 'data:image/jpeg;base64,' + arg7;
+            imageElement.width = 190; // Set the desired width of the image
+            imageElement.height = 250; // Set the desired height of the image
+
+            let textContainer = document.createElement('div');
+            textContainer.style.display = 'inline-block';
+            // textContainer.style.marginBottom = '100px';
+
+            let idElement = document.createElement('p');
+            idElement.style.marginLeft = '10px';
+            idElement.style.marginBottom = '30px';
+            idElement.textContent = 'Id: ' + arg1;
+
+            let nameElement = document.createElement('p');
+            nameElement.style.marginLeft = '10px';
+            nameElement.style.marginBottom = '30px';
+            nameElement.textContent = 'Name: ' + arg2;
+
+            let usernameElement = document.createElement('p');
+            usernameElement.style.marginLeft = '10px';
+            usernameElement.style.marginBottom = '30px';
+            usernameElement.textContent = 'Username: ' + arg3;
+
+            let sexElement = document.createElement('p');
+            sexElement.style.marginLeft = '10px';
+            sexElement.style.marginBottom = '30px';
+            sexElement.textContent = 'Sex: ' + arg4;
+
+            let dobElement = document.createElement('p');
+            dobElement.style.marginLeft = '10px';
+            dobElement.style.marginBottom = '30px';
+            dobElement.textContent = 'Date of Birth: ' + arg5;
+
+            let hiredElement = document.createElement('p');
+            hiredElement.style.marginLeft = '10px';
+            hiredElement.style.marginBottom = '30px';
+            hiredElement.textContent = 'Hired Date: ' + arg6;
+
+            textContainer.appendChild(idElement);
+            textContainer.appendChild(nameElement);
+            textContainer.appendChild(usernameElement);
+            textContainer.appendChild(sexElement);
+            textContainer.appendChild(dobElement);
+            textContainer.appendChild(hiredElement);
+
+            showInfoElement.innerHTML = '';
+            showInfoElement.appendChild(imageElement);
+            showInfoElement.appendChild(textContainer);
+
+            // Remove CSS class from the previously clicked row
+            if (previousClickedRow) {
+                previousClickedRow.classList.remove('selected-row');
+            }
+
+            // Add CSS class to the clicked row
+            let clickedRow = event.target.closest('.data-row');
+            if (clickedRow) {
+                clickedRow.classList.add('selected-row');
+                previousClickedRow = clickedRow;
+            }
+        }
+
+
+
+        // function showInfo1(arg1, arg2, arg3, arg4) {
+        //     let showInfoElement = document.getElementById('drinkInfo');
+
+        //     let imageElement = document.createElement('img');
+        //     imageElement.src = 'data:image/jpeg;base64,' + arg4;
+        //     imageElement.width = 190; // Set the desired width of the image
+        //     imageElement.height = 250; // Set the desired height of the image
+
+        //     let content = `
+        //         <span style="margin-left: 300px;" class="py-2">Id: ${arg1}</span><br>
+        //         <span style="margin-left: 300px;" class="py-2">DrinkName: ${arg2}</span><br>
+        //         <span style="margin-left: 300px; class="py-2">Price: ${arg3}</span><br>
+        //     `;
+
+        //     showInfoElement.innerHTML = '';
+        //     showInfoElement.appendChild(imageElement);
+        //     showInfoElement.insertAdjacentHTML('beforeend', content);
+
+        //     // Remove CSS class from the previously clicked row
+        //     if (previousClickedRow) {
+        //         previousClickedRow.classList.remove('selected-row');
+        //     }
+
+        //     // Add CSS class to the clicked row
+        //     let clickedRow = event.target.closest('.data-row');
+        //     if (clickedRow) {
+        //         clickedRow.classList.add('selected-row');
+        //         previousClickedRow = clickedRow;
+        //     }
+        // }
+
+        function showInfo1(arg1, arg2, arg3, arg4) {
+            let showInfoElement = document.getElementById('drinkInfo');
+
+            let imageElement = document.createElement('img');
+            imageElement.src = 'data:image/jpeg;base64,' + arg4;
+            imageElement.width = 190; // Set the desired width of the image
+            imageElement.height = 250; // Set the desired height of the image
+
+            let textContainer = document.createElement('div');
+            textContainer.style.display = 'inline-block';
+            // textContainer.style.marginBottom = '100px';
+
+            let idElement = document.createElement('p');
+            idElement.style.marginLeft = '10px';
+            idElement.style.marginBottom = '30px';
+            idElement.textContent = 'Id: ' + arg1;
+
+            let nameElement = document.createElement('p');
+            nameElement.style.marginLeft = '10px';
+            nameElement.style.marginBottom = '30px';
+            nameElement.textContent = 'Drink Name: ' + arg2;
+
+            let usernameElement = document.createElement('p');
+            usernameElement.style.marginLeft = '10px';
+            usernameElement.style.marginBottom = '30px';
+            usernameElement.textContent = 'Price: ' + arg3;
+
+
+            textContainer.appendChild(idElement);
+            textContainer.appendChild(nameElement);
+            textContainer.appendChild(usernameElement);
+            
+
+            showInfoElement.innerHTML = '';
+            showInfoElement.appendChild(imageElement);
+            showInfoElement.appendChild(textContainer);
+
+            // Remove CSS class from the previously clicked row
+            if (previousClickedRow) {
+                previousClickedRow.classList.remove('selected-row');
+            }
+
+            // Add CSS class to the clicked row
+            let clickedRow = event.target.closest('.data-row');
+            if (clickedRow) {
+                clickedRow.classList.add('selected-row');
+                previousClickedRow = clickedRow;
+            }
+        }
+
+
+
+
+        let evencolumn = document.querySelectorAll('.evencolumn')
+        let cashier = document.getElementById('btn_cashier')
+        let drink = document.getElementById('btn_drinks')
+        let food = document.getElementById('btn_foods')
+        evencolumn[0].style.display = "flex";
+        cashier.onclick = () => {
+            evencolumn[0].style.display = "flex";
+            evencolumn[1].style.display = "none";
+            evencolumn[2].style.display = "none";
+        }
+        drink.onclick = () => {
+            evencolumn[0].style.display = "none";
+            evencolumn[1].style.display = "flex";
+            evencolumn[2].style.display = "none";
+        }
+        food.onclick = () => {
+            evencolumn[0].style.display = "none";
+            evencolumn[1].style.display = "none";
+            evencolumn[2].style.display = "flex";
+        }
+
+    </script>
+</body>
+</html>

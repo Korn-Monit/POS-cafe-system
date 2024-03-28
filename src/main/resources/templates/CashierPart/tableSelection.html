@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Selection</title>
+    <style>
+        body {
+            height: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-image: url("https://i.pinimg.com/564x/28/fa/f6/28faf6993de4841588887606918bed96.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+
+        }
+        .content {
+            width: 1020px;
+            height: 500px;
+            display: flex;
+            flex-wrap: wrap;
+            background-color: rgb(255, 255, 255);
+            padding: 18px;
+            overflow-y: auto;
+            border: 2px black solid;
+            gap: 11px;
+            margin-top: 20px;
+        }
+        .box1{
+            width: 90px;
+            height: 90px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(65, 227, 57);
+            cursor: pointer;
+            border-radius: 10px;
+            border: 2px solid black;
+        }
+        .box2{
+            width: 90px;
+            height: 90px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: red;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 2px solid gray;
+        }
+        .box3{
+            width: 90px;
+            height: 90px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: yellow;
+            cursor: pointer;
+        }
+        .info{
+            width: 300px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: yellow;
+        }
+        .centered {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .table_title {
+            text-align: center;
+            margin-bottom: 20px; /* Add this line */
+        }
+    </style>
+</head>
+<body>
+    <div class="centered">
+        <div class="table_title">
+          <h1>Table Selection</h1>
+        </div>
+    </div>
+    <div class="content">
+        <!-- <div class="left"> -->
+            <!-- <form action="/drinkSelect" method="post"> -->
+                <div th:each="table : ${tables}">
+                    <div th:switch="${table.getAvailability()}">
+                        <div th:case="'1'"
+                             th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])"
+                             th:data-table-id="${table.getTable_id()}"
+                             onclick="storeTableId(this)"
+                             th:ondblclick="orderProduct([[${table.getAvailability()}]]); storeTableId(this)"
+                             type="button"
+                             class="box1">
+                            <span th:text="${table.getTablenumber()}"></span>
+                        </div>
+                        <div th:case="0"
+                             th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])"
+                             th:data-table-id="${table.getTable_id()}"
+                             onclick="storeTableId(this)"
+                             th:ondblclick="orderProduct([[${table.getAvailability()}]]); storeTableId(this)"
+                             type="button"
+                             class="box2">
+                            <span th:text="${table.getTablenumber()}"></span>
+                        </div>
+                        <div th:case="*"
+                             th:onclick="showTableInfo([[${table.getTablenumber()}]] , [[${table.getAvailability()}]])"
+                             th:data-table-id="${table.getTable_id()}"
+                             onclick="storeTableId(this)"
+                             th:ondblclick="orderProduct([[${table.getAvailability()}]]); storeTableId(this)"
+                             type="button"
+                             class="box3">
+                            <span th:text="${table.getTablenumber()}"></span>
+                        </div>
+                    </div>
+                </div>
+            <!-- </form> -->
+
+
+            
+        <!-- </div> -->
+        <!-- <div class="right">
+            <h2>Table information</h2>
+            <div id="showInfo" class="info">
+                
+            </div>
+        </div> -->
+    </div>
+
+    <script>
+
+    function storeTableId(element) {
+        var tableId = element.getAttribute('data-table-id');
+        localStorage.setItem('selectedTableId', tableId);
+    }
+
+    // function showTableInfo(number , status) {
+    //     let showInfo = document.getElementById('showInfo');
+    //     let content = '';
+
+
+    //     if(status == 1) {
+    //         content = `
+    //             <span>Table: ${number}</span>
+    //             <br>
+    //             <span>Status: avaialable</span>
+    //             `;
+    //     }
+    //     else{
+    //         content = `
+    //             <span>Table: ${number}</span>
+    //             <br>
+    //             <span>Status: unavaialable</span>
+    //             `;
+    //     }
+    //     showInfo.innerHTML = content;
+    // }
+
+    function orderProduct(available) {
+        if(available == 1) {
+            location.href="/drinkSelect";
+        }
+        else if(available == 0) {
+            alert("This table is unavailable");
+        }
+        else{
+            alert("This table is serving");
+        }
+    }
+    </script>
+</body>
+</html>
